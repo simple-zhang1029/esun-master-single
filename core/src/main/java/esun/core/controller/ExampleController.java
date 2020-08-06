@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 
 //声明为RestfulController，自动进行注入,如不声明则接口无法生效
-//@RestController
+@RestController
 //声明接口,格式为"/版本号/接口"
 @RequestMapping("/v1/example/")
 public class ExampleController {
