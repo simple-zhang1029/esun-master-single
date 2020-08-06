@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="postgres@10.124.0.47" check-outdated="false" uuid="ac8e3a93-b535-4e24-ade7-7d5ec3476b6c">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://10.124.0.47:30432/postgres</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="@10.124.0.41" uuid="d9fd010e-4f5a-4aed-8a5e-73476f36b109">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://10.124.0.41:30006</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="test" uuid="400444c1-5dca-4b22-8317-85db156e2a5c">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://10.124.0.47:30006/test_db</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="10.124.0.45" uuid="4f8bad89-23a0-4a10-8fc5-adf081e7f8a7">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://10.124.0.42:6002/postgres</jdbc-url>
+    </data-source>
+  </component>
+</project>

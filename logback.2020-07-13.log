@@ -1,0 +1,117 @@
+16:43:40.253  logback [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$75dbcf54] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+16:43:40.771  logback [main] INFO  esun.token.TokenApplication - No active profile set, falling back to default profiles: default
+16:43:41.668  logback [main] WARN  o.s.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+16:43:41.750  logback [main] INFO  c.c.f.f.i.p.DefaultApplicationProvider - App ID is set to back-end-token by app.id property from System Property
+16:43:41.753  logback [main] INFO  c.c.f.f.i.p.DefaultServerProvider - Environment is set to null. Because it is not available in either (1) JVM system property 'env', (2) OS env variable 'ENV' nor (3) property 'env' from the properties InputStream.
+16:43:41.853  logback [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=77e33b3f-ee14-3bee-88ad-3b287ce1ec3f
+16:43:41.897  logback [main] INFO  c.c.f.a.i.DefaultMetaServerProvider - Located meta services from apollo.meta configuration: http://10.124.0.41:30002!
+16:43:41.899  logback [main] INFO  c.c.f.apollo.core.MetaDomainConsts - Located meta server address http://10.124.0.41:30002 for env UNKNOWN from com.ctrip.framework.apollo.internals.DefaultMetaServerProvider
+16:46:17.975  logback [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$efb08fec] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+16:46:18.471  logback [main] INFO  esun.token.TokenApplication - No active profile set, falling back to default profiles: default
+16:46:19.082  logback [main] WARN  o.s.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+16:46:19.209  logback [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=066f8d4f-597c-3b03-b2e0-876bbd30fd7c
+16:46:19.225  logback [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'esun.token.service.DbHelperService' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+16:46:19.279  logback [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$efb08fec] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+16:46:19.530  logback [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8884 (http)
+16:46:19.543  logback [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8884"]
+16:46:19.550  logback [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+16:46:19.550  logback [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.24]
+16:46:19.724  logback [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+16:46:19.724  logback [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1243 ms
+16:46:19.796  logback [main] WARN  c.n.c.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+16:46:19.796  logback [main] INFO  c.n.c.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+16:46:19.802  logback [main] INFO  c.n.config.DynamicPropertyFactory - DynamicPropertyFactory is initialized with configuration sources: com.netflix.config.ConcurrentCompositeConfiguration@76a14c8d
+16:46:20.669  logback [main] WARN  c.n.c.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+16:46:20.669  logback [main] INFO  c.n.c.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+16:46:20.794  logback [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+16:46:21.697  logback [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 2 endpoint(s) beneath base path '/actuator'
+16:46:21.776  logback [main] INFO  o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+16:46:21.799  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+16:46:22.132  logback [main] INFO  c.n.d.p.DiscoveryJerseyProvider - Using JSON encoding codec LegacyJacksonJson
+16:46:22.133  logback [main] INFO  c.n.d.p.DiscoveryJerseyProvider - Using JSON decoding codec LegacyJacksonJson
+16:46:22.213  logback [main] INFO  c.n.d.p.DiscoveryJerseyProvider - Using XML encoding codec XStreamXml
+16:46:22.213  logback [main] INFO  c.n.d.p.DiscoveryJerseyProvider - Using XML decoding codec XStreamXml
+16:46:22.341  logback [main] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+16:46:22.572  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+16:46:22.572  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+16:46:22.572  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+16:46:22.572  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+16:46:22.572  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+16:46:22.572  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: true
+16:46:22.573  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+16:46:22.689  logback [main] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+16:46:22.692  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+16:46:22.695  logback [main] INFO  c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+16:46:22.697  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1594629982697 with initial instances count: 1
+16:46:22.697  logback [main] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application TOKEN with eureka with status UP
+16:46:22.699  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1594629982699, current=UP, previous=STARTING]
+16:46:22.700  logback [DiscoveryClient-InstanceInfoReplicator-0] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_TOKEN/host.docker.internal:token:8884: registering service...
+16:46:22.720  logback [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8884"]
+16:46:22.738  logback [DiscoveryClient-InstanceInfoReplicator-0] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_TOKEN/host.docker.internal:token:8884 - registration status: 204
+16:46:22.742  logback [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8884 (http) with context path ''
+16:46:22.743  logback [main] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8884
+16:46:23.147  logback [main] INFO  esun.token.TokenApplication - Started TokenApplication in 6.517 seconds (JVM running for 7.986)
+16:46:23.808  logback [RMI TCP Connection(3)-192.168.218.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+16:46:23.808  logback [RMI TCP Connection(3)-192.168.218.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+16:46:23.814  logback [RMI TCP Connection(3)-192.168.218.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+16:49:55.243  logback [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$2916f34a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+16:49:55.840  logback [main] INFO  esun.token.TokenApplication - No active profile set, falling back to default profiles: default
+16:49:56.729  logback [main] WARN  o.s.boot.actuate.endpoint.EndpointId - Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+16:49:56.903  logback [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=066f8d4f-597c-3b03-b2e0-876bbd30fd7c
+16:49:56.937  logback [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'esun.token.service.DbHelperService' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+16:49:57.034  logback [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$2916f34a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+16:49:57.437  logback [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8884 (http)
+16:49:57.461  logback [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8884"]
+16:49:57.478  logback [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+16:49:57.479  logback [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.24]
+16:49:57.760  logback [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+16:49:57.760  logback [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1907 ms
+16:49:57.839  logback [main] WARN  c.n.c.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+16:49:57.840  logback [main] INFO  c.n.c.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+16:49:57.847  logback [main] INFO  c.n.config.DynamicPropertyFactory - DynamicPropertyFactory is initialized with configuration sources: com.netflix.config.ConcurrentCompositeConfiguration@1d6d1d42
+16:49:59.320  logback [main] WARN  c.n.c.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+16:49:59.321  logback [main] INFO  c.n.c.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+16:49:59.526  logback [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+16:50:00.915  logback [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 2 endpoint(s) beneath base path '/actuator'
+16:50:01.183  logback [main] INFO  o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+16:50:01.290  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+16:50:01.910  logback [main] INFO  c.n.d.p.DiscoveryJerseyProvider - Using JSON encoding codec LegacyJacksonJson
+16:50:01.911  logback [main] INFO  c.n.d.p.DiscoveryJerseyProvider - Using JSON decoding codec LegacyJacksonJson
+16:50:02.036  logback [main] INFO  c.n.d.p.DiscoveryJerseyProvider - Using XML encoding codec XStreamXml
+16:50:02.037  logback [main] INFO  c.n.d.p.DiscoveryJerseyProvider - Using XML decoding codec XStreamXml
+16:50:02.213  logback [main] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+16:50:02.531  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+16:50:02.531  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+16:50:02.531  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+16:50:02.531  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+16:50:02.531  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+16:50:02.531  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: true
+16:50:02.531  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+16:50:02.666  logback [main] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+16:50:02.668  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+16:50:02.670  logback [main] INFO  c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+16:50:02.674  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1594630202673 with initial instances count: 2
+16:50:02.675  logback [main] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application TOKEN with eureka with status UP
+16:50:02.675  logback [main] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1594630202675, current=UP, previous=STARTING]
+16:50:02.677  logback [DiscoveryClient-InstanceInfoReplicator-0] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_TOKEN/host.docker.internal:token:8884: registering service...
+16:50:02.700  logback [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8884"]
+16:50:02.722  logback [DiscoveryClient-InstanceInfoReplicator-0] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_TOKEN/host.docker.internal:token:8884 - registration status: 204
+16:50:02.727  logback [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8884 (http) with context path ''
+16:50:02.727  logback [main] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8884
+16:50:03.168  logback [main] INFO  esun.token.TokenApplication - Started TokenApplication in 9.091 seconds (JVM running for 10.536)
+16:50:03.778  logback [RMI TCP Connection(4)-192.168.218.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+16:50:03.778  logback [RMI TCP Connection(4)-192.168.218.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+16:50:03.786  logback [RMI TCP Connection(4)-192.168.218.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 8 ms
+16:55:02.534  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:00:02.537  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:05:02.539  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:10:02.541  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:15:02.545  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:20:02.546  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:25:02.547  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:30:02.550  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:35:02.552  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:40:02.554  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:45:02.557  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:50:02.559  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+17:55:02.561  logback [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration

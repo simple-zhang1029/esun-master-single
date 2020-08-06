@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="esun.dbhelper.dao.mapper.BaseMapper" >
+
+
+
+  <select id="select" parameterType="java.lang.String" resultType="map">
+    ${value}
+  </select>
+
+  <update id="update" parameterType="java.lang.String">
+    ${value}
+  </update>
+
+  <insert id="insert" parameterType="java.lang.String">
+    ${value}
+  </insert>
+
+  <delete id="delete" parameterType="java.lang.String">
+    ${value}
+  </delete>
+
+
+  <select id="selectProcedures" parameterType="java.lang.String" resultType="map" statementType="CALLABLE">
+    ${value}
+  </select>
+
+  <update id="updateProcedures" parameterType="java.lang.String" statementType="CALLABLE">
+    ${value}
+  </update>
+
+  <insert id="insertProcedures" parameterType="java.lang.String" statementType="CALLABLE">
+    ${value}
+  </insert>
+
+  <delete id="deleteProcedures" parameterType="java.lang.String" statementType="CALLABLE">
+    ${value}
+  </delete>
+
+  <select id="datasource" parameterType="java.lang.String" resultType="java.lang.String">
+    select datasource from datasources_table where product=#{product,jdbcType=VARCHAR};
+  </select>
+
+  <select id="postgresIndexes" parameterType="java.lang.String" resultType="java.lang.String">
+    select indexname from pg_indexes where tablename=#{table,jdbcType=VARCHAR};
+  </select>
+
+  <select id="mysqlIndexes" parameterType="java.lang.String" resultType="java.lang.String">
+    select column_name from information_schema.statistics where table_name=#{table,jdbcType=VARCHAR};
+  </select>
+</mapper>
