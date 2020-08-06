@@ -7,9 +7,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="core" />
-        <module name="token" />
-        <module name="eureka" />
         <module name="dbhelper" />
+        <module name="eureka" />
+        <module name="token" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
