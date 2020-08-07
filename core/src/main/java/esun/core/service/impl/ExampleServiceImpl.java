@@ -441,4 +441,26 @@ public class ExampleServiceImpl implements ExampleService {
         logger.info(message);
         return ResultUtil.ok().put("msg",message);
     }
+
+    /**
+     * 分页获取用户信息
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ResultUtil getUserInfoList(int pageIndex, int pageSize) {
+        String sql="select * from "+postgres_user_table+";";
+        String message;
+        ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);
+        if(HttpStatus.OK.value()!= (int)result.get("code")){
+            message=MessageUtil.getMessage(Message.USER_INFO_GET_ERROR.getCode());
+            logger.error(message);
+            return ResultUtil.error(message);
+        }
+        ArrayList list= (ArrayList) result.get("result");
+        message=MessageUtil.getMessage(Message.USER_INFO_GET_SUCCESS.getCode());
+        logger.info(message);
+        return ResultUtil.ok().put("msg",message).put("result",list);
+    }
 }

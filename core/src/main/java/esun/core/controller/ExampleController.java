@@ -206,7 +206,7 @@ public class ExampleController {
     }
 
     /**
-     *
+     * 分页查询
      * @param pageIndex
      * @param pageSize
      * @return
@@ -218,6 +218,18 @@ public class ExampleController {
         return exampleService.queryPage(pageIndex,pageSize);
     }
 
+    /**
+     * 分页获取用户信息列表
+     * @param pageIndex 页数。默认值为1
+     * @param pageSize  每页大小。默认值为10
+     * @return
+     */
+    @LoginRequire
+    @GetMapping("userInfoList")
+    public ResultUtil getUserInfoList(@RequestParam(value = "pageIndex",required = false,defaultValue = "1")int pageIndex,
+                                      @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
+        return  exampleService.getUserInfoList(pageIndex,pageSize);
+    }
     /**
      * 获取路由i表
      * @param name

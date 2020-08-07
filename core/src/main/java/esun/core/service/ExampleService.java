@@ -28,6 +28,8 @@ public interface ExampleService {
 
     ResultUtil batchRegister(Workbook workbook);
 
+    ResultUtil getUserInfoList(int pageIndex,int pageSize);
+
     ResultUtil queryPage(int pageIndex,int pageSize);
 
     ResultUtil routerList(String name);

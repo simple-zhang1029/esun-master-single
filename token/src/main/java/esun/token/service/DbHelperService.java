@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 调用dbHelper服务
  */
-@FeignClient(name = "dbHelper",url = "http://127.0.0.1:8883")
-//@FeignClient(name = "dbHelper",url = "http://10.124.0.47:30012")
+//@FeignClient(name = "dbHelper",url = "http://127.0.0.1:8883")
+@FeignClient(name = "dbHelper",url = "http://10.124.0.47:30012")
 @RequestMapping("/common")
 public interface DbHelperService {
 
