@@ -99,11 +99,11 @@ public class CommonServiceIpml implements CommonService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> selectPage(String sql, int pageIndex, int pageSize) {
+    public PageInfo selectPage(String sql, int pageIndex, int pageSize) {
         PageHelper.startPage(pageIndex,pageSize);
         List<Map<String,Object>> result=baseMapper.select(sql);
         PageInfo pageInfo=new PageInfo(result);
         PageHelper.clearPage();
-        return pageInfo.getList();
+        return pageInfo;
     }
 }

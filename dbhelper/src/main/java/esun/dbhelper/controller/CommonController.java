@@ -1,5 +1,6 @@
 package esun.dbhelper.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.sun.istack.Nullable;
 import esun.dbhelper.dataSources.DataSource;
 import esun.dbhelper.dataSources.DataSourceType;
@@ -128,8 +129,10 @@ public class CommonController {
                                  @RequestParam(value = "product",required = false,defaultValue = "default")String product,
                                  @RequestParam(value = "pageIndex",required = false,defaultValue = "1") @Nullable int pageIndex,
                                  @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Nullable int pageSize){
-        List<Map<String,Object>> result=commonService.selectPage(sql,pageIndex,pageSize);
-        return ResultUtil.ok("sql语句执行成功").put("result",result);
+
+        PageInfo  result=commonService.selectPage(sql,pageIndex,pageSize);
+        int count=result.getPages();
+        return ResultUtil.ok("sql语句执行成功").put("pageCount",count).put("result",result.getList());
     }
 
 

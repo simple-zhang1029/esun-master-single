@@ -228,8 +228,13 @@ public class ExampleServiceImpl implements ExampleService {
      */
     @Override
     public ResultUtil getUserInfo(String name) {
+        String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
+                "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
+                "user_country as \"country\", user_actived as \"isActived\" ,user_depart as \"depart\"," +
+                "user_post as \"post\" , user_qqnum as \"qqNum\" " +
+                " from "+postgres_user_table+" where user_name ='"+name+"';";
+
         String message;
-        String sql="select * from "+postgres_user_table+" where user_name='"+name+"'";
         ResultUtil result=dbHelperService.select(sql,"postgres_test");
         ArrayList list= (ArrayList) result.get("result");
         if(list.size()==0){
@@ -450,7 +455,11 @@ public class ExampleServiceImpl implements ExampleService {
      */
     @Override
     public ResultUtil getUserInfoList(int pageIndex, int pageSize) {
-        String sql="select * from "+postgres_user_table+";";
+        String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
+                "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
+                "user_country as \"country\", user_actived as \"isActived\" ,user_depart as \"depart\"," +
+                "user_post as \"post\" , user_qqnum as \"qqNum\" " +
+                " from "+postgres_user_table+";";
         String message;
         ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);
         if(HttpStatus.OK.value()!= (int)result.get("code")){
@@ -459,8 +468,9 @@ public class ExampleServiceImpl implements ExampleService {
             return ResultUtil.error(message);
         }
         ArrayList list= (ArrayList) result.get("result");
+        int pageCount= (int) result.get("pageCount");
         message=MessageUtil.getMessage(Message.USER_INFO_GET_SUCCESS.getCode());
         logger.info(message);
-        return ResultUtil.ok().put("msg",message).put("result",list);
+        return ResultUtil.ok().put("msg",message).put("result",list).put("pageCount",pageCount);
     }
 }

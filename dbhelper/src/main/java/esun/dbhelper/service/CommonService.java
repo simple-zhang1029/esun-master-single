@@ -1,5 +1,7 @@
 package esun.dbhelper.service;
 
+import com.github.pagehelper.PageInfo;
+
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +67,7 @@ public interface CommonService {
      */
     List<String> indexes(String table, String dataSource);
 
-    List<Map<String,Object>> selectPage(String sql,int pageIndex,int pageSize);
+    PageInfo selectPage(String sql, int pageIndex, int pageSize);
 
 
 }
