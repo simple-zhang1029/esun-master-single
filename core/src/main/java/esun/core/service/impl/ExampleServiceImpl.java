@@ -230,7 +230,7 @@ public class ExampleServiceImpl implements ExampleService {
     public ResultUtil getUserInfo(String name) {
         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
-                "user_country as \"country\", user_actived as \"isActived\" ,user_depart as \"depart\"," +
+                "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
                 " from "+postgres_user_table+" where user_name ='"+name+"';";
 
@@ -457,7 +457,7 @@ public class ExampleServiceImpl implements ExampleService {
     public ResultUtil getUserInfoList(int pageIndex, int pageSize) {
         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
-                "user_country as \"country\", user_actived as \"isActived\" ,user_depart as \"depart\"," +
+                "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
                 " from "+postgres_user_table+";";
         String message;
