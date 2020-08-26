@@ -231,7 +231,7 @@ public class ExampleServiceImpl implements ExampleService {
         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActived\" ,user_depart as \"depart\"," +
-                "user_post as \"post\" , user_qqnum as \"qqNum\" " +
+                "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
                 " from "+postgres_user_table+" where user_name ='"+name+"';";
 
         String message;
@@ -296,7 +296,7 @@ public class ExampleServiceImpl implements ExampleService {
         String sql="update "+postgres_user_table+" set user_name='"+username+"',user_lang='"+language+"', user_mail_address='"+email+"',user_last_chg_date='"+changeTime+"'," +
                 "user_country='"+country+"',user_actived="+isActive+",user_depart='"+depart+"',user_post='"+post+"',user_type='"+type+"', "+
                 "user_phone='"+phone+"',user_qqnum='"+qqNum+"' ,user_groupid='"+groupId+"'"+
-                "where user_userid='"+userId    +"' ;";
+                "where user_userid='"+userId+"' ;";
         ResultUtil result=dbHelperService.update(sql,"postgres_test");
         if(HttpStatus.OK.value() != (int)result.get("code")){
             message=MessageUtil.getMessage(Message.USER_INFO_UPDATE_ERROR.getCode());
@@ -458,7 +458,7 @@ public class ExampleServiceImpl implements ExampleService {
         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActived\" ,user_depart as \"depart\"," +
-                "user_post as \"post\" , user_qqnum as \"qqNum\" " +
+                "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
                 " from "+postgres_user_table+";";
         String message;
         ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);

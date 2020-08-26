@@ -170,7 +170,6 @@ public class ExampleController {
     @Router(name = "user:info:insert")
     public ResultUtil insertUserInfo(@RequestParam("userId") String userId,
                                      @RequestParam("username") String username,
-                                     @RequestParam(value = "password",required = false,defaultValue = "123456")String password,
                                      @RequestParam(value = "language",required = false,defaultValue = "CH") String language,
                                      @RequestParam(value = "email")  String email,
                                      @RequestParam(value = "type",required = false,defaultValue = "外部用户") String type,
@@ -181,7 +180,8 @@ public class ExampleController {
                                      @RequestParam(value = "post",required = false,defaultValue = "DEFAULT")String post,
                                      @RequestParam(value = "qqNum",required = false,defaultValue = " ")String qqNum,
                                      @RequestParam(value = "groupID",required = false,defaultValue = "2") int groupId){
-        return exampleService.insertUserInfo(userId,username,password,language,email,type,phone,country,isActive,depart,post,qqNum,groupId);
+        String defaultPassword="123456";
+        return exampleService.insertUserInfo(userId,username,defaultPassword,language,email,type,phone,country,isActive,depart,post,qqNum,groupId);
     }
 
     /**
