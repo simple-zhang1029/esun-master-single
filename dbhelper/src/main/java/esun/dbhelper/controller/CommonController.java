@@ -131,8 +131,9 @@ public class CommonController {
                                  @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Nullable int pageSize){
 
         PageInfo  result=commonService.selectPage(sql,pageIndex,pageSize);
-        int count=result.getPages();
-        return ResultUtil.ok("sql语句执行成功").put("pageCount",count).put("result",result.getList());
+        int pageCount=result.getPages();
+        long count=result.getTotal();
+        return ResultUtil.ok("sql语句执行成功").put("pageCount",pageCount).put("result",result.getList()).put("count",count);
     }
 
 

@@ -468,9 +468,12 @@ public class ExampleServiceImpl implements ExampleService {
             return ResultUtil.error(message);
         }
         ArrayList list= (ArrayList) result.get("result");
+        //获取总页数
         int pageCount= (int) result.get("pageCount");
+        //获取总条数
+        int count= (int) result.get("count");
         message=MessageUtil.getMessage(Message.USER_INFO_GET_SUCCESS.getCode());
         logger.info(message);
-        return ResultUtil.ok().put("msg",message).put("result",list).put("pageCount",pageCount);
+        return ResultUtil.ok().put("msg",message).put("result",list).put("pageCount",pageCount).put("count",count);
     }
 }
