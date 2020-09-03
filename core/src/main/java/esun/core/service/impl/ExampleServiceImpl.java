@@ -6,10 +6,7 @@ import esun.core.constant.Message;
 import esun.core.service.DbHelperService;
 import esun.core.service.ExampleService;
 import esun.core.service.TokenService;
-import esun.core.utils.Md5Util;
-import esun.core.utils.MessageUtil;
-import esun.core.utils.PoiUtils;
-import esun.core.utils.ResultUtil;
+import esun.core.utils.*;
 import jdk.nashorn.tools.Shell;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -234,7 +231,7 @@ public class ExampleServiceImpl implements ExampleService {
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
-                " from "+postgres_user_table+" where user_name ='%"+name+"%';";
+                " from "+postgres_user_table+" where user_name like '%"+name+"%';";
 
         String message;
         ResultUtil result=dbHelperService.select(sql,"postgres_test");
@@ -382,28 +379,7 @@ public class ExampleServiceImpl implements ExampleService {
         return ResultUtil.ok().put("list",resultList);
     }
 
-    /**
-     * 分页查询
-     * @param pageIndex
-     * @param pageSize
-     * @return
-     */
-    @Override
-    public ResultUtil queryPage(int pageIndex, int pageSize) {
-        String sql="select id,code,language,message from "+message_table+";";
-        String message;
-        ResultUtil result=dbHelperService.selectPage(sql,null,pageIndex,pageSize);
-        if(HttpStatus.OK.value()!= (int)result.get("code")){
-            message=MessageUtil.getMessage(Message.USER_INFO_GET_ERROR.getCode());
-            logger.error(message);
-            return ResultUtil.error(message);
-        }
-        ArrayList list= (ArrayList) result.get("result");
-        message=MessageUtil.getMessage(Message.USER_INFO_GET_SUCCESS.getCode());
-        logger.info(message);
-        return ResultUtil.ok().put("msg",message).put("result",list);
-    }
-
+   
     @Override
     public ResultUtil routerList(String name) {
         String sql="select router from "+router_table+" where user= '"+name+"';";
@@ -592,4 +568,22 @@ public class ExampleServiceImpl implements ExampleService {
         }
         return false;
     }
+
+//    @Override
+//    public ResultUtil exportUserInfo(String username) {
+//        String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
+//                "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
+//                "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
+//                "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
+//                " from "+postgres_user_table+" where user_name like '%"+username+"%';";
+//        String message;
+//        ResultUtil result=dbHelperService.select(sql,"postgres_test");
+//        if(HttpStatus.OK.value()!= (int)result.get("code")){
+//            message=MessageUtil.getMessage(Message.USER_INFO_GET_ERROR.getCode());
+//            logger.error(message);
+//            return ResultUtil.error(message);
+//        }
+//        ArrayList list= (ArrayList) result.get("result");
+//        return null;
+//    }
 }

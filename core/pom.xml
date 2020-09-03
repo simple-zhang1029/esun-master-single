@@ -21,6 +21,7 @@
         <poi.version>3.9</poi.version>
         <redis.version>1.4.6.RELEASE</redis.version>
         <apollo.version>1.1.1</apollo.version>
+        <commons-net.version>3.6</commons-net.version>
         <commons.io.version>2.5</commons.io.version>
         <joda.time.version>2.9.9</joda.time.version>
         <commons.fileupload.version>1.2.2</commons.fileupload.version>
@@ -73,6 +74,18 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+        <!--ftp工具类依赖-->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>${commons-net.version}</version>
+        </dependency>
+        <!--Excel转换依赖-->
+        <dependency>
+            <groupId>net.sourceforge.jexcelapi</groupId>
+            <artifactId>jxl</artifactId>
+            <version>2.6.12</version>
         </dependency>
         <!--文件上传依赖-->
         <dependency>
