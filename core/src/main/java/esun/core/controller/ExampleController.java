@@ -5,6 +5,7 @@ import com.sun.istack.Nullable;
 import esun.core.annotation.LoginRequire;
 import esun.core.annotation.Router;
 import esun.core.constant.Message;
+import esun.core.exception.ClientException;
 import esun.core.utils.MessageUtil;
 import esun.core.utils.ResultUtil;
 import esun.core.service.ExampleService;
@@ -227,8 +228,10 @@ public class ExampleController {
     @LoginRequire
     @GetMapping("userInfoList")
     public ResultUtil getUserInfoList(@RequestParam(value = "pageIndex",required = false,defaultValue = "1")int pageIndex,
-                                      @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
-        return  exampleService.getUserInfoList(pageIndex,pageSize);
+                                      @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
+                                      @RequestParam(value = "username",required = false,defaultValue = "")String userName){
+
+        return  exampleService.getUserInfoList(pageIndex,pageSize,userName);
     }
     /**
      * 获取路由i表
@@ -242,6 +245,13 @@ public class ExampleController {
     }
 
 
+    /**
+     * 修改密码
+     * @param name
+     * @param password
+     * @param newPassword
+     * @return
+     */
     @LoginRequire
     @PostMapping("password")
     public ResultUtil updatePassword(@RequestParam("username")String name,
@@ -250,5 +260,46 @@ public class ExampleController {
         return exampleService.updatePassword(name,newPassword);
     }
 
+
+    /**
+     * 通过Excel文件批量插入或更新数据
+     * @param file
+     * @return
+     */
+    @LoginRequire
+    @PostMapping("batchUserInfo")
+    public ResultUtil batchUserInfoInsertOrUpdate(@RequestParam("file") MultipartFile file){
+        //初步处理Excel文件
+        Workbook workbook=null;
+        try {
+            InputStream inputStream=file.getInputStream();
+            workbook=WorkbookFactory.create(inputStream);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return exampleService.batchUserInfoInsertOrUpdate(workbook);
+    }
+
+    /**
+     * 批量删除用户信息
+     * @param file
+     * @return
+     */
+    @LoginRequire
+    @DeleteMapping("batchUserInfo")
+    public ResultUtil batchUserInfoDelete(@RequestParam("file")MultipartFile file){
+        //初步处理Excel文件
+        Workbook workbook=null;
+        try {
+            InputStream inputStream=file.getInputStream();
+            workbook=WorkbookFactory.create(inputStream);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return exampleService.batchUserInfoDelete(workbook);
+
+    }
 }
 

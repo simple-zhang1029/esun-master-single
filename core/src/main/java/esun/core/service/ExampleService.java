@@ -2,6 +2,7 @@ package esun.core.service;
 
 import com.sun.istack.Nullable;
 import esun.core.utils.ResultUtil;
+import org.apache.poi.ss.formula.WorkbookEvaluator;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,11 +29,15 @@ public interface ExampleService {
 
     ResultUtil batchRegister(Workbook workbook);
 
-    ResultUtil getUserInfoList(int pageIndex,int pageSize);
+    ResultUtil getUserInfoList(int pageIndex,int pageSize,String userName);
 
     ResultUtil queryPage(int pageIndex,int pageSize);
 
     ResultUtil routerList(String name);
 
     ResultUtil updatePassword(String username,String newPassword);
+
+    ResultUtil batchUserInfoInsertOrUpdate(Workbook workbook);
+
+    ResultUtil batchUserInfoDelete(Workbook workbook);
 }

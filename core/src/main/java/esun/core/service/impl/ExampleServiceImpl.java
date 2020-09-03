@@ -10,8 +10,10 @@ import esun.core.utils.Md5Util;
 import esun.core.utils.MessageUtil;
 import esun.core.utils.PoiUtils;
 import esun.core.utils.ResultUtil;
+import jdk.nashorn.tools.Shell;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.joda.time.DateTime;
@@ -232,7 +234,7 @@ public class ExampleServiceImpl implements ExampleService {
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
-                " from "+postgres_user_table+" where user_name ='"+name+"';";
+                " from "+postgres_user_table+" where user_name ='%"+name+"%';";
 
         String message;
         ResultUtil result=dbHelperService.select(sql,"postgres_test");
@@ -454,12 +456,12 @@ public class ExampleServiceImpl implements ExampleService {
      * @return
      */
     @Override
-    public ResultUtil getUserInfoList(int pageIndex, int pageSize) {
+    public ResultUtil getUserInfoList(int pageIndex, int pageSize,String userName) {
         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
-                " from "+postgres_user_table+";";
+                " from "+postgres_user_table+" where user_name like '%"+userName+"%';";
         String message;
         ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);
         if(HttpStatus.OK.value()!= (int)result.get("code")){
@@ -475,5 +477,119 @@ public class ExampleServiceImpl implements ExampleService {
         message=MessageUtil.getMessage(Message.USER_INFO_GET_SUCCESS.getCode());
         logger.info(message);
         return ResultUtil.ok().put("msg",message).put("result",list).put("pageCount",pageCount).put("count",count);
+    }
+
+    /**
+     * 批量插入更新用户信息
+     * @param workbook
+     * @return
+     */
+    @Override
+    public ResultUtil batchUserInfoInsertOrUpdate(Workbook workbook) {
+        String defaultPassword="123456";
+        //获取ExceL文档第一个表格
+        Sheet sheet=workbook.getSheetAt(0);
+        //获取表格标题列表
+        List titleList=PoiUtils.getTitleList(PoiUtils.getRow(sheet,0));
+
+        //请求结果列表
+        List<Map<String,Object>> resultList=new ArrayList<>();
+
+        Map<String,Object> userInfo=new HashMap<>();
+
+        //循环遍历用户信息写入列表
+        for (int i = 1; i <=sheet.getLastRowNum() ; i++) {
+            //获取相应行的数据，转换为list
+            userInfo=PoiUtils.getRowData(PoiUtils.getRow(sheet,i),titleList);
+            String username=userInfo.get("username").toString();
+            String userId=userInfo.get("userId").toString();
+            String language=userInfo.get("language").toString();
+            String email=userInfo.get("email").toString();
+            String type=userInfo.get("type").toString();
+            String phone=userInfo.get("phone").toString();
+            String country=userInfo.get("country").toString();
+            boolean isActive= Boolean.parseBoolean(userInfo.get("isActive").toString()) ;
+            String depart=userInfo.get("depart").toString();
+            String post=userInfo.get("post").toString();
+            String qqNum=userInfo.get("qqNum").toString();
+            int groupId= Integer.parseInt(userInfo.get("groupId").toString());
+            //用户运行结果Map
+            Map<String,Object> resultMap=new HashMap<>();
+            resultMap.put("username",username);
+            //查看该用户是否存在
+            if (!checkUserExist(username)){
+                ResultUtil insertResult= insertUserInfo(userId,username,defaultPassword,language,email,type,phone,country,isActive,depart,post,qqNum,groupId);
+                resultMap.put("code",insertResult.get("code"));
+                resultMap.put("msg",insertResult.get("msg"));
+            }
+            else {
+                ResultUtil updateResult=updateUserInfo(userId,username,language,email,type,phone,country,isActive,depart,post,qqNum,groupId);
+                resultMap.put("code",updateResult.get("code"));
+                resultMap.put("msg",updateResult.get("msg"));
+            }
+            resultList.add(resultMap);
+        }
+
+        return ResultUtil.ok().put("result",resultList);
+    }
+
+
+    /**
+     * 根据EXCEL文件批量删除用户
+     * @param workbook
+     * @return
+     */
+    @Override
+    public ResultUtil batchUserInfoDelete(Workbook workbook) {
+        //获取ExceL文档第一个表格
+        Sheet sheet=workbook.getSheetAt(0);
+        //获取表格标题列表
+        List titleList=PoiUtils.getTitleList(PoiUtils.getRow(sheet,0));
+
+        //请求结果列表
+        List<Map<String,Object>> resultList=new ArrayList<>();
+        Map<String,Object> userInfo=new HashMap<>();
+        //循环遍历用户信息写入列表
+        for (int i = 1; i <=sheet.getLastRowNum() ; i++) {
+            //获取相应行的数据，转换为list
+            userInfo=PoiUtils.getRowData(PoiUtils.getRow(sheet,i),titleList);
+            String username=userInfo.get("username").toString();
+            //用户运行结果Map
+            Map<String,Object> resultMap=new HashMap<>();
+            resultMap.put("username",username);
+            //查看该用户是否存在
+            if (!checkUserExist(username)){
+                String message=MessageUtil.getMessage(Message.USER_NOT_EXIST.getCode());
+                resultMap.put("code",HttpStatus.BAD_REQUEST.value());
+                resultMap.put("msg",message);
+            }
+            else {
+                ResultUtil deleteResult=deleteUserInfo(username);
+                resultMap.put("code",deleteResult.get("code"));
+                resultMap.put("msg",deleteResult.get("msg"));
+            }
+            resultList.add(resultMap);
+        }
+        return ResultUtil.ok().put("result",resultList);
+    }
+
+    /**
+     * 检查用户是否存在
+     * @param username
+     * @return
+     */
+    public boolean checkUserExist(String username){
+        String sql ="select 1 from  "+postgres_user_table+" where user_name='"+username+"'";
+        ResultUtil result=dbHelperService.select(sql,"postgres_test");
+        String meesage;
+        if(HttpStatus.OK.value() != (int)result.get("code")){
+            meesage=MessageUtil.getMessage(Message.USER_INFO_GET_ERROR.getCode());
+            logger.error(meesage);
+        }
+        ArrayList list= (ArrayList) result.get("result");
+        if(list.size()>0){
+           return  true;
+        }
+        return false;
     }
 }
