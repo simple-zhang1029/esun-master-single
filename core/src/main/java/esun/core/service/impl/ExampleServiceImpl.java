@@ -66,6 +66,20 @@ public class ExampleServiceImpl implements ExampleService {
     @Value("${postgres_user_table}")
     String postgres_user_table;
 
+    @Value("${ftp.url}")
+    String ftpUrl;
+
+    @Value("${ftp.port}")
+    int ftpPort;
+
+    @Value(("${ftp.username}"))
+    String ftpUsername;
+
+    @Value(("${ftp.password}"))
+    String ftpPassword;
+
+
+
     //创建日志对象
     private static Logger logger= LoggerFactory.getLogger(ExampleServiceImpl.class);
 
@@ -231,7 +245,7 @@ public class ExampleServiceImpl implements ExampleService {
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
-                " from "+postgres_user_table+" where user_name like '%"+name+"%';";
+                " from "+postgres_user_table+" where user_name = '"+name+"';";
 
         String message;
         ResultUtil result=dbHelperService.select(sql,"postgres_test");
@@ -569,21 +583,40 @@ public class ExampleServiceImpl implements ExampleService {
         return false;
     }
 
-//    @Override
-//    public ResultUtil exportUserInfo(String username) {
-//        String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
-//                "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
-//                "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
-//                "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
-//                " from "+postgres_user_table+" where user_name like '%"+username+"%';";
-//        String message;
-//        ResultUtil result=dbHelperService.select(sql,"postgres_test");
-//        if(HttpStatus.OK.value()!= (int)result.get("code")){
-//            message=MessageUtil.getMessage(Message.USER_INFO_GET_ERROR.getCode());
-//            logger.error(message);
-//            return ResultUtil.error(message);
-//        }
-//        ArrayList list= (ArrayList) result.get("result");
-//        return null;
-//    }
+    @Override
+    public ResultUtil exportUserInfo(String username) {
+        String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
+                "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
+                "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
+                "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
+                " from "+postgres_user_table+" where user_name like '%"+username+"%';";
+        String message;
+        ResultUtil result=dbHelperService.select(sql,"postgres_test");
+        if(HttpStatus.OK.value()!= (int)result.get("code")){
+            message=MessageUtil.getMessage(Message.USER_INFO_GET_ERROR.getCode());
+            logger.error(message);
+            return ResultUtil.error(message);
+        }
+        ArrayList list= (ArrayList) result.get("result");
+        String file=ExcelUtils.createMapListExcel(list,diskPath);
+        String ftpFile=RandomStringUtils.randomAlphanumeric(32)+".xls";
+        String ftpPath="/userInfoExport/";
+        //FTP上传文件
+        FTPUtils ftpUtils=new FTPUtils();
+        ftpUtils.setHostname(ftpUrl);
+        ftpUtils.setPort(ftpPort);
+        ftpUtils.setUsername(ftpUsername);
+        ftpUtils.setPassword(ftpPassword);
+        if(!ftpUtils.uploadFile(ftpPath,ftpFile,file)){
+            message=MessageUtil.getMessage(Message.UPLOAD_FTP_FAIL.getCode());
+            logger.error(message);
+           return ResultUtil.error(message);
+        }
+        message=MessageUtil.getMessage(Message.UPLOAD_FTP_SUCCESS.getCode());
+        logger.info(message);
+        String path="ftp://"+ftpUrl+ftpPath+ftpFile;
+        return ResultUtil.ok().put("msg",message).put("result",path);
+    }
+
+
 }

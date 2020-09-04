@@ -31,8 +31,6 @@ public interface ExampleService {
 
     ResultUtil getUserInfoList(int pageIndex,int pageSize,String userName);
 
-    ResultUtil queryPage(int pageIndex,int pageSize);
-
     ResultUtil routerList(String name);
 
     ResultUtil updatePassword(String username,String newPassword);
@@ -40,4 +38,6 @@ public interface ExampleService {
     ResultUtil batchUserInfoInsertOrUpdate(Workbook workbook);
 
     ResultUtil batchUserInfoDelete(Workbook workbook);
+
+    ResultUtil exportUserInfo(String username);
 }

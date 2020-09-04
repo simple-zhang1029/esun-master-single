@@ -34,7 +34,9 @@ public enum   Message {
     UPDATE_PASSWORD_ERROR("update_password_error","更新密码失败"),
     UPDATE_PASSWORD_SUCCESS("update_password_success","更新密码成功"),
     GET_PROJECT_INFO_SUCCESS("get_project_info_success","获取项目信息成功"),
-    GET_PROJECT_INFO_ERROR("get_project_info_error","获取项目信息失败");
+    GET_PROJECT_INFO_ERROR("get_project_info_error","获取项目信息失败"),
+    UPLOAD_FTP_FAIL("upload_ftp_fail","上传FTP服务器失败"),
+    UPLOAD_FTP_SUCCESS("upload_ftp_success","上传FTP服务器成功");
 
 
     //信息码

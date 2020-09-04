@@ -6,9 +6,11 @@ import esun.core.annotation.LoginRequire;
 import esun.core.annotation.Router;
 import esun.core.constant.Message;
 import esun.core.exception.ClientException;
+import esun.core.utils.FTPUtils;
 import esun.core.utils.MessageUtil;
 import esun.core.utils.ResultUtil;
 import esun.core.service.ExampleService;
+import org.apache.commons.net.ftp.FTPClient;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
@@ -16,8 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.net.ftp.FtpClient;
 
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -206,18 +211,7 @@ public class ExampleController {
         return exampleService.batchRegister(workbook);
     }
 
-    /**
-     * 分页查询
-     * @param pageIndex
-     * @param pageSize
-     * @return
-     */
-    @LoginRequire
-    @GetMapping("queryPage")
-    public ResultUtil queryPage(@RequestParam(value = "pageIndex",required = false,defaultValue = "1") int pageIndex,
-                                @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize){
-        return exampleService.queryPage(pageIndex,pageSize);
-    }
+
 
     /**
      * 分页获取用户信息列表
@@ -281,14 +275,17 @@ public class ExampleController {
         return exampleService.batchUserInfoInsertOrUpdate(workbook);
     }
 
+
+
     /**
-     * 批量删除用户信息
+     * Excel批量删除用户信息
      * @param file
      * @return
      */
     @LoginRequire
-    @DeleteMapping("batchUserInfo")
-    public ResultUtil batchUserInfoDelete(@RequestParam("file")MultipartFile file){
+    @DeleteMapping("batchUserInfoWithExcel")
+    public ResultUtil batchUserInfoDeleteWithExcel(@RequestParam("file")MultipartFile file){
+
         //初步处理Excel文件
         Workbook workbook=null;
         try {
@@ -299,7 +296,23 @@ public class ExampleController {
             e.printStackTrace();
         }
         return exampleService.batchUserInfoDelete(workbook);
+    }
 
+    //@LoginRequire
+    @DeleteMapping("batchUserInfo")
+    public ResultUtil batchUserInfo(@RequestParam("list")List<Map> list){
+        System.out.println("test");
+        return null;
+    }
+    /**
+     * 通过username导出用户信息
+     * @param username
+     * @return
+     */
+    @LoginRequire
+    @GetMapping("batchUserInfo")
+    public ResultUtil exportUserInfo(@RequestParam(value = "username",required = false,defaultValue ="" )String username){
+        return exampleService.exportUserInfo(username);
     }
 }
 
