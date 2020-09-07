@@ -6,6 +6,9 @@ import org.apache.poi.ss.formula.WorkbookEvaluator;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Map;
+
 //Service接口类，用于隔离Service具体实现代码，所有Service都需要在接口类声明，调用接口
 public interface ExampleService {
     //接口类返回值固定为ResultUtil
@@ -37,7 +40,10 @@ public interface ExampleService {
 
     ResultUtil batchUserInfoInsertOrUpdate(Workbook workbook);
 
-    ResultUtil batchUserInfoDelete(Workbook workbook);
+    ResultUtil batchUserInfoDelete(List<Map<String,Object>> list);
+
+
+    ResultUtil batchUserInfoDeleteWithExcel(Workbook workbook);
 
     ResultUtil exportUserInfo(String username);
 }

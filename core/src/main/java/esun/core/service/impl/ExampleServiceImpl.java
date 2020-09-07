@@ -393,7 +393,7 @@ public class ExampleServiceImpl implements ExampleService {
         return ResultUtil.ok().put("list",resultList);
     }
 
-   
+
     @Override
     public ResultUtil routerList(String name) {
         String sql="select router from "+router_table+" where user= '"+name+"';";
@@ -524,13 +524,42 @@ public class ExampleServiceImpl implements ExampleService {
     }
 
 
+  /**
+   * 批量删除用户信息
+   * @param list
+   * @return
+   */
+    @Override
+    public ResultUtil batchUserInfoDelete(List<Map<String, Object>> list) {
+      String message;
+      List<Map<String,Object>> resultList=new ArrayList<>();
+      Map<String,Object> resultMap=new HashMap<>();
+      for (int i = 0; i <list.size() ; i++) {
+        String username=list.get(i).get("username").toString();
+        resultMap.put("username",username);
+        //检查用户是否存在
+        if (!checkUserExist(username)){
+          message=MessageUtil.getMessage(Message.USER_NOT_EXIST.getCode());
+          resultMap.put("code",HttpStatus.BAD_REQUEST.value());
+          resultMap.put("msg",message);
+        }
+        else {
+          ResultUtil deleteResult=deleteUserInfo(username);
+          resultMap.put("code",deleteResult.get("code"));
+          resultMap.put("msg",deleteResult.get("msg"));
+        }
+        resultList.add(resultMap);
+      }
+      return ResultUtil.ok().put("msg","执行完毕").put("result",resultList);
+     }
+
     /**
      * 根据EXCEL文件批量删除用户
      * @param workbook
      * @return
      */
     @Override
-    public ResultUtil batchUserInfoDelete(Workbook workbook) {
+    public ResultUtil batchUserInfoDeleteWithExcel(Workbook workbook) {
         //获取ExceL文档第一个表格
         Sheet sheet=workbook.getSheetAt(0);
         //获取表格标题列表

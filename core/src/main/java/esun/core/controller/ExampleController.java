@@ -10,6 +10,7 @@ import esun.core.utils.FTPUtils;
 import esun.core.utils.MessageUtil;
 import esun.core.utils.ResultUtil;
 import esun.core.service.ExampleService;
+import net.sf.json.JSONArray;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -295,14 +296,20 @@ public class ExampleController {
         catch (Exception e){
             e.printStackTrace();
         }
-        return exampleService.batchUserInfoDelete(workbook);
+        return exampleService.batchUserInfoDeleteWithExcel(workbook);
     }
 
+  /**
+   * 批量删除用户信息
+   * @param list
+   * @return
+   */
     //@LoginRequire
     @DeleteMapping("batchUserInfo")
-    public ResultUtil batchUserInfo(@RequestParam("list")List<Map> list){
-        System.out.println("test");
-        return null;
+    public ResultUtil batchUserInfo(@RequestParam("list")String list ){
+      //使用Json解析转换列表
+        List<Map<String,Object>> jsonArray=JSONArray.fromObject(list);
+        return exampleService.batchUserInfoDelete(jsonArray);
     }
     /**
      * 通过username导出用户信息
