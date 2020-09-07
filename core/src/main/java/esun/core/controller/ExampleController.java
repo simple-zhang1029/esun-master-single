@@ -304,7 +304,7 @@ public class ExampleController {
    * @param list
    * @return
    */
-    //@LoginRequire
+    @LoginRequire
     @DeleteMapping("batchUserInfo")
     public ResultUtil batchUserInfo(@RequestParam("list")String list ){
       //使用Json解析转换列表
