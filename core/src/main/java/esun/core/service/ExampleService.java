@@ -36,7 +36,7 @@ public interface ExampleService {
 
     ResultUtil routerList(String name);
 
-    ResultUtil updatePassword(String username,String newPassword);
+    ResultUtil updatePassword(String username,String password,String newPassword);
 
     ResultUtil batchUserInfoInsertOrUpdate(Workbook workbook);
 

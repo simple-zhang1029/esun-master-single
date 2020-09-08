@@ -419,10 +419,35 @@ public class ExampleServiceImpl implements ExampleService {
         return ResultUtil.ok().put("result",routerList);
     }
 
+  /**
+   * 修改密码
+   * @param username
+   * @param newPassword
+   * @return
+   */
     @Override
-    public ResultUtil updatePassword(String username, String newPassword) {
+    public ResultUtil updatePassword(String username,String password, String newPassword) {
         Md5Util md5Util=new Md5Util();
         String message;
+        //获取盐
+        String saltSql="select user_salt,user_password from "+postgres_user_table+" where user_name='"+username+"';";
+        ResultUtil saltResult=dbHelperService.select(saltSql,"postgres_test");
+        if(HttpStatus.OK.value()!= (int)saltResult.get("code")){
+        message=MessageUtil.getMessage(Message.GET_SALT_FAIL.getCode());
+        logger.error(message);
+        return ResultUtil.error(message);
+        }
+        message=MessageUtil.getMessage(Message.GET_SALT_SUCCESS.getCode());
+        logger.info(message);
+        ArrayList<Map<String,Object>> list= (ArrayList) saltResult.get("result");
+        String userSalt=list.get(0).get("user_salt").toString();
+        String user_password=list.get(0).get("user_password").toString();
+        //校验密码是否相同
+        if(!md5Util.checkPassword(password,userSalt,user_password)){
+          message=MessageUtil.getMessage(Message.PASSWORD_ERROR.getCode());
+          logger.error(username+":"+message);
+          return ResultUtil.error(message);
+        }
         //使用MD5进行加密
         String encodePassword= md5Util.encodePassword(newPassword);
         String salt=md5Util.getSalt();

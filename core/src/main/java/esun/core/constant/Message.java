@@ -36,7 +36,10 @@ public enum   Message {
     GET_PROJECT_INFO_SUCCESS("get_project_info_success","获取项目信息成功"),
     GET_PROJECT_INFO_ERROR("get_project_info_error","获取项目信息失败"),
     UPLOAD_FTP_FAIL("upload_ftp_fail","上传FTP服务器失败"),
-    UPLOAD_FTP_SUCCESS("upload_ftp_success","上传FTP服务器成功");
+    UPLOAD_FTP_SUCCESS("upload_ftp_success","上传FTP服务器成功"),
+    GET_SALT_FAIL("get_salt_fail","获取用户盐失败"),
+    GET_SALT_SUCCESS("get_salt_success","获取用户盐成功"),
+    PASSWORD_IS_SAME("password_is_same","密码相同");
 
 
     //信息码

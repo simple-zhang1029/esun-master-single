@@ -252,7 +252,13 @@ public class ExampleController {
     public ResultUtil updatePassword(@RequestParam("username")String name,
                                      @RequestParam("password")String password,
                                      @RequestParam("newPassword")String newPassword){
-        return exampleService.updatePassword(name,newPassword);
+        //检测密码是否相同
+        if(password.equals(newPassword)){
+          String message=MessageUtil.getMessage(Message.PASSWORD_IS_SAME.getCode());
+          logger.error(message);
+          return ResultUtil.error(message);
+        }
+        return exampleService.updatePassword(name,password,newPassword);
     }
 
 
@@ -308,8 +314,8 @@ public class ExampleController {
     @DeleteMapping("batchUserInfo")
     public ResultUtil batchUserInfo(@RequestParam("list")String list ){
       //使用Json解析转换列表
-        List<Map<String,Object>> jsonArray=JSONArray.fromObject(list);
-        return exampleService.batchUserInfoDelete(jsonArray);
+      List<Map<String,Object>> jsonArray=JSONArray.fromObject(list);
+      return exampleService.batchUserInfoDelete(jsonArray);
     }
     /**
      * 通过username导出用户信息
