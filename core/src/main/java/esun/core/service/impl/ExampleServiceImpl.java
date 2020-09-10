@@ -637,6 +637,11 @@ public class ExampleServiceImpl implements ExampleService {
         return false;
     }
 
+    /**
+     * 导出用户信息
+     * @param username
+     * @return
+     */
     @Override
     public ResultUtil exportUserInfo(String username) {
         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
@@ -652,6 +657,12 @@ public class ExampleServiceImpl implements ExampleService {
             return ResultUtil.error(message);
         }
         ArrayList list= (ArrayList) result.get("result");
+        //判断用户是否存在
+        if (list.size()==0){
+            message=MessageUtil.getMessage(Message.USER_NOT_EXIST.getCode());
+            logger.error(message);
+            return ResultUtil.error(message);
+        }
         String file=ExcelUtils.createMapListExcel(list,diskPath);
         String ftpFile=RandomStringUtils.randomAlphanumeric(32)+".xls";
         String ftpPath="/userInfoExport/";
