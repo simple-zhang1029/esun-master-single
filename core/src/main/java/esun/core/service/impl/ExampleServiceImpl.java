@@ -476,7 +476,7 @@ public class ExampleServiceImpl implements ExampleService {
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
-                " from "+postgres_user_table+" where user_name like '%"+userName+"%';";
+                " from "+postgres_user_table+" where user_name like '%25"+userName+"%25';";
         String message;
         ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);
         if(HttpStatus.OK.value()!= (int)result.get("code")){
@@ -648,7 +648,7 @@ public class ExampleServiceImpl implements ExampleService {
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
-                " from "+postgres_user_table+" where user_name like '%"+username+"%';";
+                " from "+postgres_user_table+" where user_name like '%25"+username+"%25';";
         String message;
         ResultUtil result=dbHelperService.select(sql,"postgres_test");
         if(HttpStatus.OK.value()!= (int)result.get("code")){
