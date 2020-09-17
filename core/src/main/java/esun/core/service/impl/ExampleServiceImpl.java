@@ -448,22 +448,23 @@ public class ExampleServiceImpl implements ExampleService {
      */
     @Override
     public ResultUtil addRouter(List list) {
-        String sql;
-        String message;
-        for () {
-
-        }
+//        String sql;
+//        String message;
+//        String router="test";
+//        for () {
+//
+//        }
         //检测路由是否存在
-        sql = "insert into "+router_table+"(router,router_description,is_public,is_Active)  values('"+router+"','"+description+"','"+isPublic+"','"+isActive+"')";
-        ResultUtil result=dbHelperService.insert(sql,"postgres_test");
-        if(HttpStatus.OK.value()!= (int)result.get("code")){
-            message=MessageUtil.getMessage(Message.ROUTER_ADD_ERROR.getCode());
-            logger.error(message);
-            return ResultUtil.error(message);
-        }
-        message=MessageUtil.getMessage(Message.ROUTER_ADD_SUCCESS.getCode());
-        logger.info(message);
-        return ResultUtil.ok().put("msg",message);
+//        sql = "insert into "+router_table+"(router,router_description,is_public,is_Active)  values('"+router+"','"+description+"','"+isPublic+"','"+isActive+"')";
+//        ResultUtil result=dbHelperService.insert(sql,"postgres_test");
+//        if(HttpStatus.OK.value()!= (int)result.get("code")){
+//            message=MessageUtil.getMessage(Message.ROUTER_ADD_ERROR.getCode());
+//            logger.error(message);
+//            return ResultUtil.error(message);
+//        }
+//        message=MessageUtil.getMessage(Message.ROUTER_ADD_SUCCESS.getCode());
+//        logger.info(message);
+        return ResultUtil.ok().put("msg","Test");
     }
 
     /**
