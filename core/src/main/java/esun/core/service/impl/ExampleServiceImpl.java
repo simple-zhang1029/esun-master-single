@@ -3,6 +3,7 @@ package esun.core.service.impl;
 import com.google.common.io.Files;
 import com.sun.istack.Nullable;
 import esun.core.constant.Message;
+import esun.core.exception.CustomHttpException;
 import esun.core.service.DbHelperService;
 import esun.core.service.ExampleService;
 import esun.core.service.TokenService;
@@ -60,8 +61,13 @@ public class ExampleServiceImpl implements ExampleService {
     @Value("${message.table}")
     String message_table;
 
+    //路由表
     @Value("${router.table}")
     String router_table;
+
+    //用户组路由表
+    @Value("${router.group.table}")
+    String router_group_table;
 
     @Value("${postgres_user_table}")
     String postgres_user_table;
@@ -244,7 +250,7 @@ public class ExampleServiceImpl implements ExampleService {
         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
-                "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
+                "user_post as \"post\" , user_qqnum as \"qqNum\" " +
                 " from "+postgres_user_table+" where user_name = '"+name+"';";
 
         String message;
@@ -302,13 +308,13 @@ public class ExampleServiceImpl implements ExampleService {
      * @return
      */
     @Override
-    public ResultUtil updateUserInfo(String userId, String username, String language, String email,String type, String phone, String country, boolean isActive, String depart, String post, String qqNum,int groupId) {
+    public ResultUtil updateUserInfo(String userId, String username, String language, String email,String type, String phone, String country, boolean isActive, String depart, String post, String qqNum) {
         DateTime dateTime=new DateTime();
         String changeTime=dateTime.toString("yyyyMMdd");
         String message;
         String sql="update "+postgres_user_table+" set user_name='"+username+"',user_lang='"+language+"', user_mail_address='"+email+"',user_last_chg_date='"+changeTime+"'," +
                 "user_country='"+country+"',user_actived="+isActive+",user_depart='"+depart+"',user_post='"+post+"',user_type='"+type+"', "+
-                "user_phone='"+phone+"',user_qqnum='"+qqNum+"' ,user_groupid='"+groupId+"'"+
+                "user_phone='"+phone+"',user_qqnum='"+qqNum+"' "+
                 "where user_userid='"+userId+"' ;";
         ResultUtil result=dbHelperService.update(sql,"postgres_test");
         if(HttpStatus.OK.value() != (int)result.get("code")){
@@ -336,7 +342,7 @@ public class ExampleServiceImpl implements ExampleService {
      * @return
      */
     @Override
-    public ResultUtil insertUserInfo(String userId, String username,String password, String language, String email,String type, String phone, String country, boolean isActive, String depart, String post, String qqNum,int groupId) {
+    public ResultUtil insertUserInfo(String userId, String username,String password, String language, String email,String type, String phone, String country, boolean isActive, String depart, String post, String qqNum) {
         String message;
         DateTime date=new DateTime();
         String changeTime=date.toString("yyyyMMdd");
@@ -345,9 +351,9 @@ public class ExampleServiceImpl implements ExampleService {
         String salt=md5Util.getSalt();
         String sql="insert into "+postgres_user_table+
                 "(user_userid,user_name,user_lang,user_password,user_last_chg_date,user_mail_address,user_type," +
-                "user_country,user_actived,user_depart,user_post,user_phone,user_qqnum,user_salt,user_groupId) " +
+                "user_country,user_actived,user_depart,user_post,user_phone,user_qqnum,user_salt) " +
                 "values('"+userId+"','"+username+"','"+language+"','"+encodePassword+"','"+changeTime+"','"+email+"','"+type+"'," +
-                "'"+country+"',"+isActive+",'"+depart+"','"+post+"','"+phone+"','"+qqNum+"','"+salt+"','"+groupId+"');";
+                "'"+country+"',"+isActive+",'"+depart+"','"+post+"','"+phone+"','"+qqNum+"','"+salt+"');";
         ResultUtil result=dbHelperService.insert(sql,"postgres_test");
         if(HttpStatus.OK.value()!= (int)result.get("code")){
             message=MessageUtil.getMessage(Message.USER_INFO_INSERT_ERROR.getCode());
@@ -393,12 +399,138 @@ public class ExampleServiceImpl implements ExampleService {
         return ResultUtil.ok().put("list",resultList);
     }
 
+    /**
+     * 获取路由信息
+     * @param groupId
+     * @return
+     */
+    @Override
+    public ResultUtil getRouter(int groupId) {
+        String sql;
+        //判断groupId是否为默认值
+        if (groupId == -1){
+            sql= "select id as \"id\", router as \"router\" , router_description as \"description\", " +
+                    "parent_id as \"parentId\", is_public as \"isPublic\", is_active as \"isActive\" " +
+                    " from "+router_table+" ;";
 
+        }
+        else {
+            //筛选出用户组所拥有的有效路由
+            sql="select "+router_table+".id as \"id\","+router_group_table+".router as \"router\", group_id as \"groupId\", " +
+                    "router_description as \"description\",parent_id as \"parentId\", is_public as \"isPublic\", is_active as \"isActive\"  " +
+                    "from "+router_group_table+" left join "+router_table+" on "+router_table+".router ="+router_group_table+".router " +
+                    "where "+router_group_table+".group_id = '"+groupId+"'  and "+router_table+".is_active = 'true' ;";
+        }
+        String message;
+        ResultUtil result=dbHelperService.select(sql,"postgres_test");
+        if(HttpStatus.OK.value()!= (int)result.get("code")){
+            message=MessageUtil.getMessage(Message.ROUTER_GET_ERROR.getCode());
+            logger.error(message);
+            return ResultUtil.error(message);
+        }
+        ArrayList<HashMap> list= (ArrayList) result.get("result");
+        if (HttpStatus.OK.value()!= (int)result.get("code")){
+            message=MessageUtil.getMessage(Message.ROUTER_GET_ERROR.getCode());
+            logger.error(message);
+
+            return ResultUtil.error(message);
+        }
+        message=MessageUtil.getMessage(Message.ROUTER_GET_SUCCESS.getCode());
+        logger.info(message);
+        return ResultUtil.ok().put("result",list);
+    }
+
+
+    /**
+     * 添加路由
+     * @param list
+     * @return
+     */
+    @Override
+    public ResultUtil addRouter(List list) {
+        String sql;
+        String message;
+        for () {
+
+        }
+        //检测路由是否存在
+        sql = "insert into "+router_table+"(router,router_description,is_public,is_Active)  values('"+router+"','"+description+"','"+isPublic+"','"+isActive+"')";
+        ResultUtil result=dbHelperService.insert(sql,"postgres_test");
+        if(HttpStatus.OK.value()!= (int)result.get("code")){
+            message=MessageUtil.getMessage(Message.ROUTER_ADD_ERROR.getCode());
+            logger.error(message);
+            return ResultUtil.error(message);
+        }
+        message=MessageUtil.getMessage(Message.ROUTER_ADD_SUCCESS.getCode());
+        logger.info(message);
+        return ResultUtil.ok().put("msg",message);
+    }
+
+    /**
+     * 删除路由
+     * @param router
+     * @return
+     */
+    @Override
+    public ResultUtil deleteRouter(String router) {
+        String sql;
+        String message;
+        //检测路由是否存在
+        if(!checkRouterExist(-1,router)){
+            message=MessageUtil.getMessage(Message.ROUTER_NOT_EXIST.getCode());
+            logger.error(message);
+            return ResultUtil.error(message);
+        }
+        sql = "delete from "+router_table+" where router ='"+router+"';";
+        ResultUtil result=dbHelperService.insert(sql,"postgres_test");
+        if(HttpStatus.OK.value()!= (int)result.get("code")){
+            message=MessageUtil.getMessage(Message.ROUTER_DELETE_ERROR.getCode());
+            logger.error(message);
+            return ResultUtil.error(message);
+        }
+        message=MessageUtil.getMessage(Message.ROUTER_DELETE_SUCCESS.getCode());
+        logger.info(message);
+        return ResultUtil.ok().put("msg",message);
+    }
+
+    /**
+     * 检测路由是否存在
+     * @param groupId
+     * @param router
+     * @return
+     */
+    public boolean checkRouterExist(int groupId,String router){
+        String sql;
+        String message;
+        if (groupId== -1){
+            sql="select 1 from "+router_table+" where router ='"+router+"';";
+        }
+        else {
+            sql="select 1 from "+router_group_table+" where router='"+router+"' and user_groupid='"+groupId+"';";
+        }
+        ResultUtil result=dbHelperService.select(sql,"postgres_test");
+        if(HttpStatus.OK.value()!= (int)result.get("code")){
+            message=MessageUtil.getMessage(Message.ROUTER_ADD_ERROR.getCode());
+            logger.error(message);
+            throw new CustomHttpException(message);
+        }
+        ArrayList<HashMap> list= (ArrayList) result.get("result");
+        if(list.size()>0){
+            return true;
+        }
+        return  false;
+    }
+
+    /**
+     * 获取用户路由表
+     * @param name
+     * @return
+     */
     @Override
     public ResultUtil routerList(String name) {
-        String sql="select router from "+router_table+" where user= '"+name+"';";
+        String sql="select router from "+router_table+" where user_groupid=(select user_groupid from "+postgres_user_table+" where user_name = '"+name+"');";
         String message;
-        ResultUtil result=dbHelperService.select(sql,DEFAULT_PRODUCT);
+        ResultUtil result=dbHelperService.select(sql,"postgres_test");
         if(HttpStatus.OK.value()!= (int)result.get("code")){
             message=MessageUtil.getMessage(Message.ROUTER_GET_ERROR.getCode());
             logger.error(message);
@@ -475,7 +607,7 @@ public class ExampleServiceImpl implements ExampleService {
         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
-                "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
+                "user_post as \"post\" , user_qqnum as \"qqNum\" " +
                 " from "+postgres_user_table+" where user_name like '%25"+userName+"%25';";
         String message;
         ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);
@@ -527,18 +659,17 @@ public class ExampleServiceImpl implements ExampleService {
             String depart=userInfo.get("depart").toString();
             String post=userInfo.get("post").toString();
             String qqNum=userInfo.get("qqNum").toString();
-            int groupId= Integer.parseInt(userInfo.get("groupId").toString());
             //用户运行结果Map
             Map<String,Object> resultMap=new HashMap<>();
             resultMap.put("username",username);
             //查看该用户是否存在
             if (!checkUserExist(username)){
-                ResultUtil insertResult= insertUserInfo(userId,username,defaultPassword,language,email,type,phone,country,isActive,depart,post,qqNum,groupId);
+                ResultUtil insertResult= insertUserInfo(userId,username,defaultPassword,language,email,type,phone,country,isActive,depart,post,qqNum);
                 resultMap.put("code",insertResult.get("code"));
                 resultMap.put("msg",insertResult.get("msg"));
             }
             else {
-                ResultUtil updateResult=updateUserInfo(userId,username,language,email,type,phone,country,isActive,depart,post,qqNum,groupId);
+                ResultUtil updateResult=updateUserInfo(userId,username,language,email,type,phone,country,isActive,depart,post,qqNum);
                 resultMap.put("code",updateResult.get("code"));
                 resultMap.put("msg",updateResult.get("msg"));
             }
@@ -647,7 +778,7 @@ public class ExampleServiceImpl implements ExampleService {
         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
-                "user_post as \"post\" , user_qqnum as \"qqNum\" , user_groupid as \"groupId\"" +
+                "user_post as \"post\" , user_qqnum as \"qqNum\" " +
                 " from "+postgres_user_table+" where user_name like '%25"+username+"%25';";
         String message;
         ResultUtil result=dbHelperService.select(sql,"postgres_test");

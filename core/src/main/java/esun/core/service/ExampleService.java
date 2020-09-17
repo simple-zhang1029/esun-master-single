@@ -25,14 +25,20 @@ public interface ExampleService {
     ResultUtil deleteUserInfo(String name);
 
     ResultUtil updateUserInfo(String userId, String username,String language,String email,String type,String phone,
-                              String country,boolean isActive,String depart,String post,String qqNum,int groupId);
+                              String country,boolean isActive,String depart,String post,String qqNum);
 
     ResultUtil insertUserInfo(String userId, String username,String password,String language,String email,String type,String phone,
-                              String country,boolean isActive,String depart,String post,String qqNum,int groupId);
+                              String country,boolean isActive,String depart,String post,String qqNum);
 
     ResultUtil batchRegister(Workbook workbook);
 
     ResultUtil getUserInfoList(int pageIndex,int pageSize,String userName);
+
+    ResultUtil getRouter(int groupId);
+
+    ResultUtil addRouter(List list);
+
+    ResultUtil deleteRouter(String router);
 
     ResultUtil routerList(String name);
 

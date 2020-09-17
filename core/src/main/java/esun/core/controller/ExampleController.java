@@ -46,7 +46,7 @@ public class ExampleController {
     //使用Restful命名风格的标签，只允许指定类型的请求调用接口
     @PostMapping("login")
     //使用Router标签指定用户访问权限,拥有该权限才可请求此接口,否者返回错误,router权限在存储在数据库中
-    @Router(name = "user:login")
+//    @Router(name = "user:login")
     //所有接口的返回类型固定为ResultUtil封装类
     //请求参数使用@RequestParam标签获取。
     public ResultUtil login(@RequestParam("name")String name,
@@ -60,9 +60,16 @@ public class ExampleController {
         return exampleService.login(name,password);
     }
 
-    //注册接口
+    /**
+     * 注册接口
+     * @param name
+     * @param password
+     * @param email
+     * @param telephone
+     * @return
+     * @author john.xiao
+     */
     @PostMapping("register")
-    @Router(name = "user:register")
     public ResultUtil register(@RequestParam("name")String name,
                                @RequestParam("password")String password,
                                @RequestParam("email")String email,
@@ -85,12 +92,13 @@ public class ExampleController {
     }
     /**
      * 上传文件
-     * @param file
+     * @param file 传入的文件
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @PostMapping("upload")
-    @Router(name = "file:upload")
+//    @Router(name = "file:upload")
     //上传文件格式使用MultipartFile
     public ResultUtil uploadImg(@RequestParam("file") MultipartFile file){
         if (file.getSize() / 1024 / 1024 > 1) {
@@ -102,6 +110,7 @@ public class ExampleController {
     /**
      * 登录用户名单
      * @return
+     * @author john.xiao
      */
     //使用loginRequire标签设置该接口是否要求登入后才能请求
     @LoginRequire
@@ -114,10 +123,11 @@ public class ExampleController {
      * 获取用户信息
      * @param username
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @GetMapping("userInfo")
-    @Router(name = "user:info:get")
+//    @Router(name = "user:info:get")
     public ResultUtil getUserInfo(@RequestParam("username") String username){
         return exampleService.getUserInfo(username);
     }
@@ -126,10 +136,11 @@ public class ExampleController {
      * 删除用户
      * @param username
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @DeleteMapping("userInfo")
-    @Router(name = "user:info:delete")
+//    @Router(name = "user:info:delete")
     public ResultUtil deleteUserInfo(@RequestParam("username") String username){
         return exampleService.deleteUserInfo(username);
     }
@@ -148,10 +159,11 @@ public class ExampleController {
      * @param post
      * @param qqNum
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @PostMapping("userInfo")
-    @Router(name = "user:info:update")
+//    @Router(name = "user:info:update")
     public ResultUtil updateUserInfo(@RequestParam("userId") String userId,
                                      @RequestParam("username") String username,
                                      @RequestParam(value = "language") String language,
@@ -162,19 +174,19 @@ public class ExampleController {
                                      @RequestParam(value = "isActive" )boolean isActive,
                                      @RequestParam(value = "depart")String depart,
                                      @RequestParam(value = "post")String post,
-                                     @RequestParam(value = "qqNum")String qqNum,
-                                     @RequestParam("groupId")int groupId){
-        return exampleService.updateUserInfo(userId,username,language,email,type,phone,country,isActive,depart,post,qqNum,groupId);
+                                     @RequestParam(value = "qqNum")String qqNum){
+        return exampleService.updateUserInfo(userId,username,language,email,type,phone,country,isActive,depart,post,qqNum);
     }
 
     /**
      * 插入用户信息
      * @param email
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @PutMapping("userInfo")
-    @Router(name = "user:info:insert")
+//    @Router(name = "user:info:insert")
     public ResultUtil insertUserInfo(@RequestParam("userId") String userId,
                                      @RequestParam("username") String username,
                                      @RequestParam(value = "language",required = false,defaultValue = "CH") String language,
@@ -185,20 +197,19 @@ public class ExampleController {
                                      @RequestParam(value = "isActive",required = false,defaultValue ="false" )boolean isActive,
                                      @RequestParam(value = "depart",required = false,defaultValue = "DEFAULT")String depart,
                                      @RequestParam(value = "post",required = false,defaultValue = "DEFAULT")String post,
-                                     @RequestParam(value = "qqNum",required = false,defaultValue = " ")String qqNum,
-                                     @RequestParam(value = "groupID",required = false,defaultValue = "2") int groupId){
+                                     @RequestParam(value = "qqNum",required = false,defaultValue = " ")String qqNum){
         String defaultPassword="123456";
-        return exampleService.insertUserInfo(userId,username,defaultPassword,language,email,type,phone,country,isActive,depart,post,qqNum,groupId);
+        return exampleService.insertUserInfo(userId,username,defaultPassword,language,email,type,phone,country,isActive,depart,post,qqNum);
     }
 
     /**
      * 批量注册
      * @param file
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @PostMapping("batchRegister")
-    @Router(name = "user:register")
     public ResultUtil batchRegister(@RequestParam("file")MultipartFile file){
         Workbook workbook = null;
         try {
@@ -212,13 +223,12 @@ public class ExampleController {
         return exampleService.batchRegister(workbook);
     }
 
-
-
     /**
      * 分页获取用户信息列表
      * @param pageIndex 页数。默认值为1
      * @param pageSize  每页大小。默认值为10
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @GetMapping("userInfoList")
@@ -228,17 +238,55 @@ public class ExampleController {
 
         return  exampleService.getUserInfoList(pageIndex,pageSize,userName);
     }
+
     /**
-     * 获取路由i表
-     * @param name
+     * 获取路由表
      * @return
+     * @author john.xiao
      */
     @LoginRequire
-    @GetMapping("routerList")
-    public ResultUtil routerList(@RequestParam("name") String name){
-        return exampleService.routerList(name);
+    @GetMapping("router")
+    public ResultUtil  getRouterList(@RequestParam(value = "groupId",required = false,defaultValue = "-1") int groupId){
+        return exampleService.getRouter(groupId);
     }
 
+    /**
+     * 添加路由
+     * @return
+     * @author john.xiao
+     */
+    @LoginRequire
+    @PutMapping("router")
+    public ResultUtil addRouterList(@RequestParam("router")String router){
+        JSONArray jsonArray=JSONArray.fromObject(router);
+        return exampleService.addRouter(jsonArray);
+    }
+
+    /**
+     * 删除路由
+     * @param router
+     * @return
+     * @author john.xiao
+     */
+    @LoginRequire
+    @DeleteMapping("router")
+    public ResultUtil deleteRouterList(@RequestParam("router")String router){
+        return exampleService.deleteRouter(router);
+    }
+
+
+
+    /**
+     * 获取用户路由表
+     * @param name
+     * @return
+     * @author john.xiao
+     */
+    @LoginRequire
+    @GetMapping("userRouter")
+    public ResultUtil userRouterList(@RequestParam("name") String name){
+        return exampleService.routerList(name);
+    }
 
     /**
      * 修改密码
@@ -246,6 +294,7 @@ public class ExampleController {
      * @param password
      * @param newPassword
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @PostMapping("password")
@@ -261,11 +310,11 @@ public class ExampleController {
         return exampleService.updatePassword(name,password,newPassword);
     }
 
-
     /**
      * 通过Excel文件批量插入或更新数据
      * @param file
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @PostMapping("batchUserInfo")
@@ -282,12 +331,11 @@ public class ExampleController {
         return exampleService.batchUserInfoInsertOrUpdate(workbook);
     }
 
-
-
     /**
      * Excel批量删除用户信息
      * @param file
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @DeleteMapping("batchUserInfoWithExcel")
@@ -305,11 +353,12 @@ public class ExampleController {
         return exampleService.batchUserInfoDeleteWithExcel(workbook);
     }
 
-  /**
-   * 批量删除用户信息
-   * @param list
-   * @return
-   */
+    /**
+     * 批量删除用户信息
+     * @param list
+     * @return
+     * @author john.xiao
+     */
     @LoginRequire
     @DeleteMapping("batchUserInfo")
     public ResultUtil batchUserInfo(@RequestParam("list")String list ){
@@ -317,10 +366,12 @@ public class ExampleController {
       List<Map<String,Object>> jsonArray=JSONArray.fromObject(list);
       return exampleService.batchUserInfoDelete(jsonArray);
     }
+
     /**
      * 通过username导出用户信息
      * @param username
      * @return
+     * @author john.xiao
      */
     @LoginRequire
     @GetMapping("batchUserInfo")
