@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.net.ftp.FtpClient;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -119,11 +120,11 @@ public class ExampleController {
         return exampleService.loggedList();
     }
 
+
     /**
-     * 获取用户信息
-     * @param username
-     * @return
      * @author john.xiao
+     * @param username 查询用户名
+     * @return
      */
     @LoginRequire
     @GetMapping("userInfo")
@@ -227,6 +228,9 @@ public class ExampleController {
      * 分页获取用户信息列表
      * @param pageIndex 页数。默认值为1
      * @param pageSize  每页大小。默认值为10
+     * @param criteria
+     * @param sort
+     * @param userName
      * @return
      * @author john.xiao
      */
@@ -234,9 +238,33 @@ public class ExampleController {
     @GetMapping("userInfoList")
     public ResultUtil getUserInfoList(@RequestParam(value = "pageIndex",required = false,defaultValue = "1")int pageIndex,
                                       @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
-                                      @RequestParam(value = "username",required = false,defaultValue = "")String userName){
-
-        return  exampleService.getUserInfoList(pageIndex,pageSize,userName);
+                                      @RequestParam(value = "username",required = false,defaultValue = "")String userName,
+                                      @RequestParam(value = "criteria",required = false,defaultValue = "userId")String criteria,
+                                      @RequestParam(value = "sort",required = false,defaultValue = "0")int sort){
+        String tableParam;
+        switch (criteria){
+            case "userId":
+                tableParam="user_userid";
+                break;
+            case "username":
+                tableParam="user_name";
+                break;
+            case "language":
+                tableParam="user_lang";
+                break;
+            case "email":
+                tableParam="user_mail_address";
+                break;
+            case "phone":
+                tableParam="user_phone";
+                break;
+            case "qqNum":
+                tableParam="user_qqnum";
+                break;
+            default:
+                tableParam="user_userid";
+        }
+        return  exampleService.getUserInfoList(pageIndex,pageSize,userName,tableParam,sort);
     }
 
     /**
@@ -355,7 +383,7 @@ public class ExampleController {
 
     /**
      * 批量删除用户信息
-     * @param list
+     * @param list 传入的用户信息列表
      * @return
      * @author john.xiao
      */

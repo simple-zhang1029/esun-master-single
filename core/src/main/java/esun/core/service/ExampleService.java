@@ -32,7 +32,7 @@ public interface ExampleService {
 
     ResultUtil batchRegister(Workbook workbook);
 
-    ResultUtil getUserInfoList(int pageIndex,int pageSize,String userName);
+    ResultUtil getUserInfoList(int pageIndex,int pageSize,String userName,String criteria,int sort);
 
     ResultUtil getRouter(int groupId);
 

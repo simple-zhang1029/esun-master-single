@@ -247,12 +247,11 @@ public class ExampleServiceImpl implements ExampleService {
      */
     @Override
     public ResultUtil getUserInfo(String name) {
-        String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
-                "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
-                "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
-                "user_post as \"post\" , user_qqnum as \"qqNum\" " +
-                " from "+postgres_user_table+" where user_name = '"+name+"' order by user_userid;";
-
+         String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
+                    "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
+                    "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
+                    "user_post as \"post\" , user_qqnum as \"qqNum\" " +
+                    " from "+postgres_user_table+" where user_name = '"+name+"';";
         String message;
         ResultUtil result=dbHelperService.select(sql,"postgres_test");
         ArrayList list= (ArrayList) result.get("result");
@@ -604,12 +603,22 @@ public class ExampleServiceImpl implements ExampleService {
      * @return
      */
     @Override
-    public ResultUtil getUserInfoList(int pageIndex, int pageSize,String userName) {
-        String sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
-                "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
-                "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
-                "user_post as \"post\" , user_qqnum as \"qqNum\" " +
-                " from "+postgres_user_table+" where user_name like '%25"+userName+"%25' order by user_userid;";
+    public ResultUtil getUserInfoList(int pageIndex, int pageSize,String userName,String criteria,int sort) {
+        String sql;
+        if (sort == 0){
+             sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
+                    "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
+                    "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
+                    "user_post as \"post\" , user_qqnum as \"qqNum\" " +
+                    " from "+postgres_user_table+" where user_name like '%25"+userName+"%25' order by "+criteria+";";
+        }
+        else {
+            sql="select user_name as \"username\" ,user_userid as \"userId\" ,user_phone as \"phone\" ," +
+                    "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
+                    "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
+                    "user_post as \"post\" , user_qqnum as \"qqNum\" " +
+                    " from "+postgres_user_table+" where user_name like '%25"+userName+"%25' order by "+criteria+" desc;";
+        }
         String message;
         ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);
         if(HttpStatus.OK.value()!= (int)result.get("code")){
