@@ -251,7 +251,7 @@ public class ExampleServiceImpl implements ExampleService {
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" " +
-                " from "+postgres_user_table+" where user_name = '"+name+"';";
+                " from "+postgres_user_table+" where user_name = '"+name+"' order by user_userid;";
 
         String message;
         ResultUtil result=dbHelperService.select(sql,"postgres_test");
@@ -609,7 +609,7 @@ public class ExampleServiceImpl implements ExampleService {
                 "user_mail_address as \"email\" ,user_lang as \"language\", user_type as \"type\", " +
                 "user_country as \"country\", user_actived as \"isActive\" ,user_depart as \"depart\"," +
                 "user_post as \"post\" , user_qqnum as \"qqNum\" " +
-                " from "+postgres_user_table+" where user_name like '%25"+userName+"%25';";
+                " from "+postgres_user_table+" where user_name like '%25"+userName+"%25' order by user_userid;";
         String message;
         ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);
         if(HttpStatus.OK.value()!= (int)result.get("code")){
