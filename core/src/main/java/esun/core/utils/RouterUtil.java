@@ -11,7 +11,9 @@ import java.util.ArrayList;
 public class RouterUtil {
 
 
-    private static String Router_TABLE="user_router";
+    private static String GROUP_ROUTER_TABLE="group_router_table";
+
+    private static String USER_GROUP_TABLE="user_group_table";
 
     private static String USER_TABLE="user_mstr";
 
@@ -25,8 +27,8 @@ public class RouterUtil {
      */
     public static boolean verifyRouter(String name,String router){
         DbHelperService dbHelperService=SpringContextUtils.getBean(DbHelperService.class);
-        String sql="select 1 from "+Router_TABLE+" where user_groupid=(select user_groupid from "+USER_TABLE+" where user_name = '"+name+"')" +
-                " and router ='"+ router+"' ;";
+        String sql="select 1 from "+GROUP_ROUTER_TABLE+" grt left join "+USER_GROUP_TABLE+" ugt on grt.group_id = ugt.group_id  where ugt.user_userid  = (select user_userid from "+USER_TABLE+" where user_name = '"+name+"')" +
+                " and grt.router ='"+ router+"' ;";
         ResultUtil result=dbHelperService.select(sql,DEFAULT_PRODUCT);
         if(HttpStatus.OK.value() != (int)result.get("code")){
             return false;

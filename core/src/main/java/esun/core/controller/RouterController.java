@@ -1,6 +1,7 @@
 package esun.core.controller;
 
 import esun.core.annotation.LoginRequire;
+import esun.core.annotation.Router;
 import esun.core.service.RouterService;
 import esun.core.utils.ResultUtil;
 import net.sf.json.JSONArray;
@@ -28,6 +29,7 @@ public class RouterController {
 	 */
 	@LoginRequire
 	@GetMapping("router")
+	@Router(name = "test")
 	public ResultUtil getRouterList(@RequestParam(value = "groupId",required = false,defaultValue = "-1") int groupId){
 		return routerService.getRouter(groupId);
 	}
