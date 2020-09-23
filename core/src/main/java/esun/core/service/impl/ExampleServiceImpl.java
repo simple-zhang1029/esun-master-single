@@ -59,15 +59,18 @@ public class ExampleServiceImpl implements ExampleService {
     String userTable;
 
     @Value("${message.table}")
-    String message_table;
+    String messageTable;
 
     //路由表
     @Value("${router.table}")
-    String router_table;
+    String routerTable;
 
     //用户组路由表
     @Value("${router.group.table}")
-    String router_group_table;
+    String routerGroupTable;
+
+    @Value(("${router.group.user.table}"))
+    String userGroupTable;
 
     @Value("${postgres_user_table}")
     String postgres_user_table;
@@ -369,7 +372,7 @@ public class ExampleServiceImpl implements ExampleService {
 
     /**
      * 通过Excel文件批量注册用户
-     * @param workbook
+     * @param workbook 解析后Excel文件
      * @return
      */
     @Override
@@ -398,165 +401,16 @@ public class ExampleServiceImpl implements ExampleService {
         return ResultUtil.ok().put("list",resultList);
     }
 
-    /**
-     * 获取路由信息
-     * @param groupId
-     * @return
-     */
-    @Override
-    public ResultUtil getRouter(int groupId) {
-        String sql;
-        //判断groupId是否为默认值
-        if (groupId == -1){
-            sql= "select id as \"id\", router as \"router\" , router_description as \"description\", " +
-                    "parent_id as \"parentId\", is_public as \"isPublic\", is_active as \"isActive\" " +
-                    " from "+router_table+" ;";
-
-        }
-        else {
-            //筛选出用户组所拥有的有效路由
-            sql="select "+router_table+".id as \"id\","+router_group_table+".router as \"router\", group_id as \"groupId\", " +
-                    "router_description as \"description\",parent_id as \"parentId\", is_public as \"isPublic\", is_active as \"isActive\"  " +
-                    "from "+router_group_table+" left join "+router_table+" on "+router_table+".router ="+router_group_table+".router " +
-                    "where "+router_group_table+".group_id = '"+groupId+"'  and "+router_table+".is_active = 'true' ;";
-        }
-        String message;
-        ResultUtil result=dbHelperService.select(sql,"postgres_test");
-        if(HttpStatus.OK.value()!= (int)result.get("code")){
-            message=MessageUtil.getMessage(Message.ROUTER_GET_ERROR.getCode());
-            logger.error(message);
-            return ResultUtil.error(message);
-        }
-        ArrayList<HashMap> list= (ArrayList) result.get("result");
-        if (HttpStatus.OK.value()!= (int)result.get("code")){
-            message=MessageUtil.getMessage(Message.ROUTER_GET_ERROR.getCode());
-            logger.error(message);
-
-            return ResultUtil.error(message);
-        }
-        message=MessageUtil.getMessage(Message.ROUTER_GET_SUCCESS.getCode());
-        logger.info(message);
-        return ResultUtil.ok().put("result",list);
-    }
 
 
     /**
-     * 添加路由
-     * @param list
+     * 修改密码
+     * @param username
+     * @param newPassword
+     * @author john.xiao
+     * @date 2020-09-21 16:13
      * @return
      */
-    @Override
-    public ResultUtil addRouter(List list) {
-//        String sql;
-//        String message;
-//        String router="test";
-//        for () {
-//
-//        }
-        //检测路由是否存在
-//        sql = "insert into "+router_table+"(router,router_description,is_public,is_Active)  values('"+router+"','"+description+"','"+isPublic+"','"+isActive+"')";
-//        ResultUtil result=dbHelperService.insert(sql,"postgres_test");
-//        if(HttpStatus.OK.value()!= (int)result.get("code")){
-//            message=MessageUtil.getMessage(Message.ROUTER_ADD_ERROR.getCode());
-//            logger.error(message);
-//            return ResultUtil.error(message);
-//        }
-//        message=MessageUtil.getMessage(Message.ROUTER_ADD_SUCCESS.getCode());
-//        logger.info(message);
-        return ResultUtil.ok().put("msg","Test");
-    }
-
-    /**
-     * 删除路由
-     * @param router
-     * @return
-     */
-    @Override
-    public ResultUtil deleteRouter(String router) {
-        String sql;
-        String message;
-        //检测路由是否存在
-        if(!checkRouterExist(-1,router)){
-            message=MessageUtil.getMessage(Message.ROUTER_NOT_EXIST.getCode());
-            logger.error(message);
-            return ResultUtil.error(message);
-        }
-        sql = "delete from "+router_table+" where router ='"+router+"';";
-        ResultUtil result=dbHelperService.insert(sql,"postgres_test");
-        if(HttpStatus.OK.value()!= (int)result.get("code")){
-            message=MessageUtil.getMessage(Message.ROUTER_DELETE_ERROR.getCode());
-            logger.error(message);
-            return ResultUtil.error(message);
-        }
-        message=MessageUtil.getMessage(Message.ROUTER_DELETE_SUCCESS.getCode());
-        logger.info(message);
-        return ResultUtil.ok().put("msg",message);
-    }
-
-    /**
-     * 检测路由是否存在
-     * @param groupId
-     * @param router
-     * @return
-     */
-    public boolean checkRouterExist(int groupId,String router){
-        String sql;
-        String message;
-        if (groupId== -1){
-            sql="select 1 from "+router_table+" where router ='"+router+"';";
-        }
-        else {
-            sql="select 1 from "+router_group_table+" where router='"+router+"' and user_groupid='"+groupId+"';";
-        }
-        ResultUtil result=dbHelperService.select(sql,"postgres_test");
-        if(HttpStatus.OK.value()!= (int)result.get("code")){
-            message=MessageUtil.getMessage(Message.ROUTER_ADD_ERROR.getCode());
-            logger.error(message);
-            throw new CustomHttpException(message);
-        }
-        ArrayList<HashMap> list= (ArrayList) result.get("result");
-        if(list.size()>0){
-            return true;
-        }
-        return  false;
-    }
-
-    /**
-     * 获取用户路由表
-     * @param name
-     * @return
-     */
-    @Override
-    public ResultUtil routerList(String name) {
-        String sql="select router from "+router_table+" where user_groupid=(select user_groupid from "+postgres_user_table+" where user_name = '"+name+"');";
-        String message;
-        ResultUtil result=dbHelperService.select(sql,"postgres_test");
-        if(HttpStatus.OK.value()!= (int)result.get("code")){
-            message=MessageUtil.getMessage(Message.ROUTER_GET_ERROR.getCode());
-            logger.error(message);
-            return ResultUtil.error(message);
-        }
-        ArrayList<HashMap> list= (ArrayList) result.get("result");
-        if (list.size()<1){
-            message=MessageUtil.getMessage(Message.ROUTER_GET_ERROR.getCode());
-            logger.error(message);
-            return ResultUtil.error(message);
-        }
-        ArrayList routerList=new ArrayList();
-        for (int i = 0; i <list.size() ; i++) {
-            routerList.add(list.get(i).get("router"));
-        }
-        message=MessageUtil.getMessage(Message.ROUTER_GET_SUCCESS.getCode());
-        logger.info(message);
-        return ResultUtil.ok().put("result",routerList);
-    }
-
-  /**
-   * 修改密码
-   * @param username
-   * @param newPassword
-   * @return
-   */
     @Override
     public ResultUtil updatePassword(String username,String password, String newPassword) {
         Md5Util md5Util=new Md5Util();
@@ -600,6 +454,8 @@ public class ExampleServiceImpl implements ExampleService {
      * 分页获取用户信息
      * @param pageIndex
      * @param pageSize
+     * @author john.xiao
+     * @date 2020-09-21 16:13
      * @return
      */
     @Override

@@ -1,6 +1,7 @@
 package esun.core.controller;
 
 
+import com.google.inject.internal.cglib.core.$KeyFactory;
 import com.sun.istack.Nullable;
 import esun.core.annotation.LoginRequire;
 import esun.core.annotation.Router;
@@ -228,17 +229,18 @@ public class ExampleController {
      * 分页获取用户信息列表
      * @param pageIndex 页数。默认值为1
      * @param pageSize  每页大小。默认值为10
-     * @param criteria
-     * @param sort
-     * @param userName
+     * @param criteria 排序条件
+     * @param sort 排序顺序 0:正序 1:倒序
+     * @param username 查询用户名
      * @return
      * @author john.xiao
+     * @date 2020-09-21 14:41
      */
     @LoginRequire
     @GetMapping("userInfoList")
     public ResultUtil getUserInfoList(@RequestParam(value = "pageIndex",required = false,defaultValue = "1")int pageIndex,
                                       @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
-                                      @RequestParam(value = "username",required = false,defaultValue = "")String userName,
+                                      @RequestParam(value = "username",required = false,defaultValue = "")String username,
                                       @RequestParam(value = "criteria",required = false,defaultValue = "userId")String criteria,
                                       @RequestParam(value = "sort",required = false,defaultValue = "0")int sort){
         String tableParam;
@@ -264,57 +266,12 @@ public class ExampleController {
             default:
                 tableParam="user_userid";
         }
-        return  exampleService.getUserInfoList(pageIndex,pageSize,userName,tableParam,sort);
-    }
-
-    /**
-     * 获取路由表
-     * @return
-     * @author john.xiao
-     */
-    @LoginRequire
-    @GetMapping("router")
-    public ResultUtil  getRouterList(@RequestParam(value = "groupId",required = false,defaultValue = "-1") int groupId){
-        return exampleService.getRouter(groupId);
-    }
-
-    /**
-     * 添加路由
-     * @return
-     * @author john.xiao
-     */
-    @LoginRequire
-    @PutMapping("router")
-    public ResultUtil addRouterList(@RequestParam("router")String router){
-        JSONArray jsonArray=JSONArray.fromObject(router);
-        return exampleService.addRouter(jsonArray);
-    }
-
-    /**
-     * 删除路由
-     * @param router
-     * @return
-     * @author john.xiao
-     */
-    @LoginRequire
-    @DeleteMapping("router")
-    public ResultUtil deleteRouterList(@RequestParam("router")String router){
-        return exampleService.deleteRouter(router);
+        return  exampleService.getUserInfoList(pageIndex,pageSize,username,tableParam,sort);
     }
 
 
 
-    /**
-     * 获取用户路由表
-     * @param name
-     * @return
-     * @author john.xiao
-     */
-    @LoginRequire
-    @GetMapping("userRouter")
-    public ResultUtil userRouterList(@RequestParam("name") String name){
-        return exampleService.routerList(name);
-    }
+
 
     /**
      * 修改密码

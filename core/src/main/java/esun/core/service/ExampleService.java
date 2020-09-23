@@ -34,20 +34,11 @@ public interface ExampleService {
 
     ResultUtil getUserInfoList(int pageIndex,int pageSize,String userName,String criteria,int sort);
 
-    ResultUtil getRouter(int groupId);
-
-    ResultUtil addRouter(List list);
-
-    ResultUtil deleteRouter(String router);
-
-    ResultUtil routerList(String name);
-
     ResultUtil updatePassword(String username,String password,String newPassword);
 
     ResultUtil batchUserInfoInsertOrUpdate(Workbook workbook);
 
     ResultUtil batchUserInfoDelete(List<Map<String,Object>> list);
-
 
     ResultUtil batchUserInfoDeleteWithExcel(Workbook workbook);
 
