@@ -69,5 +69,7 @@ public interface CommonService {
 
     PageInfo selectPage(String sql, int pageIndex, int pageSize);
 
+    List<Map<String,Object>> test();
+
 
 }

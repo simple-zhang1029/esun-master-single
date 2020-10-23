@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 public class CoreApplication {
 
     public static void main(String[] args) {
-        System.setProperty("apollo.configService", "http://10.124.0.47:30002");
+//        System.setProperty("apollo.configService", "http://10.124.0.99:8080");
         SpringApplication.run(CoreApplication.class, args);
     }
 

@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,8 +41,8 @@ public class ExampleServiceImpl implements ExampleService {
     TokenService tokenService;
     @Autowired
     //进行懒加载
-    @Lazy
-    private RedisTemplate redisTemplate;
+//    @Lazy
+//    private RedisTemplate redisTemplate;
 
     //声明静态常量，所有常量都需实现声明使用，不允许出现魔法值
     private final static String LOGIN_SET="loginSet";
@@ -226,22 +225,22 @@ public class ExampleServiceImpl implements ExampleService {
         return ResultUtil.ok().put("path",path);
     }
 
-    /**
-     * 登入用户名单
-     * @return
-     */
-    @Override
-    public ResultUtil loggedList() {
-        Set<String> loginSet=redisTemplate.opsForSet().members(LOGIN_SET);
-        List<Map<String,Object>> resultList=new ArrayList<>();
-        Iterator<String> iterator = loginSet.iterator();
-        while (iterator.hasNext()){
-            Map resultMap=new HashMap();
-            resultMap.put("name",iterator.next());
-            resultList.add(resultMap);
-        }
-        return ResultUtil.ok().put("list",resultList);
-    }
+//    /**
+//     * 登入用户名单
+//     * @return
+//     */
+//    @Override
+//    public ResultUtil loggedList() {
+//        Set<String> loginSet=redisTemplate.opsForSet().members(LOGIN_SET);
+//        List<Map<String,Object>> resultList=new ArrayList<>();
+//        Iterator<String> iterator = loginSet.iterator();
+//        while (iterator.hasNext()){
+//            Map resultMap=new HashMap();
+//            resultMap.put("name",iterator.next());
+//            resultList.add(resultMap);
+//        }
+//        return ResultUtil.ok().put("list",resultList);
+//    }
 
     /**
      * 获取用户信息
@@ -317,6 +316,45 @@ public class ExampleServiceImpl implements ExampleService {
         String sql="update "+postgres_user_table+" set user_name='"+username+"',user_lang='"+language+"', user_mail_address='"+email+"',user_last_chg_date='"+changeTime+"'," +
                 "user_country='"+country+"',user_actived="+isActive+",user_depart='"+depart+"',user_post='"+post+"',user_type='"+type+"', "+
                 "user_phone='"+phone+"',user_qqnum='"+qqNum+"' "+
+                "where user_userid='"+userId+"' ;";
+        ResultUtil result=dbHelperService.update(sql,"postgres_test");
+        if(HttpStatus.OK.value() != (int)result.get("code")){
+            message=MessageUtil.getMessage(Message.USER_INFO_UPDATE_ERROR.getCode());
+            logger.error(message);
+            return ResultUtil.error(message);
+        }
+        message=MessageUtil.getMessage(Message.USER_INFO_UPDATE_SUCCESS.getCode());
+        logger.info(message);
+        return ResultUtil.ok().put("msg",message);
+    }
+
+    /**
+     * 更新用户信息（修改密码）
+     * @param userId
+     * @param username
+     * @param password
+     * @param language
+     * @param email
+     * @param type
+     * @param phone
+     * @param country
+     * @param isActive
+     * @param depart
+     * @param post
+     * @param qqNum
+     * @return
+     */
+    @Override
+    public ResultUtil updateUserInfo(String userId, String username,String password, String language, String email,String type, String phone, String country, boolean isActive, String depart, String post, String qqNum) {
+        DateTime dateTime=new DateTime();
+        String changeTime=dateTime.toString("yyyy-MM-dd");
+        String message;
+        Md5Util md5Util=new Md5Util();
+        String encodePassword=md5Util.encodePassword(password);
+        String salt=md5Util.getSalt();
+        String sql="update "+postgres_user_table+" set user_name='"+username+"',user_lang='"+language+"', user_mail_address='"+email+"',user_last_chg_date='"+changeTime+"'," +
+                "user_country='"+country+"',user_actived="+isActive+",user_depart='"+depart+"',user_post='"+post+"',user_type='"+type+"', "+
+                "user_phone='"+phone+"',user_qqnum='"+qqNum+"',user_password = '"+encodePassword+"',user_salt = '"+salt+"' "+
                 "where user_userid='"+userId+"' ;";
         ResultUtil result=dbHelperService.update(sql,"postgres_test");
         if(HttpStatus.OK.value() != (int)result.get("code")){

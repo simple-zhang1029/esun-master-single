@@ -58,14 +58,13 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        <!--sharing-jdbc -->
 
+
+        <!--rabbitMq依赖-->
 <!--        <dependency>-->
-<!--            <groupId>org.apache.shardingsphere</groupId>-->
-<!--            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>-->
-<!--            <version>4.0.0-RC1</version>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-amqp</artifactId>-->
 <!--        </dependency>-->
-
         <!--druid连接池-->
         <dependency>
             <groupId>com.alibaba</groupId>

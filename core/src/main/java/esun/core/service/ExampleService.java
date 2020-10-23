@@ -18,13 +18,15 @@ public interface ExampleService {
 
     ResultUtil upload(MultipartFile file);
 
-    ResultUtil loggedList();
 
     ResultUtil getUserInfo(String name);
 
     ResultUtil deleteUserInfo(String name);
 
     ResultUtil updateUserInfo(String userId, String username,String language,String email,String type,String phone,
+                              String country,boolean isActive,String depart,String post,String qqNum);
+
+    ResultUtil updateUserInfo(String userId, String username,String password,String language,String email,String type,String phone,
                               String country,boolean isActive,String depart,String post,String qqNum);
 
     ResultUtil insertUserInfo(String userId, String username,String password,String language,String email,String type,String phone,

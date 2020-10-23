@@ -4,8 +4,9 @@ import esun.core.utils.ResultUtil;
 
 public interface AutoDeployService {
 
-    ResultUtil getProjectInfoList();
+    ResultUtil getProjectInfoList(String project);
 
-    ResultUtil getProjectInfo(String projectName);
+    ResultUtil deploy(String project,String version,String name);
+
 
 }

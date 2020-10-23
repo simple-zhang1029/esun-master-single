@@ -8,7 +8,11 @@
     <file url="file://$PROJECT_DIR$/dbhelper/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/router/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/token" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/token/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wharf/src/main/java" charset="UTF-8" />
   </component>
 </project>

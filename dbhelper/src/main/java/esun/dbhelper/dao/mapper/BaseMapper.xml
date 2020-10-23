@@ -48,4 +48,8 @@
   <select id="mysqlIndexes" parameterType="java.lang.String" resultType="java.lang.String">
     select column_name from information_schema.statistics where table_name=#{table,jdbcType=VARCHAR};
   </select>
+
+  <select id="test" resultType="map">
+    select * from user_mstr where user_name like '%1234%';
+  </select>
 </mapper>

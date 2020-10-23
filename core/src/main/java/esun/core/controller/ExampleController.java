@@ -12,6 +12,7 @@ import esun.core.utils.MessageUtil;
 import esun.core.utils.ResultUtil;
 import esun.core.service.ExampleService;
 import net.sf.json.JSONArray;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -115,11 +116,11 @@ public class ExampleController {
      * @author john.xiao
      */
     //使用loginRequire标签设置该接口是否要求登入后才能请求
-    @LoginRequire
-    @GetMapping("loggedList")
-    public ResultUtil loggedList(){
-        return exampleService.loggedList();
-    }
+//    @LoginRequire
+//    @GetMapping("loggedList")
+//    public ResultUtil loggedList(){
+//        return exampleService.loggedList();
+//    }
 
 
     /**
@@ -168,6 +169,7 @@ public class ExampleController {
 //    @Router(name = "user:info:update")
     public ResultUtil updateUserInfo(@RequestParam("userId") String userId,
                                      @RequestParam("username") String username,
+                                     @RequestParam(value = "password",required = false,defaultValue = "") String password,
                                      @RequestParam(value = "language") String language,
                                      @RequestParam(value = "email")  String email,
                                      @RequestParam(value = "type") String type,
@@ -177,6 +179,9 @@ public class ExampleController {
                                      @RequestParam(value = "depart")String depart,
                                      @RequestParam(value = "post")String post,
                                      @RequestParam(value = "qqNum")String qqNum){
+        if(!StringUtils.isBlank(password)){
+            return exampleService.updateUserInfo(userId,username,password,language,email,type,phone,country,isActive,depart,post,qqNum);
+        }
         return exampleService.updateUserInfo(userId,username,language,email,type,phone,country,isActive,depart,post,qqNum);
     }
 
@@ -191,6 +196,7 @@ public class ExampleController {
 //    @Router(name = "user:info:insert")
     public ResultUtil insertUserInfo(@RequestParam("userId") String userId,
                                      @RequestParam("username") String username,
+                                     @RequestParam("password") String password,
                                      @RequestParam(value = "language",required = false,defaultValue = "CH") String language,
                                      @RequestParam(value = "email")  String email,
                                      @RequestParam(value = "type",required = false,defaultValue = "外部用户") String type,
@@ -200,8 +206,7 @@ public class ExampleController {
                                      @RequestParam(value = "depart",required = false,defaultValue = "DEFAULT")String depart,
                                      @RequestParam(value = "post",required = false,defaultValue = "DEFAULT")String post,
                                      @RequestParam(value = "qqNum",required = false,defaultValue = " ")String qqNum){
-        String defaultPassword="123456";
-        return exampleService.insertUserInfo(userId,username,defaultPassword,language,email,type,phone,country,isActive,depart,post,qqNum);
+        return exampleService.insertUserInfo(userId,username,password,language,email,type,phone,country,isActive,depart,post,qqNum);
     }
 
     /**
@@ -268,10 +273,6 @@ public class ExampleController {
         }
         return  exampleService.getUserInfoList(pageIndex,pageSize,username,tableParam,sort);
     }
-
-
-
-
 
     /**
      * 修改密码

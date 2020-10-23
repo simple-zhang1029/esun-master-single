@@ -83,4 +83,8 @@ public interface BaseMapper {
      */
     List<String> mysqlIndexes(String table);
 
+    List<Map<String,Object>> test();
+
+
+
 }

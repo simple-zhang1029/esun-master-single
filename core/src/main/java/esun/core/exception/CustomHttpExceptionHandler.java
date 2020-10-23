@@ -2,9 +2,10 @@ package esun.core.exception;
 
 
 import esun.core.utils.ResultUtil;
+import org.apache.xmlbeans.impl.piccolo.util.DuplicateKeyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DuplicateKeyException;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

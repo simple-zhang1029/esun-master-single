@@ -106,4 +106,11 @@ public class CommonServiceIpml implements CommonService {
         PageHelper.clearPage();
         return pageInfo;
     }
+
+    @Override
+    public List<Map<String, Object>> test() {
+        String sql="select * from user_mstr where user_name like '%1234%';";
+        List<Map<String,Object>> list=baseMapper.test();
+        return list;
+    }
 }

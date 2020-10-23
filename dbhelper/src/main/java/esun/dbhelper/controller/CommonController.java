@@ -6,6 +6,7 @@ import esun.dbhelper.dataSources.DataSource;
 import esun.dbhelper.dataSources.DataSourceType;
 import esun.dbhelper.service.CommonService;
 import esun.dbhelper.utils.ResultUtil;
+//import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -138,7 +139,8 @@ public class CommonController {
 
 
     @PostMapping("test")
-    public void  test(@RequestParam("sql")String sql){
-        commonService.test(sql);
+    public ResultUtil  test(@RequestParam(value = "sql",required = false,defaultValue = "")String sql,
+                      @RequestParam(value = "product",required = false,defaultValue = "default")String product){
+       return  ResultUtil.ok().put("result",commonService.test());
     }
 }
