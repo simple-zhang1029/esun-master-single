@@ -613,6 +613,94 @@ public class ReceivingServiceImpl implements ReceivingService {
 
 		//添加状态描述
 		ArrayList<HashMap> list= (ArrayList) result.get("result");
+		//输出起始序号
+		int no=(pageIndex-1)*pageSize+1;
+		for (int i = 0; i <list.size() ; i++) {
+			list.get(i).put("no",no+i);
+		}
+		list= (ArrayList<HashMap>) addReceivingStatusName(list);
+		message=MessageUtil.getMessage(Message.RECEIVING_GET_SUCCESS.getCode());
+		logger.info(message);
+		//校验是否超时
+		//获取装卸超时小时数
+		int loadTimeOut=receivingBaseDataService.getLoadTimeOut();
+		//获取等待超时小时数
+		int waitTimeOut=receivingBaseDataService.getWaitTimeOut();
+
+		for (int i = 0; i <list.size() ; i++) {
+			Map<String,Object> listMap= (Map<String, Object>) list.get(i);
+			Optional arrivedTime = Optional.ofNullable(listMap.get("arrivedTime"));
+			Optional leaveTime = Optional.ofNullable(listMap.get("leaveTime"));
+			Optional planReceivingNo = Optional.ofNullable(listMap.get("planReceivingNo"));
+			Optional receivingNo = Optional.ofNullable(listMap.get("receivingNo"));
+			//发货码头
+			Optional receivingWharf= Optional.ofNullable(listMap.get("wharf"));
+			//校验是否等待超时
+			boolean isWaitTimeOut= TimeUtil.checkTimeOut(arrivedTime.orElse("00:00:00").toString(),waitTimeOut);
+			//校验是否装卸超时
+			boolean isLoadTimeOUt=TimeUtil.checkTimeOut(leaveTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
+			boolean isConsistent=planReceivingNo.equals(receivingNo);
+			boolean isWharfEmploy=checkWharfEmploy(receivingWharf.orElse("").toString(),startDate,endDate);
+			list.get(i).put("isWaitTimeOut",isWaitTimeOut);
+			list.get(i).put("isLoadTimeOUt",isLoadTimeOUt);
+			list.get(i).put("isConsistent",isConsistent);
+			list.get(i).put("isWharfEmploy",isWharfEmploy);
+		}
+		int pageCount= (int) result.get("pageCount");
+		//获取总条数
+		int count= (int) result.get("count");
+		return ResultUtil.ok().put("msg",message).put("result",list).put("pageCount",pageCount).put("count",count);
+	}
+
+	@Override
+	public ResultUtil getBoardInfo(String startDate, String endDate, int pageIndex, int pageSize, List<?> criteriaList, List<?> wharfList) {
+		String message;
+		String sql;
+		StringBuilder builder=new StringBuilder();
+		Optional wharf;
+		for (int i = 0; i < wharfList.size() ; i++) {
+			Map<String,Object> listMap= (Map<String, Object>) wharfList.get(i);
+			wharf =Optional.ofNullable(listMap.get("wharf"));
+			builder.append("'"+wharf.orElse("")+"',");
+		}
+		builder.setLength(builder.length()-1);
+		//排序条件字符串
+		StringBuilder criteriaBuilder=new StringBuilder();
+		for (int i = 0; i < criteriaList.size(); i++) {
+			Map<String,Object> listMap= (Map<String, Object>) criteriaList.get(i);
+			Optional sort=Optional.ofNullable(listMap.get("sort"));
+			criteriaBuilder.append(listMap.get("criteria"));
+			if (!"0".equals(sort.orElse("0"))){
+				criteriaBuilder.append(" desc");
+			}
+			criteriaBuilder.append(" ,");
+		}
+		//删除最后一个，
+		criteriaBuilder.setLength(criteriaBuilder.length()-1);
+		//判断排序正序倒序
+		sql = "select id, order_id as \"orderId\", supplier, wharf, car_no as \"carNo\", plan_receiving_no as \"planReceivingNo\", " +
+				"receiving_no as \"receivingNo\", plan_arrived_time as \"planArrivedTime\", arrived_time as \"arrivedTime\", " +
+				"plan_leave_time as \"planLeaveTime\", leave_time as \"leaveTime\", " +
+				"receiving_status as \"receivingStatus\", plan_date \"planDate\"" +
+				" from receiving_goods " +
+				"where plan_date between '" + startDate + "' and '" + endDate + "' " +
+				"and wharf in  ("+builder.toString()+")" +
+				"order by "+criteriaBuilder+" ";
+		//进行查询
+		ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);
+		if(HttpStatus.OK.value()!= (int)result.get("code")){
+			message=MessageUtil.getMessage(Message.RECEIVING_GET_ERROR.getCode());
+			logger.error(message);
+			return ResultUtil.error(message);
+		}
+
+		//添加状态描述
+		ArrayList<HashMap> list= (ArrayList) result.get("result");
+		//输出起始序号
+		int no=(pageIndex-1)*pageSize+1;
+		for (int i = 0; i <list.size() ; i++) {
+			list.get(i).put("no",no+i);
+		}
 		list= (ArrayList<HashMap>) addReceivingStatusName(list);
 		message=MessageUtil.getMessage(Message.RECEIVING_GET_SUCCESS.getCode());
 		logger.info(message);

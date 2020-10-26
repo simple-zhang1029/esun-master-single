@@ -32,5 +32,7 @@ public interface DeliveryService {
 
 	ResultUtil getBoardInfo(String startDate,String endDate,int pageIndex,int pageSize,String criteria,int sort,List<?> wharfList);
 
+	ResultUtil getBoardInfo(String startDate,String endDate,int pageIndex,int pageSize,List<?> criteriaList,List<?> wharfList);
+
 	ResultUtil checkWharf(String wharf,String startDate,String endDate);
 }

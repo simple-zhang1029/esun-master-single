@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author test
@@ -214,16 +216,72 @@ public class DeliveryController {
 	                               @RequestParam(value = "endDate",required = false,defaultValue = "2099-01-01")String endDate,
 	                               @RequestParam(value = "pageIndex",required = false,defaultValue = "1")int pageIndex,
 	                               @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
+	                               @RequestParam(value = "criteriaList",required = false,defaultValue = "[]")String criteriaList,
 	                               @RequestParam(value = "criteria",required = false,defaultValue = "dataType")String criteria,
-	                               @RequestParam(value = "sort",required = false,defaultValue = "")int sort,
+	                               @RequestParam(value = "sort",required = false,defaultValue = "0")int sort,
 	                               @RequestParam(value = "wharfList",required = false,defaultValue = "[{}]")String wharfList){
 		String sortParam;
+		//排序条件json转化列表
+		JSONArray criteriaArray=JSONArray.fromObject(criteriaList);
+		//码头json转化列表
+		JSONArray wharfArray=JSONArray.fromObject(wharfList);
+		//如果有排序列表则以列表条件为优先
+		if(criteriaArray.size()>0){
+			Optional criteriaOptional;
+			for (int i = 0; i < criteriaArray.size() ; i++)
+			{
+				Map<String,Object> listMap= (Map<String, Object>) criteriaArray.get(i);
+				criteriaOptional=Optional.ofNullable(listMap.get("criteria"));
+				switch (criteriaOptional.orElse("").toString()){
+					case "orderId":
+						sortParam="order_id";
+						break;
+					case "customer":
+						sortParam="customer";
+						break;
+					case "wharf":
+						sortParam="wharf";
+						break;
+					case "carNo":
+						sortParam="car_no";
+						break;
+					case "planDeliveryNo":
+						sortParam="plan_delivery_no";
+						break;
+					case "deliveryNo":
+						sortParam="delivery_no";
+						break;
+					case "planArrivedTime":
+						sortParam="plan_arrived_time";
+						break;
+					case "arrivedTime":
+						sortParam="arrived_time";
+						break;
+					case "planLeaveTime":
+						sortParam="plan_leave_time";
+						break;
+					case "leaveTime":
+						sortParam="leave_time";
+						break;
+					case "deliveryStatus":
+						sortParam="delivery_status";
+						break;
+					case "planDate":
+						sortParam="plan_date";
+						break;
+					default:
+						sortParam="id";
+				}
+				listMap.put("criteria",sortParam);
+			}
+			return deliveryService.getBoardInfo(startDate,endDate,pageIndex,pageSize,criteriaArray,wharfArray);
+		}
 		switch (criteria){
 			case "orderId":
 				sortParam="order_id";
 				break;
-			case "supplier":
-				sortParam="supplier";
+			case "customer":
+				sortParam="customer";
 				break;
 			case "wharf":
 				sortParam="wharf";
@@ -231,11 +289,11 @@ public class DeliveryController {
 			case "carNo":
 				sortParam="car_no";
 				break;
-			case "planReceivingNo":
-				sortParam="plan_receiving_no";
+			case "planDeliveryNo":
+				sortParam="plan_delivery_no";
 				break;
-			case "receivingNo":
-				sortParam="receiving_no";
+			case "deliveryNo":
+				sortParam="delivery_no";
 				break;
 			case "planArrivedTime":
 				sortParam="plan_arrived_time";
@@ -249,8 +307,8 @@ public class DeliveryController {
 			case "leaveTime":
 				sortParam="leave_time";
 				break;
-			case "receivingStatus":
-				sortParam="receiving_status";
+			case "deliveryStatus":
+				sortParam="delivery_status";
 				break;
 			case "planDate":
 				sortParam="plan_date";
@@ -258,8 +316,7 @@ public class DeliveryController {
 			default:
 				sortParam="id";
 		}
-		JSONArray jsonArray=JSONArray.fromObject(wharfList);
-		return deliveryService.getBoardInfo(startDate,endDate,pageIndex,pageSize,sortParam,sort,jsonArray);
+		return deliveryService.getBoardInfo(startDate,endDate,pageIndex,pageSize,sortParam,sort,wharfArray);
 	}
 
 }
