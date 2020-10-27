@@ -47,7 +47,7 @@ public class TimeUtil {
 	 */
 	public static boolean checkTimeOut(Date start,Date end,int duration){
 		//间隔时间
-		 long interval=Math.abs(start.getTime()-end.getTime());
+		 long interval=start.getTime()-end.getTime();
 		 if(interval>duration){
 		 	return true;
 		 }
