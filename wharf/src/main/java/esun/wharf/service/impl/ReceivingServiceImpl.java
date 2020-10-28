@@ -44,6 +44,9 @@ public class ReceivingServiceImpl implements ReceivingService {
 	@Value(("${ftp.password}"))
 	String ftpPassword;
 
+	@Value("${ftp.ftpPath}")
+	String ftpPath;
+
 
 	@Autowired
 	ReceivingBaseDataService receivingBaseDataService;
@@ -505,7 +508,7 @@ public class ReceivingServiceImpl implements ReceivingService {
 		titleList.add("计划日期");
 		String file= ExcelUtils.createMapListExcel(list,diskPath,titleList);
 		String ftpFile= RandomStringUtils.randomAlphanumeric(32)+".xls";
-		String ftpPath="/wharf/";
+//		String ftpPath="/wharf/";
 		//FTP上传文件
 		FTPUtils ftpUtils=new FTPUtils();
 		ftpUtils.setHostname(ftpUrl);
@@ -664,7 +667,7 @@ public class ReceivingServiceImpl implements ReceivingService {
 			//发货完成
 			if("2".equals(receivingStatus.orElse("0"))){
 				isConsistent=planReceivingNo.equals(receivingNo);
-				isLoadTimeOUt=TimeUtil.checkTimeOut(leaveTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
+				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
 				isLeaveTimeOut=TimeUtil.checkTimeOut(planLeaveTime.orElse("00:00:00").toString(),leaveTime.orElse("00:00:00").toString(),loadTimeOut);
 			}
 			//添加超时判断
@@ -778,7 +781,7 @@ public class ReceivingServiceImpl implements ReceivingService {
 			//发货完成
 			if("2".equals(receivingStatus.orElse("0"))){
 				isConsistent=planReceivingNo.equals(receivingNo);
-				isLoadTimeOUt=TimeUtil.checkTimeOut(leaveTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
+				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
 				isLeaveTimeOut=TimeUtil.checkTimeOut(planLeaveTime.orElse("00:00:00").toString(),leaveTime.orElse("00:00:00").toString(),loadTimeOut);
 			}
 			//添加超时判断
@@ -814,7 +817,7 @@ public class ReceivingServiceImpl implements ReceivingService {
 			throw new CustomHttpException(message);
 		}
 		ArrayList<HashMap> list= (ArrayList) result.get("result");
-		if(list.size()>0){
+		if(list.size()>1){
 			return true;
 		}
 		return  false;

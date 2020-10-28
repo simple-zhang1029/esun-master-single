@@ -41,11 +41,14 @@ public class DeliveryServiceImpl  implements DeliveryService {
 	@Value("${ftp.port}")
 	int ftpPort;
 
-	@Value(("${ftp.username}"))
+	@Value("${ftp.username}")
 	String ftpUsername;
 
-	@Value(("${ftp.password}"))
+	@Value("${ftp.password}")
 	String ftpPassword;
+
+	@Value("${ftp.ftpPath}")
+	String ftpPath;
 
 	/**
 	 * 获取客户信息
@@ -496,7 +499,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		titleList.add("计划日期");
 		String file= ExcelUtils.createMapListExcel(list,diskPath,titleList);
 		String ftpFile= RandomStringUtils.randomAlphanumeric(32)+".xls";
-		String ftpPath="/wharf/";
+//		String ftpPath="/wharf/";
 		//FTP上传文件
 		FTPUtils ftpUtils=new FTPUtils();
 		ftpUtils.setHostname(ftpUrl);
@@ -654,7 +657,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 			//发货完成
 			if("2".equals(deliveryStatus.orElse("0"))){
 				isConsistent=planDeliveryNo.equals(deliveryNo);
-				isLoadTimeOUt=TimeUtil.checkTimeOut(leaveTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
+				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
 				isLeaveTimeOut=TimeUtil.checkTimeOut(planLeaveTime.orElse("00:00:00").toString(),leaveTime.orElse("00:00:00").toString(),loadTimeOut);
 			}
 			listMap.put("isWaitTimeOut",isWaitTimeOut);
@@ -782,7 +785,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 			//发货完成
 			if("2".equals(deliveryStatus.orElse("0"))){
 				isConsistent=planDeliveryNo.equals(deliveryNo);
-				isLoadTimeOUt=TimeUtil.checkTimeOut(leaveTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
+				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
 				isLeaveTimeOut=TimeUtil.checkTimeOut(planLeaveTime.orElse("00:00:00").toString(),leaveTime.orElse("00:00:00").toString(),loadTimeOut);
 			}
 			//添加超时判断
@@ -869,7 +872,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 			throw new CustomHttpException(message);
 		}
 		ArrayList<HashMap> list= (ArrayList) result.get("result");
-		if(list.size()>0){
+		if(list.size()>1){
 			return true;
 		}
 		return  false;

@@ -27,16 +27,11 @@ public interface ReceivingService {
 
 	ResultUtil deriveReceivingHistory(String startDate,String endDate,List<?> supplierList,String orderId,boolean isDelete);
 
-
-
 	ResultUtil getReceivingStatus();
 
 	ResultUtil getBoardInfo(String startDate,String endDate,int pageIndex,int pageSize,String criteria,int sort,List<?> wharfList);
 
 	ResultUtil getBoardInfo(String startDate,String endDate,int pageIndex,int pageSize,List<?> criteriaList,List<?> wharfList);
 
-
 	ResultUtil checkWharf(String wharf,String startDate,String endDate);
-
-
 }
