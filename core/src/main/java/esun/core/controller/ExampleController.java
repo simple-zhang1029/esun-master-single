@@ -1,19 +1,14 @@
 package esun.core.controller;
 
 
-import com.google.inject.internal.cglib.core.$KeyFactory;
 import com.sun.istack.Nullable;
 import esun.core.annotation.LoginRequire;
-import esun.core.annotation.Router;
 import esun.core.constant.Message;
-import esun.core.exception.ClientException;
-import esun.core.utils.FTPUtils;
 import esun.core.utils.MessageUtil;
 import esun.core.utils.ResultUtil;
 import esun.core.service.ExampleService;
 import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.net.ftp.FTPClient;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
@@ -21,9 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.net.ftp.FtpClient;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;

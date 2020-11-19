@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import esun.gateway.service.TokenService;
 import esun.gateway.utils.ResultUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.HttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 
 
 /**
@@ -62,7 +65,11 @@ public class AuthorizeFilter implements GlobalFilter {
 		}
 		logger.info(name+":token校验成功"+token);
 		//添加Token-Checked请求头
-		serverHttpRequest=exchange.getRequest().mutate().header("Token-Checked","true").build();
+		serverHttpRequest=exchange.getRequest().mutate()
+				.header("Token-Checked","true")
+				.header("name",name)
+				.build();
+
 		return chain.filter(exchange.mutate().request(serverHttpRequest).build());
 	}
 

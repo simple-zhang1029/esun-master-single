@@ -101,16 +101,19 @@ public class DataSourceUtil {
             }
             else {
                 logger.error(tableList.get(i)+"表中没有任何索引");
-                throw new CustomHttpException(tableList.get(i)+"表中没有任何索引");
             }
         }
         //检测where条件是否存在索引
         for (int i = 0; i <conditionList.size() ; i++) {
-            if(!doCheckIndex(listMap,conditionList.get(i))){
+            if(listMap.size()==0){
+                createIndex(conditionList.get(i));
+            }
+            else if(!doCheckIndex(listMap,conditionList.get(i))){
                 logger.error(conditionList.get(i).getColumn().getName()+"没有索引");
-                throw new CustomHttpException(conditionList.get(i).getColumn().getName()+"没有索引");
+                createIndex(conditionList.get(i));
             }
         }
+
     }
 
 
@@ -141,6 +144,36 @@ public class DataSourceUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * 创建缺失索引
+     * @param condition
+     */
+    public  static  void createIndex(TableStat.Condition condition){
+        String table=condition.getColumn().getTable();
+        String name=condition.getColumn().getName();
+        if(crateIndex(table,name)==false){
+            logger.error(table+":"+name+"添加索引失败");
+            throw new CustomHttpException(table+":"+name+"添加索引失败");
+        }
+        logger.info(table+":"+name+"添加索引成功");
+
+    }
+    /**
+     * 创建缺失的索引
+     * @param name
+     * @return
+     */
+    public static boolean crateIndex(String table,String name){
+        String indexName=table+"_"+name+"_index";
+        String sql="create index "+indexName+" on "+table+" ("+name+");";
+        CommonService commonService=SpringContextUtils.getBean(CommonService.class);
+        int i=commonService.put(sql);
+        if(i>=0){
+            return  true;
+        }
+        return  false;
     }
 
 

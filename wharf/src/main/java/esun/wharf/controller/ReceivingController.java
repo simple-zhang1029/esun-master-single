@@ -5,6 +5,8 @@ import esun.wharf.utils.ResultUtil;
 import net.sf.json.JSONArray;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +25,7 @@ public class ReceivingController {
 	@Autowired
 	ReceivingService receivingService;
 
+	private  static Logger logger= LoggerFactory.getLogger(ReceivingController.class);
 
 	/**
 	 * 获取客户信息及订单
@@ -321,6 +324,12 @@ public class ReceivingController {
 				sortParam="id";
 		}
 		return receivingService.getBoardInfo(startDate,endDate,pageIndex,pageSize,sortParam,sort,wharfArray);
+	}
+
+	@PostMapping("receivingLog")
+	public ResultUtil receivingLogger(@RequestParam("log")String log){
+		logger.info(log);
+		return ResultUtil.ok().put("msg","输出日志成功");
 	}
 
 }

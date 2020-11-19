@@ -24,7 +24,7 @@ import java.util.*;
  */
 @Service
 public class DeliveryServiceImpl  implements DeliveryService {
-	private  static Logger logger= LoggerFactory.getLogger(ReceivingServiceImpl.class);
+	private  static Logger logger= LoggerFactory.getLogger(DeliveryServiceImpl.class);
 	@Autowired
 	@Lazy
 	DbHelperService dbHelperService;
@@ -188,6 +188,59 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		int no=(pageIndex-1)*pageSize+1;
 		for (int i = 0; i <list.size() ; i++) {
 			list.get(i).put("no",no+i);
+		}
+		//校验是否超时
+		//获取装卸超时小时数
+		int loadTimeOut=baseDataService.getLoadTimeOut();
+		//获取等待超时小时数
+		int waitTimeOut=baseDataService.getWaitTimeOut();
+		for (int i = 0; i <list.size() ; i++) {
+			Map<String,Object> listMap= (Map<String, Object>) list.get(i);
+			Optional planArrivedTime = Optional.ofNullable(listMap.get("planArrivedTime"));
+			Optional arrivedTime = Optional.ofNullable(listMap.get("arrivedTime"));
+			Optional planLeaveTime = Optional.ofNullable(listMap.get("planLeaveTime"));
+			Optional leaveTime = Optional.ofNullable(listMap.get("leaveTime"));
+			Optional planDeliveryNo = Optional.ofNullable(listMap.get("planDeliveryNo"));
+			Optional deliveryNo = Optional.ofNullable(listMap.get("deliveryNo"));
+			//发货码头
+			Optional deliveryWharf= Optional.ofNullable(listMap.get("wharf"));
+			Optional deliveryStatus=Optional.ofNullable(listMap.get("deliveryStatus"));
+			//校验是否装卸超时
+			boolean isLoadTimeOUt=false;
+			//校验码头是否占用
+			boolean isWharfEmploy=false;
+
+			//校验数量是否一致
+			boolean isConsistent=true;
+			boolean isWaitTimeOut=false;
+			boolean isArrivedTimeOut=false;
+			boolean isLeaveTimeOut=false;
+			//判断状态
+			//等待发货
+			if("0".equals(deliveryStatus.orElse("0"))){
+				isWharfEmploy=checkWharfEmploy(deliveryWharf.orElse("").toString(),startDate,endDate);
+
+			}
+			//正在发货
+			if("1".equals(deliveryStatus.orElse("0"))){
+				isWaitTimeOut=TimeUtil.checkTimeOut(arrivedTime.orElse("00:00:00").toString(),waitTimeOut);
+				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
+				isWharfEmploy=checkWharfEmploy(deliveryWharf.orElse("").toString(),startDate,endDate);
+
+			}
+			//发货完成
+			if("2".equals(deliveryStatus.orElse("0"))){
+				isConsistent=planDeliveryNo.equals(deliveryNo);
+				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
+				isLeaveTimeOut=TimeUtil.checkTimeOut(planLeaveTime.orElse("00:00:00").toString(),leaveTime.orElse("00:00:00").toString(),loadTimeOut);
+			}
+			//添加超时判断
+			listMap.put("isWaitTimeOut",isWaitTimeOut);
+			listMap.put("isLoadTimeOUt",isLoadTimeOUt);
+			listMap.put("isConsistent",isConsistent);
+			listMap.put("isWharfEmploy",isWharfEmploy);
+			listMap.put("isArrivedTimeOut",isArrivedTimeOut);
+			listMap.put("isLeaveTimeOut",isLeaveTimeOut);
 		}
 		list= (ArrayList<HashMap>) addDeliveryStatusName(list);
 		message=MessageUtil.getMessage(Message.DELIVERY_GET_SUCCESS.getCode());
@@ -409,10 +462,10 @@ public class DeliveryServiceImpl  implements DeliveryService {
 			Optional arrivedTime=Optional.ofNullable(info.get("实际到达时间"));
 			Optional carNo=Optional.ofNullable(info.get("车牌号"));
 			Optional planLeaveTime=Optional.ofNullable(info.get("计划离开时间"));
-			Optional leaveTime=Optional.ofNullable(info.get("离开时间"));
+			Optional leaveTime=Optional.ofNullable(info.get("实际离开时间"));
 			Optional deliveryStatus=Optional.ofNullable(info.get("发货状态"));
 			Optional planDate=Optional.ofNullable(info.get("计划日期"));
-			//根据状态名获取状态码
+			//根据状态名获取状态码test
 			for (int j = 0; j < statusList.size(); j++) {
 				Map<String,Object> status= (Map<String, Object>) statusList.get(j);
 				Optional statusNo=Optional.ofNullable(status.get("value1"));
@@ -484,7 +537,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 			list.set(i, listMap);
 		}
 		List<String> titleList=new ArrayList<>();
-		titleList.add("ID");
+//		titleList.add("ID");
 		titleList.add("订单号");
 		titleList.add("客户");
 		titleList.add("码头");
@@ -642,13 +695,13 @@ public class DeliveryServiceImpl  implements DeliveryService {
 				//将到达时间，离开时间，发货数量设置空
 				listMap.put("arrivedTime","");
 				listMap.put("leaveTime","");
-				listMap.put("deliveryNo","");
+				listMap.put("deliveryNo","0".equals(deliveryNo.orElse("0").toString())?"":deliveryNo.orElse("0"));
 				isWharfEmploy=checkWharfEmploy(deliveryWharf.orElse("").toString(),startDate,endDate);
 			}
 			//正在发货
 			if("1".equals(deliveryStatus.orElse("0"))){
 				listMap.put("leaveTime","");
-				listMap.put("deliveryNo","");
+				listMap.put("deliveryNo","0".equals(deliveryNo.orElse("0").toString())?"":deliveryNo.orElse("0"));
 				isWaitTimeOut=TimeUtil.checkTimeOut(arrivedTime.orElse("00:00:00").toString(),waitTimeOut);
 				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
 				isWharfEmploy=checkWharfEmploy(deliveryWharf.orElse("").toString(),startDate,endDate);
@@ -656,10 +709,10 @@ public class DeliveryServiceImpl  implements DeliveryService {
 			}
 			//发货完成
 			if("2".equals(deliveryStatus.orElse("0"))){
-				isConsistent=planDeliveryNo.equals(deliveryNo);
 				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
 				isLeaveTimeOut=TimeUtil.checkTimeOut(planLeaveTime.orElse("00:00:00").toString(),leaveTime.orElse("00:00:00").toString(),loadTimeOut);
 			}
+			isConsistent=planDeliveryNo.equals(deliveryNo);
 			listMap.put("isWaitTimeOut",isWaitTimeOut);
 			listMap.put("isLoadTimeOUt",isLoadTimeOUt);
 			listMap.put("isConsistent",isConsistent);
@@ -769,14 +822,14 @@ public class DeliveryServiceImpl  implements DeliveryService {
 				//将到达时间，离开时间，发货数量设置空
 				listMap.put("arrivedTime","");
 				listMap.put("leaveTime","");
-				listMap.put("deliveryNo","");
+				listMap.put("deliveryNo","0".equals(deliveryNo.orElse("0").toString())?"":deliveryNo.orElse("0"));
 				isWharfEmploy=checkWharfEmploy(deliveryWharf.orElse("").toString(),startDate,endDate);
 
 			}
 			//正在发货
 			if("1".equals(deliveryStatus.orElse("0"))){
 				listMap.put("leaveTime","");
-				listMap.put("deliveryNo","");
+				listMap.put("deliveryNo","0".equals(deliveryNo.orElse("0").toString())?"":deliveryNo.orElse("0"));
 				isWaitTimeOut=TimeUtil.checkTimeOut(arrivedTime.orElse("00:00:00").toString(),waitTimeOut);
 				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
 				isWharfEmploy=checkWharfEmploy(deliveryWharf.orElse("").toString(),startDate,endDate);
@@ -784,10 +837,10 @@ public class DeliveryServiceImpl  implements DeliveryService {
 			}
 			//发货完成
 			if("2".equals(deliveryStatus.orElse("0"))){
-				isConsistent=planDeliveryNo.equals(deliveryNo);
 				isArrivedTimeOut=TimeUtil.checkTimeOut(planArrivedTime.orElse("00:00:00").toString(),arrivedTime.orElse("00:00:00").toString(),loadTimeOut);
 				isLeaveTimeOut=TimeUtil.checkTimeOut(planLeaveTime.orElse("00:00:00").toString(),leaveTime.orElse("00:00:00").toString(),loadTimeOut);
 			}
+			isConsistent=planDeliveryNo.equals(deliveryNo);
 			//添加超时判断
 			listMap.put("isWaitTimeOut",isWaitTimeOut);
 			listMap.put("isLoadTimeOUt",isLoadTimeOUt);

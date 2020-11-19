@@ -1,15 +1,20 @@
 package esun.wharf.controller;
 
 import esun.wharf.service.DeliveryService;
+import esun.wharf.service.impl.ReceivingServiceImpl;
 import esun.wharf.utils.ResultUtil;
 import net.sf.json.JSONArray;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,6 +27,8 @@ public class DeliveryController {
 
 	@Autowired
 	DeliveryService deliveryService;
+	private  static Logger logger= LoggerFactory.getLogger(DeliveryController.class);
+
 
 	/**
 	 * 获取客户信息及订单
@@ -197,6 +204,7 @@ public class DeliveryController {
 	@GetMapping("deliveryStatus")
 	public ResultUtil getDeliveryStatus(){
 		return deliveryService.getDeliveryStatus();
+
 	}
 
 
@@ -220,6 +228,7 @@ public class DeliveryController {
 	                               @RequestParam(value = "criteria",required = false,defaultValue = "dataType")String criteria,
 	                               @RequestParam(value = "sort",required = false,defaultValue = "0")int sort,
 	                               @RequestParam(value = "wharfList",required = false,defaultValue = "[{}]")String wharfList){
+
 		String sortParam;
 		//排序条件json转化列表
 		JSONArray criteriaArray=JSONArray.fromObject(criteriaList);
@@ -317,6 +326,12 @@ public class DeliveryController {
 				sortParam="id";
 		}
 		return deliveryService.getBoardInfo(startDate,endDate,pageIndex,pageSize,sortParam,sort,wharfArray);
+	}
+
+	@PostMapping("deliveryLog")
+	public ResultUtil deliveryLogger(@RequestParam("log")String log){
+		logger.info(log);
+		return ResultUtil.ok().put("msg","输出日志成功");
 	}
 
 }

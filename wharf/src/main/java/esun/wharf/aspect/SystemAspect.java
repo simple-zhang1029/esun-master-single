@@ -2,6 +2,7 @@ package esun.wharf.aspect;
 
 import esun.wharf.exception.CustomHttpException;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -27,12 +28,13 @@ import java.util.Optional;
 public class SystemAspect {
 	//日志声明
 	private static Logger logger= LoggerFactory.getLogger(SystemAspect.class);
-
+	MethodSignature signature;
+	Optional name;
 	@Around("execution(* esun.wharf.controller.*.*(..))")
 	public Object TokenCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-		MethodSignature signature=(MethodSignature)proceedingJoinPoint.getSignature();
+		 signature=(MethodSignature)proceedingJoinPoint.getSignature();
 //        MethodSignature signature=(MethodSignature)proceedingJoinPoint.getSignature();
 		Method method=signature.getMethod();
 //        检测是否有name参数
@@ -41,18 +43,33 @@ public class SystemAspect {
 		Map<String,Object> parameterMap=new HashMap<>();
 		Object[] args=proceedingJoinPoint.getArgs();
 		String[] paraNames = signature.getParameterNames();
-		for (int i = 0; i <paraNames.length ; i++) {
-			parameterMap.put(paraNames[i],args[i]);
-			logger.info(method.getName()+":"+paraNames[i]+":"+args[i].toString());
-		}
-
+		//检查是否经过token校验
 		Optional tokenCheck=Optional.ofNullable(request.getHeader("Token-Checked"));
+		name=Optional.ofNullable(request.getHeader("name"));
 		if(!"true".equals(tokenCheck.orElse(""))){
-			String message="请求错误错误,未经过token校验";
+			String message="请求错误,未经过token校验";
 			logger.error(message);
 			throw new CustomHttpException(message, HttpStatus.UNAUTHORIZED.value());
 		}
+		for (int i = 0; i <paraNames.length ; i++) {
+			parameterMap.put(paraNames[i],args[i]);
+			logger.info(name.orElse("system").toString()+":"+method.getName()+"-params:"+paraNames[i]+":"+args[i].toString());
+		}
+
+
 		Object proceed = proceedingJoinPoint.proceed();
 		return proceed;
+	}
+
+	/**
+	 * 日志输出返回值
+	 * @param result
+	 * @author john.xiao
+	 * @date 2020-10-30 09：37
+	 */
+	@AfterReturning(returning = "result",pointcut ="execution(* esun.wharf.controller.*.*(..))" )
+	public void getReturnMessage(Object result){
+		Method method=signature.getMethod();
+		logger.info(name.orElse("system")+":"+method.getName()+"-result:"+result);
 	}
 }

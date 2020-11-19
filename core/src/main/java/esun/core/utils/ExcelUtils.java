@@ -13,8 +13,6 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
-
 
 //导出Excel工具类
 public class ExcelUtils {
@@ -134,6 +132,67 @@ public class ExcelUtils {
                 sheet.addCell(label);
                 titleList.add(key);
                 i++;
+            }
+            //写入数据
+            for ( j = 0; j <list.size() ; j++) {
+                for(i=0; i<titleList.size(); i++){
+                    String value=list.get(j).get(titleList.get(i)).toString();
+                    Label label=new Label(i,j+1,value);
+                    sheet.addCell(label);
+                }
+            }
+            book.write();
+            result = file.getPath();
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            result = "SystemException";
+            e.printStackTrace();
+        }
+        finally{
+            fileName = null;
+            name = null;
+            file = null;
+            if(book!=null){
+                try {
+                    book.close();
+                } catch (WriteException e) {
+                    // TODO Auto-generated catch block
+                    result = "WriteException";
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    result = "IOException";
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        return result;
+    }
+
+    public static  String createMapListExcel(List<Map<String,Object>> list,String path,List<?> titleList){
+        String result = "";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        String fileName = formatter.format(new Date());
+        String name = fileName.concat(".xls");
+        if(list.size()==0||list==null){
+            result = "没有对象信息";
+            return result;
+        }
+        WritableWorkbook book = null;
+        File file = null;
+        try {
+            file = new File(path.concat(File.separator).concat(name));
+            book = Workbook.createWorkbook(file);  //创建xls文件
+            WritableSheet sheet  =  book.createSheet(name,0);
+            //获取Map Key 为表头
+            int i=0;//行变量
+            int j=0;//列变量
+            for (i = 0; i <titleList.size() ; i++) {
+                Label label=new Label(i,j, titleList.get(i).toString());
+                sheet.addCell(label);
             }
             //写入数据
             for ( j = 0; j <list.size() ; j++) {
