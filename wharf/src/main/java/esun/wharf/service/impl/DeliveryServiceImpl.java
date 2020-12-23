@@ -93,7 +93,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		int i=0;
 		do {
 			Map<String,Object> listMap = (Map<String, Object>) list.get(i);
-			Optional customerName=Optional.ofNullable(listMap.get("customerName"));
+			Optional<Object> customerName=Optional.ofNullable(listMap.get("customerName"));
 			String customerSql= "select id,data_type as \"dataType\",data_name as \"dataName\",value_1 as \"customer\" " +
 					"from base_data where data_type =1 and value_1 = '"+customerName.orElse("")+"';";
 			ResultUtil customerResult=dbHelperService.select(customerSql,"postgres_test");
@@ -116,7 +116,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 					logger.error(message);
 					return ResultUtil.error(message);
 				}
-				orderList= (ArrayList) orderResult.get("result");
+				orderList= (ArrayList<HashMap>) orderResult.get("result");
 //				customerList.get(j).put("order",orderList);
 			}
 			message= "获取客户信息成功";
@@ -142,7 +142,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		String message;
 		String sql;
 		StringBuilder builder=new StringBuilder();
-		Optional wharf;
+		Optional<Object> wharf;
 		if (wharfList.size()>0){
 			builder.append(" in ( ");
 			for (int i = 0; i < wharfList.size() ; i++) {
@@ -196,15 +196,15 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		int waitTimeOut=baseDataService.getWaitTimeOut();
 		for (int i = 0; i <list.size() ; i++) {
 			Map<String,Object> listMap= (Map<String, Object>) list.get(i);
-			Optional planArrivedTime = Optional.ofNullable(listMap.get("planArrivedTime"));
-			Optional arrivedTime = Optional.ofNullable(listMap.get("arrivedTime"));
-			Optional planLeaveTime = Optional.ofNullable(listMap.get("planLeaveTime"));
-			Optional leaveTime = Optional.ofNullable(listMap.get("leaveTime"));
-			Optional planDeliveryNo = Optional.ofNullable(listMap.get("planDeliveryNo"));
-			Optional deliveryNo = Optional.ofNullable(listMap.get("deliveryNo"));
+			Optional<Object> planArrivedTime = Optional.ofNullable(listMap.get("planArrivedTime"));
+			Optional<Object> arrivedTime = Optional.ofNullable(listMap.get("arrivedTime"));
+			Optional<Object> planLeaveTime = Optional.ofNullable(listMap.get("planLeaveTime"));
+			Optional<Object> leaveTime = Optional.ofNullable(listMap.get("leaveTime"));
+			Optional<Object> planDeliveryNo = Optional.ofNullable(listMap.get("planDeliveryNo"));
+			Optional<Object> deliveryNo = Optional.ofNullable(listMap.get("deliveryNo"));
 			//发货码头
-			Optional deliveryWharf= Optional.ofNullable(listMap.get("wharf"));
-			Optional deliveryStatus=Optional.ofNullable(listMap.get("deliveryStatus"));
+			Optional<Object> deliveryWharf= Optional.ofNullable(listMap.get("wharf"));
+			Optional<Object> deliveryStatus=Optional.ofNullable(listMap.get("deliveryStatus"));
 			//校验是否装卸超时
 			boolean isLoadTimeOUt=false;
 			//校验码头是否占用
@@ -258,18 +258,18 @@ public class DeliveryServiceImpl  implements DeliveryService {
 	 */
 	@Override
 	public ResultUtil addDeliveryGoods(List<?> list) {
-		Optional orderId;
-		Optional customer;
-		Optional wharf;
-		Optional carNo;
-		Optional planDeliveryNo;
-		Optional deliveryNo;
-		Optional planArrivedTime;
-		Optional arrivedTime;
-		Optional planLeaveTime;
-		Optional leaveTime;
-		Optional deliveryStatus;
-		Optional planDate;
+		Optional<Object> orderId;
+		Optional<Object> customer;
+		Optional<Object> wharf;
+		Optional<Object> carNo;
+		Optional<Object> planDeliveryNo;
+		Optional<Object> deliveryNo;
+		Optional<Object> planArrivedTime;
+		Optional<Object> arrivedTime;
+		Optional<Object> planLeaveTime;
+		Optional<Object> leaveTime;
+		Optional<Object> deliveryStatus;
+		Optional<Object> planDate;
 		String message;
 		StringBuilder stringBuilder=new StringBuilder();
 		for (int i = 0; i < list.size(); i++) {
@@ -375,18 +375,18 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		String message;
 		//使用Optional类来防止NPE错误
 		Optional id;
-		Optional orderId;
-		Optional customer;
-		Optional wharf;
-		Optional carNo;
-		Optional planDeliveryNo;
-		Optional deliveryNo;
-		Optional planArrivedTime;
-		Optional arrivedTime;
-		Optional planLeaveTime;
-		Optional leaveTime;
-		Optional deliveryStatus;
-		Optional planDate;
+		Optional<Object> orderId;
+		Optional<Object> customer;
+		Optional<Object> wharf;
+		Optional<Object> carNo;
+		Optional<Object> planDeliveryNo;
+		Optional<Object> deliveryNo;
+		Optional<Object> planArrivedTime;
+		Optional<Object> arrivedTime;
+		Optional<Object> planLeaveTime;
+		Optional<Object> leaveTime;
+		Optional<Object> deliveryStatus;
+		Optional<Object> planDate;
 		for (int i = 0; i <list.size() ; i++) {
 			Map<String,Object> listMap = (Map<String, Object>) list.get(i);
 			id = Optional.ofNullable(listMap.get("id"));
@@ -440,7 +440,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		//获取ExceL文档第一个表格
 		Sheet sheet=workbook.getSheetAt(0);
 		//获取表格标题列表
-		List titleList= PoiUtils.getTitleList(PoiUtils.getRow(sheet,0));
+		List<String> titleList= PoiUtils.getTitleList(PoiUtils.getRow(sheet,0));
 		//请求结果列表
 		List<Map<String,Object>> resultList=new ArrayList<>();
 		Map<String,Object> info;
@@ -453,23 +453,23 @@ public class DeliveryServiceImpl  implements DeliveryService {
 			Map<String,Object> resultMap=new HashMap<>();
 			//获取相应行的数据，转换为list
 			info=PoiUtils.getRowData(PoiUtils.getRow(sheet,i),titleList);
-			Optional orderId=Optional.ofNullable(info.get("订单号"));
-			Optional customer=Optional.ofNullable(info.get("客户"));
-			Optional wharf=Optional.ofNullable(info.get("码头"));
-			Optional planDeliveryNo=Optional.ofNullable(info.get("计划发货数量"));
-			Optional deliveryNo=Optional.ofNullable(info.get("实际发货数量"));
-			Optional planArrivedTime=Optional.ofNullable(info.get("计划到达时间"));
-			Optional arrivedTime=Optional.ofNullable(info.get("实际到达时间"));
-			Optional carNo=Optional.ofNullable(info.get("车牌号"));
-			Optional planLeaveTime=Optional.ofNullable(info.get("计划离开时间"));
-			Optional leaveTime=Optional.ofNullable(info.get("实际离开时间"));
-			Optional deliveryStatus=Optional.ofNullable(info.get("发货状态"));
-			Optional planDate=Optional.ofNullable(info.get("计划日期"));
+			Optional<Object> orderId=Optional.ofNullable(info.get("订单号"));
+			Optional<Object> customer=Optional.ofNullable(info.get("客户"));
+			Optional<Object> wharf=Optional.ofNullable(info.get("码头"));
+			Optional<Object> planDeliveryNo=Optional.ofNullable(info.get("计划发货数量"));
+			Optional<Object> deliveryNo=Optional.ofNullable(info.get("实际发货数量"));
+			Optional<Object> planArrivedTime=Optional.ofNullable(info.get("计划到达时间"));
+			Optional<Object> arrivedTime=Optional.ofNullable(info.get("实际到达时间"));
+			Optional<Object> carNo=Optional.ofNullable(info.get("车牌号"));
+			Optional<Object> planLeaveTime=Optional.ofNullable(info.get("计划离开时间"));
+			Optional<Object> leaveTime=Optional.ofNullable(info.get("实际离开时间"));
+			Optional<Object> deliveryStatus=Optional.ofNullable(info.get("发货状态"));
+			Optional<Object> planDate=Optional.ofNullable(info.get("计划日期"));
 			//根据状态名获取状态码test
 			for (int j = 0; j < statusList.size(); j++) {
 				Map<String,Object> status= (Map<String, Object>) statusList.get(j);
-				Optional statusNo=Optional.ofNullable(status.get("value1"));
-				Optional statusName=Optional.ofNullable(status.get("value2"));
+				Optional<Object> statusNo=Optional.ofNullable(status.get("value1"));
+				Optional<Object> statusName=Optional.ofNullable(status.get("value2"));
 				if(statusName.equals(deliveryStatus)){
 					resultMap.put("deliveryStatus",statusNo.orElse("0"));
 				}
@@ -506,7 +506,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		StringBuilder customerBuilder=new StringBuilder();
 		for (int i = 0; i < customerList.size() ; i++) {
 			Map<String,Object> listMap= (Map<String, Object>) customerList.get(i);
-			Optional customer = Optional.ofNullable(listMap.get("customer"));
+			Optional<Object> customer = Optional.ofNullable(listMap.get("customer"));
 			customerBuilder.append("'"+customer.orElse("")+"',");
 		}
 		customerBuilder.setLength(customerBuilder.length()-1);
@@ -621,7 +621,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		String message;
 		String sql;
 		StringBuilder builder=new StringBuilder();
-		Optional wharf;
+		Optional<Object> wharf;
 		for (int i = 0; i < wharfList.size() ; i++) {
 			Map<String,Object> listMap= (Map<String, Object>) wharfList.get(i);
 			wharf =Optional.ofNullable(listMap.get("wharf"));
@@ -671,15 +671,15 @@ public class DeliveryServiceImpl  implements DeliveryService {
 
 		for (int i = 0; i <list.size() ; i++) {
 			Map<String,Object> listMap= (Map<String, Object>) list.get(i);
-			Optional planArrivedTime = Optional.ofNullable(listMap.get("planArrivedTime"));
-			Optional arrivedTime = Optional.ofNullable(listMap.get("arrivedTime"));
-			Optional planLeaveTime = Optional.ofNullable(listMap.get("planLeaveTime"));
-			Optional leaveTime = Optional.ofNullable(listMap.get("leaveTime"));
-			Optional planDeliveryNo = Optional.ofNullable(listMap.get("planDeliveryNo"));
+			Optional<Object> planArrivedTime = Optional.ofNullable(listMap.get("planArrivedTime"));
+			Optional<Object> arrivedTime = Optional.ofNullable(listMap.get("arrivedTime"));
+			Optional<Object> planLeaveTime = Optional.ofNullable(listMap.get("planLeaveTime"));
+			Optional<Object> leaveTime = Optional.ofNullable(listMap.get("leaveTime"));
+			Optional<Object> planDeliveryNo = Optional.ofNullable(listMap.get("planDeliveryNo"));
 			Optional deliveryNo = Optional.ofNullable(listMap.get("deliveryNo"));
 			//发货码头
-			Optional deliveryWharf= Optional.ofNullable(listMap.get("wharf"));
-			Optional deliveryStatus=Optional.ofNullable(listMap.get("deliveryStatus"));
+			Optional<Object> deliveryWharf= Optional.ofNullable(listMap.get("wharf"));
+			Optional<Object> deliveryStatus=Optional.ofNullable(listMap.get("deliveryStatus"));
 			//校验是否装卸超时
 			boolean isLoadTimeOUt=false;
 			//校验码头是否占用
@@ -745,7 +745,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		String sql;
 		//码头字符串
 		StringBuilder builder=new StringBuilder();
-		Optional wharf;
+		Optional<Object> wharf;
 		//循环遍历写入码头
 		for (int i = 0; i < wharfList.size() ; i++) {
 			Map<String,Object> listMap= (Map<String, Object>) wharfList.get(i);
@@ -758,7 +758,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		StringBuilder criteriaBuilder=new StringBuilder();
 		for (int i = 0; i < criteriaList.size(); i++) {
 			Map<String,Object> listMap= (Map<String, Object>) criteriaList.get(i);
-			Optional sort=Optional.ofNullable(listMap.get("sort"));
+			Optional<Object> sort=Optional.ofNullable(listMap.get("sort"));
 			criteriaBuilder.append(listMap.get("criteria"));
 			if (!"0".equals(sort.orElse("0"))){
 				criteriaBuilder.append(" desc");
@@ -767,7 +767,6 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		}
 		//删除最后一个，
 		criteriaBuilder.setLength(criteriaBuilder.length()-1);
-		//判断排序正序倒序
 		sql = "select id, order_id as \"orderId\", customer, wharf, car_no as \"carNo\", plan_delivery_no as \"planDeliveryNo\", " +
 				"delivery_no as \"deliveryNo\", plan_arrived_time as \"planArrivedTime\", arrived_time as \"arrivedTime\", " +
 				"plan_leave_time as \"planLeaveTime\", leave_time as \"leaveTime\", " +
@@ -797,15 +796,15 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		int waitTimeOut=baseDataService.getWaitTimeOut();
 		for (int i = 0; i <list.size() ; i++) {
 			Map<String,Object> listMap= (Map<String, Object>) list.get(i);
-			Optional planArrivedTime = Optional.ofNullable(listMap.get("planArrivedTime"));
-			Optional arrivedTime = Optional.ofNullable(listMap.get("arrivedTime"));
-			Optional planLeaveTime = Optional.ofNullable(listMap.get("planLeaveTime"));
-			Optional leaveTime = Optional.ofNullable(listMap.get("leaveTime"));
-			Optional planDeliveryNo = Optional.ofNullable(listMap.get("planDeliveryNo"));
+			Optional<Object> planArrivedTime = Optional.ofNullable(listMap.get("planArrivedTime"));
+			Optional<Object> arrivedTime = Optional.ofNullable(listMap.get("arrivedTime"));
+			Optional<Object> planLeaveTime = Optional.ofNullable(listMap.get("planLeaveTime"));
+			Optional<Object> leaveTime = Optional.ofNullable(listMap.get("leaveTime"));
+			Optional<Object> planDeliveryNo = Optional.ofNullable(listMap.get("planDeliveryNo"));
 			Optional deliveryNo = Optional.ofNullable(listMap.get("deliveryNo"));
 			//发货码头
-			Optional deliveryWharf= Optional.ofNullable(listMap.get("wharf"));
-			Optional deliveryStatus=Optional.ofNullable(listMap.get("deliveryStatus"));
+			Optional<Object> deliveryWharf= Optional.ofNullable(listMap.get("wharf"));
+			Optional<Object> deliveryStatus=Optional.ofNullable(listMap.get("deliveryStatus"));
 			//校验是否装卸超时
 			boolean isLoadTimeOUt=false;
 			//校验码头是否占用
@@ -870,7 +869,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 		String statusName="";
 		for (int i = 0; i < list.size() ; i++) {
 			Map<String,Object> listMap= (Map<String, Object>) list.get(i);
-			Optional deliveryStatus=Optional.ofNullable(listMap.get("deliveryStatus"));
+			Optional<Object> deliveryStatus=Optional.ofNullable(listMap.get("deliveryStatus"));
 			if(!deliveryStatus.isPresent())
 			{
 				deliveryStatus=Optional.ofNullable(listMap.get("发货状态"));
@@ -878,7 +877,7 @@ public class DeliveryServiceImpl  implements DeliveryService {
 			//获取发货状态描述
 			for (int j = 0; j < statusList.size() ; j++) {
 				Map<String,Object> statusMap= (Map<String, Object>) statusList.get(j);
-				Optional statusNo=Optional.ofNullable(statusMap.get("statusNo"));
+				Optional<Object> statusNo=Optional.ofNullable(statusMap.get("statusNo"));
 				if(deliveryStatus.get().toString().equals(statusNo.get().toString())){
 					statusName= statusMap.get("statusName").toString();
 					break;

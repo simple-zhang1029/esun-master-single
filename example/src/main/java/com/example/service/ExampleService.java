@@ -1,6 +1,6 @@
-package esun.core.service;
+package com.example.service;
 
-import esun.core.utils.ResultUtil;
+import com.example.utils.ResultUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.List;
@@ -8,9 +8,11 @@ import java.util.List;
 /**
  * @author test
  */
-public interface DeliveryService {
+public interface ExampleService {
 
-	ResultUtil getDeliveryGoods(String startDate, String endDate, int pageIndex, int pageSize, String criteria, int sort, String customer, String orderId, List<?> wharf);
+	ResultUtil login(String username, String password);
+
+	ResultUtil getDeliveryGoods(String startDate, String endDate, int pageIndex, int pageSize, String customer, String orderId, List<?> criteriaList,List<?> wharfList);
 
 	ResultUtil addDeliveryGoods(List<?> list);
 
@@ -21,5 +23,7 @@ public interface DeliveryService {
 	ResultUtil exportDeliveryGoods(Workbook workbook);
 
 	ResultUtil deriveDeliveryHistory(String startDate, String endDate, List<?> customerList, String orderId, boolean isDelete);
+
+
 
 }

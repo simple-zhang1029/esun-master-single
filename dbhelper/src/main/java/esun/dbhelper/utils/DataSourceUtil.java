@@ -2,6 +2,7 @@ package esun.dbhelper.utils;
 
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 import com.alibaba.druid.sql.visitor.SchemaStatVisitor;
 import com.alibaba.druid.stat.TableStat;
 import esun.dbhelper.dataSources.DataSourceNames;
@@ -56,13 +57,13 @@ public class DataSourceUtil {
         //根据数据源选择解析数据库类型
         switch (dataSource){
             case "SQLServer":
-                dbType="JdbcConstants.SQLServer";
+                dbType="sqlserver";
                 break;
             case "mysql" :
-                dbType="JdbcConstants.MYSQL";
+                dbType="mysql";
                 break;
             default:
-                dbType="JdbcConstants.POSTGRES";
+                dbType="postgresql";
         }
         //解析SQL
         sql= SQLUtils.format(sql,dbType);

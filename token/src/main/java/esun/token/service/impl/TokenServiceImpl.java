@@ -28,7 +28,7 @@ public class TokenServiceImpl implements TokenService {
      */
     @Override
     public ResultUtil updateToken(String user) {
-        String token=TokenUtil.createToken(user);
+        String token=TokenUtil.createToken(user,60*60*24*30);
         String sql="update "+tokenTable+" set user_token='"+token+"' where user_name='"+user+"'";
         String product="postgres_test";
         ResultUtil result=dbHelperService.update(sql,product);

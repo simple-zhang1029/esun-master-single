@@ -41,7 +41,6 @@ public class ExampleController {
     //使用Restful命名风格的标签，只允许指定类型的请求调用接口
     @PostMapping("login")
     //使用Router标签指定用户访问权限,拥有该权限才可请求此接口,否者返回错误,router权限在存储在数据库中
-//    @Router(name = "user:login")
     //所有接口的返回类型固定为ResultUtil封装类
     //请求参数使用@RequestParam标签获取。
     public ResultUtil login(@RequestParam("name")String name,

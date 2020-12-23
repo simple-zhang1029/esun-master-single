@@ -1,5 +1,6 @@
 package esun.menu.service.impl;
 
+import com.google.inject.internal.cglib.core.$ObjectSwitchCallback;
 import esun.menu.constant.Message;
 import esun.menu.exception.CustomHttpException;
 import esun.menu.service.DbHelperService;
@@ -73,12 +74,36 @@ public class MenuServiceImpl implements MenuService {
 			logger.error(message);
 			return ResultUtil.error(message);
 		}
-		ArrayList<HashMap> list= (ArrayList) result.get("result");
+		List<HashMap<String,Object>> list= (List) result.get("result");
+		list=treeMenu(list);
 		message= MessageUtil.getMessage(Message.MENU_GET_SUCCESS.getCode());
 		logger.info(message);
 		return ResultUtil.ok().put("result",list);
 	}
 
+	/**
+	 * 将菜单处理为树型结构
+	 * @param list 菜单列表
+	 * @return 菜单列表
+	 */
+	private List<HashMap<String,Object>> treeMenu(List<HashMap<String,Object>> list){
+		list=doTreeMenu("X",list);
+		return  list;
+	}
+	private List doTreeMenu(String menuNo,List<HashMap<String, Object>> list){
+		List<HashMap<String,Object>> resultList=new ArrayList<>(10);
+		for (int i=0;i<list.size();i++) {
+			HashMap<String, Object> stringObjectHashMap=list.get(i);
+			String mapMenuNo = stringObjectHashMap.get("menuNo").toString();
+			String mapMenuSelect = stringObjectHashMap.get("menuSelect").toString();
+			String childNo = menuNo.equals("X") ? mapMenuSelect : mapMenuNo + "." + mapMenuSelect;
+			if(menuNo.equals(mapMenuNo)){
+				stringObjectHashMap.put("children",doTreeMenu(childNo,list));
+				resultList.add(stringObjectHashMap);
+			}
+		}
+		return  resultList;
+	}
 	/**
 	 * 添加菜单
 	 * @param roleName 角色名
@@ -515,18 +540,15 @@ public class MenuServiceImpl implements MenuService {
 			throw new CustomHttpException(message);
 		}
 		ArrayList<HashMap> list= (ArrayList) result.get("result");
-		if(list.size()>0){
-			return true;
-		}
-		return  false;
+		return list.size() > 0;
 	}
 
 	/**
 	 * 检查角色是否存在
-	 * @param roleName
+	 * @param roleName 角色名
 	 * @author john.xiao
 	 * @date 2020-10-13 15:47
-	 * @return
+	 * @return 是否存在
 	 */
 	private  boolean checkRoleExist(String roleName){
 		String message;
@@ -538,10 +560,7 @@ public class MenuServiceImpl implements MenuService {
 			throw new CustomHttpException(message);
 		}
 		ArrayList<HashMap> list= (ArrayList) result.get("result");
-		if(list.size()>0){
-			return true;
-		}
-		return  false;
+		return list.size() > 0;
 
 	}
 
@@ -555,8 +574,7 @@ public class MenuServiceImpl implements MenuService {
 			throw new CustomHttpException(message);
 		}
 		ArrayList<HashMap> list= (ArrayList) result.get("result");
-		String userId=list.get(0).get("user_userid").toString();
-		return userId;
+		return list.get(0).get("user_userid").toString();
 	}
 
 

@@ -1,7 +1,7 @@
-package esun.core.aspect;
+package com.example.aspect;
 
 
-import esun.core.exception.CustomHttpException;
+import com.example.exception.CustomHttpException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
@@ -9,7 +9,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -21,23 +20,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+//import org.springframework.data.redis.core.RedisTemplate;
+
 /**
  * 系统切面类
  */
-    @Aspect
-@Component
+//@Aspect
+//@Component
 public class SystemAspect {
     //日志声明
     private static Logger logger= LoggerFactory.getLogger(SystemAspect.class);
     MethodSignature signature;
     Optional name;
-    @Around("execution(* esun.core.controller.*.*(..))")
+    @Around("execution(* com.example.controller.*.*(..))")
     public Object TokenCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         signature=(MethodSignature)proceedingJoinPoint.getSignature();
-//      MethodSignature signature=(MethodSignature)proceedingJoinPoint.getSignature();
+//        MethodSignature signature=(MethodSignature)proceedingJoinPoint.getSignature();
         Method method=signature.getMethod();
+//        检测是否有name参数
+
         //获取函数参数和值
         Map<String,Object> parameterMap=new HashMap<>();
         Object[] args=proceedingJoinPoint.getArgs();
@@ -64,7 +67,7 @@ public class SystemAspect {
      * @author john.xiao
      * @date 2020-10-30 09：37
      */
-    @AfterReturning(returning = "result",pointcut ="execution(* esun.core.controller.*.*(..))" )
+    @AfterReturning(returning = "result",pointcut ="execution(*  com.example.controller.*.*(..))" )
     public void getReturnMessage(Object result){
         Method method=signature.getMethod();
         logger.info(name.orElse("system")+":"+method.getName()+"-result:"+result);

@@ -23,7 +23,7 @@ import java.util.Optional;
  * @author test
  */
 @Aspect
-@Component
+//@Component
 public class SystemAspect {
 	//日志声明
 	private static Logger logger= LoggerFactory.getLogger(SystemAspect.class);
@@ -36,7 +36,7 @@ public class SystemAspect {
 		signature=(MethodSignature)proceedingJoinPoint.getSignature();
 //        MethodSignature signature=(MethodSignature)proceedingJoinPoint.getSignature();
 		Method method=signature.getMethod();
-//        检测是否有name参数
+		// 检测是否有name参数
 
 		//获取函数参数和值
 		Map<String,Object> parameterMap=new HashMap<>();

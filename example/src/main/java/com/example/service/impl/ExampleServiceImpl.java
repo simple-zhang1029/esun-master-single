@@ -1,10 +1,18 @@
-package esun.core.service.impl;
+package com.example.service.impl;
 
-import esun.core.constant.Message;
-import esun.core.exception.CustomHttpException;
-import esun.core.service.DbHelperService;
-import esun.core.service.DeliveryService;
-import esun.core.utils.*;
+import com.alicp.jetcache.Cache;
+import com.alicp.jetcache.CacheGetResult;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheType;
+import com.alicp.jetcache.anno.Cached;
+import com.alicp.jetcache.anno.CreateCache;
+import com.alicp.jetcache.embedded.LinkedHashMapCacheBuilder;
+import com.example.constant.Message;
+import com.example.exception.CustomHttpException;
+import com.example.service.DbHelperService;
+import com.example.service.ExampleService;
+import com.example.service.TokenService;
+import com.example.utils.*;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -22,14 +30,19 @@ import java.util.*;
  * @author test
  */
 @Service
-public class DeliveryServiceImpl implements DeliveryService {
-	private  static Logger logger= LoggerFactory.getLogger(DeliveryServiceImpl.class);
+public class ExampleServiceImpl implements ExampleService {
+	private  static Logger logger= LoggerFactory.getLogger(ExampleServiceImpl.class);
+
 	@Autowired
 	@Lazy
 	DbHelperService dbHelperService;
-
-
-
+	@Autowired
+	@Lazy
+	TokenService tokenService;
+	//Postgres数据源
+	private final static String DATASOURCE_POSTGRES="postgres";
+	//Mysql数据源
+	private final static String DATASOURCE_MYSQL="mysql";
 	@Value("${file.diskPath}")
 	String diskPath;
 
@@ -48,6 +61,65 @@ public class DeliveryServiceImpl implements DeliveryService {
 	@Value("${ftp.ftpPath}")
 	String ftpPath;
 
+	/**
+	 * 登入
+	 * @param name
+	 * @param password
+	 * @return
+	 */
+	@Override
+	public ResultUtil login(String name, String password) {
+
+		// 获取用户信息
+		//SQL语句
+		//调用Postgres数据库使用lower函数进行大小写忽略
+		//调用Mysql函数则默认忽略大小写
+		String sql = "select user_password as \"password\",user_salt \"salt\" from user_mstr where lower(user_name) = lower('"+name+"') ";
+		//结果信息
+		String message;
+		//调用DbHelper中间件服务，所有对数据库的请求均使用该中间件调用
+		ResultUtil result=dbHelperService.select(sql,DATASOURCE_POSTGRES);
+		if(HttpStatus.OK.value()!= (int)result.get("code")){
+			//使用MessageUtil.getMessage方法从数据库中获取信息，不允许自己写返回信息
+			//返回信息的code在Message枚举类中创建，在数据库中插入相应语言版本的返回信息
+			message= MessageUtil.getMessage(Message.USER_INFO_GET_ERROR.getCode());
+			logger.error(message);
+			return ResultUtil.error(message);
+		}
+		ArrayList list= (ArrayList) result.get("result");
+		HashMap resultmap= (HashMap) list.get(0);
+		if(resultmap.size()==0){
+			message=MessageUtil.getMessage(Message.USER_NOT_EXIST.getCode());
+			logger.error(message);
+			return ResultUtil.error(message);
+		}
+		//使用Optional类防止NPE
+		Optional<Object> salt= Optional.ofNullable(resultmap.get("salt"));
+		Optional<Object> userPassword=Optional.ofNullable(resultmap.get("password"));
+		//MD5工具类
+		Md5Util md5Util=new Md5Util();
+		//
+		if(!md5Util.checkPassword(password,salt.orElse("").toString(),userPassword.orElse("").toString())){
+//			message=MessageUtil.getMessage(Message.PASSWORD_ERROR.getCode());
+			message="test";
+			logger.error(message);
+			return ResultUtil.error(message);
+		}
+
+		//更新token
+		ResultUtil tokenResult=tokenService.updateToken(name);
+		if(HttpStatus.OK.value()!= (int)tokenResult.get("code")){
+			message=MessageUtil.getMessage(Message.TOKEN_UPDATE_ERROR.getCode());
+			logger.error(message);
+			return ResultUtil.error(message);
+		}
+		//获取token
+		Optional token=Optional.ofNullable(tokenResult.get("token"));
+		//ResultUtil.put()传输返回结果
+		message=MessageUtil.getMessage(Message.LOGIN_SUCCESS.getCode());
+		logger.info(message);
+		return ResultUtil.ok(message).put("token",token.orElse(""));
+	}
 
 	/**
 	 * 获取发货信息
@@ -58,9 +130,9 @@ public class DeliveryServiceImpl implements DeliveryService {
 	 * @return
 	 */
 	@Override
-	public ResultUtil getDeliveryGoods(String startDate,String endDate,int pageIndex,int pageSize,String criteria,int sort,String customer,String orderId,List<?> wharfList) {
+	@Cached(name = "deliveryCache",key = "new String[]{#orderId,#customer}",cacheType = CacheType.LOCAL,expire = 300)
+	public ResultUtil getDeliveryGoods(String startDate, String endDate, int pageIndex, int pageSize, String customer, String orderId, List<?> criteriaList,List<?> wharfList) {
 		String message;
-		String sql;
 		StringBuilder builder=new StringBuilder();
 		Optional wharf;
 		if (wharfList.size()>0){
@@ -76,39 +148,40 @@ public class DeliveryServiceImpl implements DeliveryService {
 		else {
 			builder.append(" like '%%' ");
 		}
-		//判断排序正序倒序
-		if(sort == 0) {
-			sql = "select id, order_id as \"orderId\", customer, wharf, car_no as \"carNo\", plan_delivery_no as \"planDeliveryNo\", " +
-					"delivery_no as \"deliveryNo\", plan_arrived_time as \"planArrivedTime\", arrived_time as \"arrivedTime\", " +
-					"plan_leave_time as \"planLeaveTime\", leave_time as \"leaveTime\", " +
-					"delivery_status as \"deliveryStatus\", plan_date \"planDate\"" +
-					" from delivery_goods " +
-					"where plan_date between '" + startDate + "' and '" + endDate + "' " +
-					"and customer like '%"+customer+"%' and order_id like '%"+orderId+"%' and wharf "+builder.toString()+"" +
-					"order by "+criteria+" ";
+
+		StringBuilder criteriaBuilder=new StringBuilder();
+		if(criteriaList.size()>0){
+			for (int i = 0; i < criteriaList.size(); i++) {
+				Map<String,Object> listMap= (Map<String, Object>) criteriaList.get(i);
+				Optional<Object> sort=Optional.ofNullable(listMap.get("sort"));
+				Optional<Object> criteria=Optional.ofNullable(listMap.get("criteria"));
+				criteriaBuilder.append(criteria.orElse("order_id"));
+				if (!"0".equals(sort.orElse("0"))){
+					criteriaBuilder.append(" desc");
+				}
+				criteriaBuilder.append(" ,");
+			}
 		}
 		else {
-			sql = "select id, order_id as \"orderId\", customer, wharf, car_no as \"carNo\", plan_delivery_no as \"planDeliveryNo\", " +
-					"delivery_no as \"deliveryNo\", plan_arrived_time as \"planArrivedTime\", arrived_time as \"arrivedTime\", " +
-					"plan_leave_time as \"planLeaveTime\", leave_time as \"leaveTime\", " +
-					"delivery_status as \"deliveryStatus\", plan_date \"planDate\"" +
-					" from delivery_goods " +
-					"where plan_date between '" + startDate + "' and '" + endDate + "' " +
-					"and customer like '%"+customer+"%' and order_id like '%"+orderId+"%' and wharf  "+builder.toString()+"" +
-					"order by "+criteria+" desc";
+			criteriaBuilder.append("order_id");
 		}
-		ResultUtil result=dbHelperService.selectPage(sql,"postgres_test",pageIndex,pageSize);
+		//判断排序正序倒序
+		//postgres使用ilike进行不区分的大小写的模糊查询
+		String sql = "select id, order_id as \"orderId\", customer, wharf, car_no as \"carNo\", plan_delivery_no as \"planDeliveryNo\", " +
+				"delivery_no as \"deliveryNo\", plan_arrived_time as \"planArrivedTime\", arrived_time as \"arrivedTime\", " +
+				"plan_leave_time as \"planLeaveTime\", leave_time as \"leaveTime\", " +
+				"delivery_status as \"deliveryStatus\", plan_date \"planDate\"" +
+				" from delivery_goods " +
+				"where plan_date between '" + startDate + "' and '" + endDate + "' " +
+				"and customer ilike '%"+customer+"%' and order_id ilike '%"+orderId+"%' and wharf "+builder.toString()+"" +
+				"order by "+criteriaBuilder+" ";
+		ResultUtil result=dbHelperService.selectPage(sql,DATASOURCE_POSTGRES,pageIndex,pageSize);
 		if(HttpStatus.OK.value()!= (int)result.get("code")){
 			message=MessageUtil.getMessage(Message.DELIVERY_GET_ERROR.getCode());
 			logger.error(message);
 			return ResultUtil.error(message);
 		}
 		ArrayList<HashMap> list= (ArrayList) result.get("result");
-		//输出起始序号
-		int no=(pageIndex-1)*pageSize+1;
-		for (int i = 0; i <list.size() ; i++) {
-			list.get(i).put("no",no+i);
-		}
 		message=MessageUtil.getMessage(Message.DELIVERY_GET_SUCCESS.getCode());
 		logger.info(message);
 		int pageCount= (int) result.get("pageCount");
@@ -195,7 +268,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 			Map<String,Object> listMap = (Map<String, Object>) list.get(i);
 			id = Optional.ofNullable(listMap.get("id"));
 			boolean isDelivery= checkDeliveryExist((Integer) id.orElse(-1));
-			//检测路由是否存在
+			//检测发货信息是否存在
 			if(!isDelivery){
 				message=MessageUtil.getMessage(Message.DELIVERY_NOT_EXIST.getCode());
 				logger.error(message);
@@ -209,7 +282,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 				deleteCount++;
 			}
 		}
-		//如果没有路由被删除，则返回结果
+		//如果没有信息被删除，则返回结果
 		if (deleteCount == 0 ){
 			message=MessageUtil.getMessage(Message.DELIVERY_NOT_EXIST.getCode());
 			logger.error(message);
@@ -293,7 +366,6 @@ public class DeliveryServiceImpl implements DeliveryService {
 				listMap.put("result",message);
 			}
 		}
-
 		return ResultUtil.ok().put("result",list);
 	}
 	/**
@@ -341,7 +413,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 			resultMap.put("planLeaveTime",planLeaveTime.orElse("00:00:00"));
 			resultMap.put("leaveTime",leaveTime.orElse("00:00:00"));
 			resultMap.put("planDate",planDate.orElse("2000-01-01"));
-			//查看该用户是否存在
+			resultMap.put("deliveryStatus",deliveryStatus.orElse("0"));
 			resultList.add(resultMap);
 		}
 		ResultUtil result=addDeliveryGoods(resultList);
@@ -371,7 +443,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 				"plan_leave_time as \"计划离开时间\", leave_time as \"实际离开时间\", " +
 				"delivery_status as \"发货状态\", plan_date \"计划日期\"" +
 				" from delivery_goods " +
-				"where plan_date between '"+startDate+"' and '"+endDate+"' and order_id like '%"+orderId+"%' and customer in ("+customerBuilder+") \n";
+				"where plan_date between '"+startDate+"' and '"+endDate+"' and order_id ilike '%"+orderId+"%' and customer in ("+customerBuilder+") \n";
 		String message;
 		ResultUtil result=dbHelperService.select(sql,"postgres_test");
 		if(HttpStatus.OK.value()!= (int)result.get("code")){
@@ -392,7 +464,6 @@ public class DeliveryServiceImpl implements DeliveryService {
 			list.set(i, listMap);
 		}
 		List<String> titleList=new ArrayList<>();
-//		titleList.add("ID");
 		titleList.add("订单号");
 		titleList.add("客户");
 		titleList.add("码头");
@@ -407,7 +478,6 @@ public class DeliveryServiceImpl implements DeliveryService {
 		titleList.add("计划日期");
 		String file= ExcelUtils.createMapListExcel(list,diskPath,titleList);
 		String ftpFile= RandomStringUtils.randomAlphanumeric(32)+".xls";
-//		String ftpPath="/wharf/";
 		//FTP上传文件
 		FTPUtils ftpUtils=new FTPUtils();
 		ftpUtils.setHostname(ftpUrl);
@@ -426,7 +496,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 					"where id in " +
 					"(" +
 					"select id from delivery_goods   " +
-					"where plan_date between '"+startDate+"' and '"+endDate+"' and order_id like '%"+orderId+"%' and customer in ("+customerBuilder+") " +
+					"where plan_date between '"+startDate+"' and '"+endDate+"' and order_id ilike '%"+orderId+"%' and customer in ("+customerBuilder+") " +
 					");";
 			ResultUtil deleteResult=dbHelperService.delete(deleteSql,"postgres_test");
 			if(HttpStatus.OK.value()!= (int)deleteResult.get("code")){
@@ -461,11 +531,5 @@ public class DeliveryServiceImpl implements DeliveryService {
 		}
 		return  false;
 	}
-
-
-
-
-
-
 
 }

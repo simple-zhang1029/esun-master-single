@@ -16,9 +16,8 @@ public class TokenUtil {
     /**
      * token有效时长
      */
-    private static final long expire=60*60*24*7;
+    private static final long expire=60*60*24*30;
 
-    private static  final String header="token";
 
     /**
      * 生成token
@@ -26,17 +25,30 @@ public class TokenUtil {
      * @return
      */
     public static String createToken(String username){
+        return  createToken(username,expire);
+    }
+
+    public static String createToken(String username,long expire){
         Date nowDate=new Date();
         //过期时间
         Date expireDate=new Date(nowDate.getTime()+expire*1000);
+        return  createToken(username,nowDate,expireDate);
+    }
+
+    private static String createToken(String username, Date startDate, Date expireDate) {
+       return  createToken(username,startDate,expireDate,secret);
+    }
+
+    private static String createToken(String username,Date startDate,Date expireDate,String secret){
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setSubject(username)
-                .setIssuedAt(nowDate)
+                .setIssuedAt(startDate)
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
+
 
     /**
      * token是否过期

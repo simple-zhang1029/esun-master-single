@@ -54,7 +54,8 @@ public class ControllerAspect {
             dataSourceType="slave";
         }
         DataSourceUtil.setDatasource(dataSource,dataSourceType);
-        DataSourceUtil.checkIndex(parameterMap.get("sql").toString(),dataSource);
+        //druid出现bug,暂时停止使用索引检测
+//        DataSourceUtil.checkIndex(parameterMap.get("sql").toString(),dataSource);
         Object result = proceedingJoinPoint.proceed();
         return result;
 

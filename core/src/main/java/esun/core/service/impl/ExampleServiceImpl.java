@@ -91,6 +91,7 @@ public class ExampleServiceImpl implements ExampleService {
     //创建日志对象
     private static Logger logger= LoggerFactory.getLogger(ExampleServiceImpl.class);
 
+
     /**
      * 登入
      * @param name
@@ -99,9 +100,11 @@ public class ExampleServiceImpl implements ExampleService {
      */
     @Override
     public ResultUtil login(String name, String password) {
+
         // 获取用户信息
         //SQL语句
-        String sql = "select user_password,user_salt from "+postgres_user_table+" where user_name= '"+name+"' ";
+        String sql = "select user_password,user_salt from "+postgres_user_table+" where lower(user_name)= lower('"+name+"') ";
+
         //结果信息
         String message;
         //调用DbHelper中间件服务，所有对数据库的请求均使用该中间件调用

@@ -34,7 +34,7 @@ public class CommonController {
      */
     @PostMapping("/token")
     public ResultUtil updateToken(@RequestParam("user") String user) {
-       return tokenService.updateToken(user);
+        return tokenService.updateToken(user);
     }
 
     /**

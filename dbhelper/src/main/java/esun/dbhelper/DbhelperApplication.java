@@ -13,7 +13,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 //@EnableRabbit
-@ComponentScan
 @EntityScan("esun.dbhelper.dao.mapper")
 @MapperScan("esun.dbhelper.dao.mapper")
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
