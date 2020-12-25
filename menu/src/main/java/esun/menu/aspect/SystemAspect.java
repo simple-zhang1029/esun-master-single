@@ -23,7 +23,7 @@ import java.util.Optional;
  * @author test
  */
 @Aspect
-//@Component
+@Component
 public class SystemAspect {
 	//日志声明
 	private static Logger logger= LoggerFactory.getLogger(SystemAspect.class);

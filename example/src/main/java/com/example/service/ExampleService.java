@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ExampleService {
 
-	ResultUtil login(String username, String password);
+	ResultUtil login(String userId, String password);
 
 	ResultUtil getDeliveryGoods(String startDate, String endDate, int pageIndex, int pageSize, String customer, String orderId, List<?> criteriaList,List<?> wharfList);
 

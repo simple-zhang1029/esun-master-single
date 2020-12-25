@@ -36,7 +36,7 @@ public class DomainController {
 	 * @return
 	 *
 	 */
-	@GetMapping("/domain")
+	@GetMapping("domain")
 	public ResultUtil getDomain(@RequestParam(value = "pageIndex",required = false,defaultValue = "1")int pageIndex,
 	                            @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
 	                            @RequestParam(value = "criteriaList",required = false,defaultValue = "[]")String criteriaList, @RequestParam(value = "sort",required = false,defaultValue = "0")int sort,
@@ -94,7 +94,7 @@ public class DomainController {
 	 * @author john.xiao
 	 * @date 2020-10-16 17:06
 	 */
-	@PutMapping("/domain")
+	@PutMapping("domain")
 	public ResultUtil addDomain(@RequestParam(value = "list") String dataList){
 		JSONArray jsonArray=JSONArray.fromObject(dataList);
 		return domainService.addDomain(jsonArray);
@@ -107,7 +107,7 @@ public class DomainController {
 	 * @author john.xiao
 	 * @date 2020-10-13 17:06
 	 */
-	@DeleteMapping("/domain")
+	@DeleteMapping("domain")
 	public ResultUtil deleteDomain(@RequestParam(value = "list") String dataList){
 		JSONArray jsonArray=JSONArray.fromObject(dataList);
 		return domainService.deleteDomain(jsonArray);
@@ -120,7 +120,7 @@ public class DomainController {
 	 * @author john.xiao
 	 * @date 2020-10-13 17:06
 	 */
-	@PostMapping("/domain")
+	@PostMapping("domain")
 	public ResultUtil updateDomain(@RequestParam(value = "list") String dataList){
 		JSONArray jsonArray=JSONArray.fromObject(dataList);
 		return domainService.updateDomain(jsonArray);
@@ -128,7 +128,7 @@ public class DomainController {
 
 	/**
 	 * 导入域信息
-	 * @param file
+	 * @param file Excel文件
 	 * @return
 	 * @author john.xiao
 	 * @date 2020-12-17 15:07

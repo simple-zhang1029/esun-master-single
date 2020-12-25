@@ -63,18 +63,18 @@ public class ExampleServiceImpl implements ExampleService {
 
 	/**
 	 * 登入
-	 * @param name
-	 * @param password
+	 * @param userId 用户Id
+	 * @param password 登入密码
 	 * @return
 	 */
 	@Override
-	public ResultUtil login(String name, String password) {
+	public ResultUtil login(String userId, String password) {
 
 		// 获取用户信息
 		//SQL语句
 		//调用Postgres数据库使用lower函数进行大小写忽略
 		//调用Mysql函数则默认忽略大小写
-		String sql = "select user_password as \"password\",user_salt \"salt\" from user_mstr where lower(user_name) = lower('"+name+"') ";
+		String sql = "select user_password as \"password\",user_salt \"salt\" from user_mstr where lower(user_userId) = lower('"+userId+"') ";
 		//结果信息
 		String message;
 		//调用DbHelper中间件服务，所有对数据库的请求均使用该中间件调用
@@ -107,7 +107,7 @@ public class ExampleServiceImpl implements ExampleService {
 		}
 
 		//更新token
-		ResultUtil tokenResult=tokenService.updateToken(name);
+		ResultUtil tokenResult=tokenService.updateToken(userId);
 		if(HttpStatus.OK.value()!= (int)tokenResult.get("code")){
 			message=MessageUtil.getMessage(Message.TOKEN_UPDATE_ERROR.getCode());
 			logger.error(message);
@@ -130,7 +130,7 @@ public class ExampleServiceImpl implements ExampleService {
 	 * @return
 	 */
 	@Override
-	@Cached(name = "deliveryCache",key = "new String[]{#orderId,#customer}",cacheType = CacheType.LOCAL,expire = 300)
+//	@Cached(name = "deliveryCache",key = "new String[]{#orderId,#customer}",cacheType = CacheType.LOCAL,expire = 300)
 	public ResultUtil getDeliveryGoods(String startDate, String endDate, int pageIndex, int pageSize, String customer, String orderId, List<?> criteriaList,List<?> wharfList) {
 		String message;
 		StringBuilder builder=new StringBuilder();

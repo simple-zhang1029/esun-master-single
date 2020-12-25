@@ -68,7 +68,7 @@ public class DomainServiceImpl  implements DomainService {
 	 * @return 返回信息工具类
 	 */
 	@Override
-	@Cached(name = "deliveryCache",key = "#domain",cacheType = CacheType.LOCAL,expire = 300)
+//	@Cached(name = "domainCache",key = "#domain",cacheType = CacheType.LOCAL,expire = 300)
 	public ResultUtil getDomain(int pageIndex, int pageSize, List<?> criteriaList,String domain) {
 		String message;
 		String sortString=getSortString(criteriaList);

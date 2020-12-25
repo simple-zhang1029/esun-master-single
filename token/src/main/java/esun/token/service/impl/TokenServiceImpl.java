@@ -23,13 +23,13 @@ public class TokenServiceImpl implements TokenService {
 
     /**
      * 更新token
-     * @param user
+     * @param user 用户I
      * @return
      */
     @Override
     public ResultUtil updateToken(String user) {
         String token=TokenUtil.createToken(user,60*60*24*30);
-        String sql="update "+tokenTable+" set user_token='"+token+"' where user_name='"+user+"'";
+        String sql="update "+tokenTable+" set user_token='"+token+"' where lower(user_userId)=lower('"+user+"')";
         String product="postgres_test";
         ResultUtil result=dbHelperService.update(sql,product);
         if(Integer.parseInt(result.get("code").toString())==200){
@@ -45,7 +45,7 @@ public class TokenServiceImpl implements TokenService {
      */
     @Override
     public ResultUtil getToken(String user) {
-        String sql="select user_token from "+tokenTable+" where user_name='"+user+"'";
+        String sql="select user_token from "+tokenTable+" where lower(user_userid)=lower('"+user+"')";
         String product="postgres_test";
         ResultUtil result=dbHelperService.select(sql,product);
         ArrayList resultList = (ArrayList) result.get("result");
@@ -73,7 +73,7 @@ public class TokenServiceImpl implements TokenService {
             return ResultUtil.error("token已失效");
         }
         String user=claims.getSubject();
-        String sql="select user_token from "+tokenTable+" where user_name='"+user+"'";
+        String sql="select user_token from "+tokenTable+" where lower(user_userid)=lower('"+user+"')";
         String product="postgres_test";
         ResultUtil result=dbHelperService.select(sql,product);
         ArrayList resultList = (ArrayList) result.get("result");

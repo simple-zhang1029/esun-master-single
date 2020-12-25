@@ -46,16 +46,16 @@ public class ExampleController {
 	//使用Router标签指定用户访问权限,拥有该权限才可请求此接口,否者返回错误,router权限在存储在数据库中
 	//所有接口的返回类型固定为ResultUtil封装类
 	//请求参数使用@RequestParam标签获取。
-	public ResultUtil login(@RequestParam("name")String name,
+	public ResultUtil login(@RequestParam("userId")String userId,
 	                        @RequestParam("password")String password){
 
 		//检查密码长度
 		if(password.length()<6 || password.length()>20){
 			String message= MessageUtil.getMessage(Message.PASSWORD_NOT_STANDARD.getCode());
-			logger.error(name+":"+message);
+			logger.error(userId+":"+message);
 			return ResultUtil.error(message);
 		}
-		return exampleService.login(name,password);
+		return exampleService.login(userId,password);
 	}
 
 	/**

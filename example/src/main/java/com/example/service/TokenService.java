@@ -16,8 +16,10 @@ public interface TokenService {
      */
     @RequestMapping(value = "/checkToken",method = RequestMethod.GET)
     ResultUtil checkToken(@RequestParam("token") String token);
+
     @PostMapping(value = "/token")
     ResultUtil updateToken(@RequestParam("user") String user);
+
     @GetMapping(value = "/token")
     ResultUtil getToken(@RequestParam("user") String user);
 
