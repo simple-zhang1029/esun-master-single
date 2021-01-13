@@ -10,21 +10,21 @@ import java.util.Map;
  * @author xiaoliebin
  */
 public class ResultUtil extends HashMap<String, Object> {
+
 	private static final long serialVersionUID = 1L;
 
-
-
 	public ResultUtil() {
-		put("code", 200);
+		put("code", 10000);
 		put("msg", "success");
+		put("methodName",ResultUtil.class.getName());
 	}
 
 	public static ResultUtil error() {
-		return error(500, "未知异常，请联系管理员或检查sql语句");
+		return error(10001, "未知异常，请联系管理员或检查sql语句");
 	}
 
 	public static ResultUtil error(String msg) {
-		return error(500, msg);
+		return error(10001, msg);
 	}
 
 	public static ResultUtil error(int code, String msg) {
@@ -33,10 +33,31 @@ public class ResultUtil extends HashMap<String, Object> {
 		resultUtil.put("msg", msg);
 		return resultUtil;
 	}
+	public static ResultUtil error(int code, String msg,String className) {
+		ResultUtil resultUtil = new ResultUtil();
+		resultUtil.put("code", code);
+		resultUtil.put("msg", msg);
+		resultUtil.put("methodName",className);
+		return resultUtil;
+	}
+
+	public static ResultUtil error(String msg,String className) {
+		ResultUtil resultUtil = new ResultUtil();
+		resultUtil.put("code", 10001);
+		resultUtil.put("msg", msg);
+		resultUtil.put("methodName",className);
+		return resultUtil;
+	}
 
 	public static ResultUtil ok(String msg) {
 		ResultUtil resultUtil = new ResultUtil();
 		resultUtil.put("msg", msg);
+		return resultUtil;
+	}
+	public static ResultUtil ok(String msg,String methodName) {
+		ResultUtil resultUtil = new ResultUtil();
+		resultUtil.put("msg", msg);
+		resultUtil.put("methodName",methodName);
 		return resultUtil;
 	}
 
@@ -53,6 +74,11 @@ public class ResultUtil extends HashMap<String, Object> {
 	@Override
 	public ResultUtil put(String key, Object value) {
 		super.put(key, value);
+		return this;
+	}
+
+	public ResultUtil setData(Object data){
+		super.put("data",data);
 		return this;
 	}
 }
