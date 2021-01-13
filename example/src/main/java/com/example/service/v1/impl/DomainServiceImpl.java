@@ -1,12 +1,9 @@
-package com.example.service.impl;
+package com.example.service.v1.impl;
 
-import com.alicp.jetcache.anno.CacheType;
-import com.alicp.jetcache.anno.Cached;
 import com.example.constant.Message;
 import com.example.exception.CustomHttpException;
-import com.example.service.DbHelperService;
-import com.example.service.DomainService;
-import com.example.service.TokenService;
+import com.example.service.feign.DbHelperService;
+import com.example.service.v1.DomainService;
 import com.example.utils.*;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.poi.ss.usermodel.Sheet;

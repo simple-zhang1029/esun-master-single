@@ -1,9 +1,9 @@
-package com.example.service.impl;
+package com.example.service.v1.impl;
 
 import com.example.constant.MenuMessage;
 import com.example.exception.CustomHttpException;
-import com.example.service.DbHelperService;
-import com.example.service.MenuService;
+import com.example.service.feign.DbHelperService;
+import com.example.service.v1.MenuService;
 import com.example.utils.MessageUtil;
 import com.example.utils.ResultUtil;
 import org.apache.commons.lang.StringUtils;

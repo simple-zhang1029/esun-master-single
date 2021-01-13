@@ -45,6 +45,6 @@ public class CustomHttpExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResultUtil handleException(Exception e){
         logger.error(e.getMessage(), e);
-        return ResultUtil.error();
+        return ResultUtil.error(10001,e.toString(),e.getStackTrace()[0].getClassName());
     }
 }

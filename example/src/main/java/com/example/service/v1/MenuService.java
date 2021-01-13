@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.service.v1;
 
 import com.example.utils.ResultUtil;
 

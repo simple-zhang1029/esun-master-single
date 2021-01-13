@@ -1,7 +1,7 @@
-package com.example.controller;
+package com.example.controller.v1;
 
 import com.example.constant.Message;
-import com.example.service.UserService;
+import com.example.service.v1.UserService;
 import com.example.utils.MessageUtil;
 import com.example.utils.ResultUtil;
 import net.sf.json.JSONArray;

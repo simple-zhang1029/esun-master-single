@@ -157,7 +157,6 @@ public class ExampleController {
      */
     @LoginRequire
     @PostMapping("userInfo")
-//    @Router(name = "user:info:update")
     public ResultUtil updateUserInfo(@RequestParam("userId") String userId,
                                      @RequestParam("username") String username,
                                      @RequestParam(value = "password",required = false,defaultValue = "") String password,
@@ -184,7 +183,6 @@ public class ExampleController {
      */
     @LoginRequire
     @PutMapping("userInfo")
-//    @Router(name = "user:info:insert")
     public ResultUtil insertUserInfo(@RequestParam("userId") String userId,
                                      @RequestParam("username") String username,
                                      @RequestParam("password") String password,
