@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.entity.dao.MenuMstrDao">
+
+    <resultMap type="com.example.entity.entity.MenuMstr" id="MenuMstrMap">
+        <result property="menuCorp" column="menu_corp" jdbcType="VARCHAR"/>
+        <result property="menuNbr" column="menu_nbr" jdbcType="VARCHAR"/>
+        <result property="menuSelect" column="menu_select" jdbcType="VARCHAR"/>
+        <result property="menuProgram" column="menu_program" jdbcType="VARCHAR"/>
+        <result property="menuName" column="menu_name" jdbcType="VARCHAR"/>
+        <result property="menuHelp" column="menu_help" jdbcType="VARCHAR"/>
+        <result property="menuCanrun" column="menu_canrun" jdbcType="VARCHAR"/>
+        <result property="menuModDate" column="menu_mod_date" jdbcType="OTHER"/>
+        <result property="menuModProg" column="menu_mod_prog" jdbcType="VARCHAR"/>
+        <result property="menuModUser" column="menu_mod_user" jdbcType="VARCHAR"/>
+        <result property="menu_Chr01" column="menu__chr01" jdbcType="VARCHAR"/>
+        <result property="menu_Chr02" column="menu__chr02" jdbcType="VARCHAR"/>
+        <result property="menu_Chr03" column="menu__chr03" jdbcType="VARCHAR"/>
+        <result property="menu_Int01" column="menu__int01" jdbcType="INTEGER"/>
+        <result property="menu_Int02" column="menu__int02" jdbcType="INTEGER"/>
+        <result property="menu_Int03" column="menu__int03" jdbcType="INTEGER"/>
+        <result property="menu_Dte01" column="menu__dte01" jdbcType="OTHER"/>
+        <result property="menu_Dte02" column="menu__dte02" jdbcType="OTHER"/>
+        <result property="menu_Dte03" column="menu__dte03" jdbcType="OTHER"/>
+        <result property="menu_Dec01" column="menu__dec01" jdbcType="OTHER"/>
+        <result property="menu_Dec02" column="menu__dec02" jdbcType="OTHER"/>
+        <result property="menu_Dec03" column="menu__dec03" jdbcType="OTHER"/>
+        <result property="menu_Log01" column="menu__log01" jdbcType="BOOLEAN"/>
+        <result property="menu_Log02" column="menu__log02" jdbcType="BOOLEAN"/>
+        <result property="menuUri" column="menu_uri" jdbcType="VARCHAR"/>
+        <result property="menuFkey" column="menu_fkey" jdbcType="INTEGER"/>
+        <result property="menuModTime" column="menu_mod_time" jdbcType="INTEGER"/>
+        <result property="menuUser1" column="menu_user1" jdbcType="VARCHAR"/>
+        <result property="menuUser2" column="menu_user2" jdbcType="VARCHAR"/>
+        <result property="menu_Qadc01" column="menu__qadc01" jdbcType="VARCHAR"/>
+        <result property="menuQad2wmsPoOk" column="menu_qad2wms_po_ok" jdbcType="BOOLEAN"/>
+        <result property="menuQad2wmsSoOk" column="menu_qad2wms_so_ok" jdbcType="BOOLEAN"/>
+        <result property="menuQad2wmsWoOk" column="menu_qad2wms_wo_ok" jdbcType="BOOLEAN"/>
+        <result property="menuQad2wmsVschOk" column="menu_qad2wms_vsch_ok" jdbcType="BOOLEAN"/>
+        <result property="menuQad2wmsCschOk" column="menu_qad2wms_csch_ok" jdbcType="BOOLEAN"/>
+        <result property="menuQad2wmsMstrOk" column="menu_qad2wms_mstr_ok" jdbcType="BOOLEAN"/>
+        <result property="guid" column="guid" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MenuMstrMap">
+        select
+          menu_corp, menu_nbr, menu_select, menu_program, menu_name, menu_help, menu_canrun, menu_mod_date, menu_mod_prog, menu_mod_user, menu__chr01, menu__chr02, menu__chr03, menu__int01, menu__int02, menu__int03, menu__dte01, menu__dte02, menu__dte03, menu__dec01, menu__dec02, menu__dec03, menu__log01, menu__log02, menu_uri, menu_fkey, menu_mod_time, menu_user1, menu_user2, menu__qadc01, menu_qad2wms_po_ok, menu_qad2wms_so_ok, menu_qad2wms_wo_ok, menu_qad2wms_vsch_ok, menu_qad2wms_csch_ok, menu_qad2wms_mstr_ok, guid
+        from public.menu_mstr
+        where menu_corp = #{menuCorp}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MenuMstrMap">
+        select
+          menu_corp, menu_nbr, menu_select, menu_program, menu_name, menu_help, menu_canrun, menu_mod_date, menu_mod_prog, menu_mod_user, menu__chr01, menu__chr02, menu__chr03, menu__int01, menu__int02, menu__int03, menu__dte01, menu__dte02, menu__dte03, menu__dec01, menu__dec02, menu__dec03, menu__log01, menu__log02, menu_uri, menu_fkey, menu_mod_time, menu_user1, menu_user2, menu__qadc01, menu_qad2wms_po_ok, menu_qad2wms_so_ok, menu_qad2wms_wo_ok, menu_qad2wms_vsch_ok, menu_qad2wms_csch_ok, menu_qad2wms_mstr_ok, guid
+        from public.menu_mstr
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="MenuMstrMap">
+        select
+          menu_corp, menu_nbr, menu_select, menu_program, menu_name, menu_help, menu_canrun, menu_mod_date, menu_mod_prog, menu_mod_user, menu__chr01, menu__chr02, menu__chr03, menu__int01, menu__int02, menu__int03, menu__dte01, menu__dte02, menu__dte03, menu__dec01, menu__dec02, menu__dec03, menu__log01, menu__log02, menu_uri, menu_fkey, menu_mod_time, menu_user1, menu_user2, menu__qadc01, menu_qad2wms_po_ok, menu_qad2wms_so_ok, menu_qad2wms_wo_ok, menu_qad2wms_vsch_ok, menu_qad2wms_csch_ok, menu_qad2wms_mstr_ok, guid
+        from public.menu_mstr
+        <where>
+            <if test="menuCorp != null and menuCorp != ''">
+                and menu_corp = #{menuCorp}
+            </if>
+            <if test="menuNbr != null and menuNbr != ''">
+                and menu_nbr = #{menuNbr}
+            </if>
+            <if test="menuSelect != null and menuSelect != ''">
+                and menu_select = #{menuSelect}
+            </if>
+            <if test="menuProgram != null and menuProgram != ''">
+                and menu_program = #{menuProgram}
+            </if>
+            <if test="menuName != null and menuName != ''">
+                and menu_name = #{menuName}
+            </if>
+            <if test="menuHelp != null and menuHelp != ''">
+                and menu_help = #{menuHelp}
+            </if>
+            <if test="menuCanrun != null and menuCanrun != ''">
+                and menu_canrun = #{menuCanrun}
+            </if>
+            <if test="menuModDate != null">
+                and menu_mod_date = #{menuModDate}
+            </if>
+            <if test="menuModProg != null and menuModProg != ''">
+                and menu_mod_prog = #{menuModProg}
+            </if>
+            <if test="menuModUser != null and menuModUser != ''">
+                and menu_mod_user = #{menuModUser}
+            </if>
+            <if test="menu_Chr01 != null and menu_Chr01 != ''">
+                and menu__chr01 = #{menu_Chr01}
+            </if>
+            <if test="menu_Chr02 != null and menu_Chr02 != ''">
+                and menu__chr02 = #{menu_Chr02}
+            </if>
+            <if test="menu_Chr03 != null and menu_Chr03 != ''">
+                and menu__chr03 = #{menu_Chr03}
+            </if>
+            <if test="menu_Int01 != null">
+                and menu__int01 = #{menu_Int01}
+            </if>
+            <if test="menu_Int02 != null">
+                and menu__int02 = #{menu_Int02}
+            </if>
+            <if test="menu_Int03 != null">
+                and menu__int03 = #{menu_Int03}
+            </if>
+            <if test="menu_Dte01 != null">
+                and menu__dte01 = #{menu_Dte01}
+            </if>
+            <if test="menu_Dte02 != null">
+                and menu__dte02 = #{menu_Dte02}
+            </if>
+            <if test="menu_Dte03 != null">
+                and menu__dte03 = #{menu_Dte03}
+            </if>
+            <if test="menu_Dec01 != null">
+                and menu__dec01 = #{menu_Dec01}
+            </if>
+            <if test="menu_Dec02 != null">
+                and menu__dec02 = #{menu_Dec02}
+            </if>
+            <if test="menu_Dec03 != null">
+                and menu__dec03 = #{menu_Dec03}
+            </if>
+            <if test="menu_Log01 != null">
+                and menu__log01 = #{menu_Log01}
+            </if>
+            <if test="menu_Log02 != null">
+                and menu__log02 = #{menu_Log02}
+            </if>
+            <if test="menuUri != null and menuUri != ''">
+                and menu_uri = #{menuUri}
+            </if>
+            <if test="menuFkey != null">
+                and menu_fkey = #{menuFkey}
+            </if>
+            <if test="menuModTime != null">
+                and menu_mod_time = #{menuModTime}
+            </if>
+            <if test="menuUser1 != null and menuUser1 != ''">
+                and menu_user1 = #{menuUser1}
+            </if>
+            <if test="menuUser2 != null and menuUser2 != ''">
+                and menu_user2 = #{menuUser2}
+            </if>
+            <if test="menu_Qadc01 != null and menu_Qadc01 != ''">
+                and menu__qadc01 = #{menu_Qadc01}
+            </if>
+            <if test="menuQad2wmsPoOk != null">
+                and menu_qad2wms_po_ok = #{menuQad2wmsPoOk}
+            </if>
+            <if test="menuQad2wmsSoOk != null">
+                and menu_qad2wms_so_ok = #{menuQad2wmsSoOk}
+            </if>
+            <if test="menuQad2wmsWoOk != null">
+                and menu_qad2wms_wo_ok = #{menuQad2wmsWoOk}
+            </if>
+            <if test="menuQad2wmsVschOk != null">
+                and menu_qad2wms_vsch_ok = #{menuQad2wmsVschOk}
+            </if>
+            <if test="menuQad2wmsCschOk != null">
+                and menu_qad2wms_csch_ok = #{menuQad2wmsCschOk}
+            </if>
+            <if test="menuQad2wmsMstrOk != null">
+                and menu_qad2wms_mstr_ok = #{menuQad2wmsMstrOk}
+            </if>
+            <if test="guid != null and guid != ''">
+                and guid = #{guid}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="menuCorp" useGeneratedKeys="true">
+        insert into public.menu_mstr(menu_program, menu_name, menu_help, menu_canrun, menu_mod_date, menu_mod_prog, menu_mod_user, menu__chr01, menu__chr02, menu__chr03, menu__int01, menu__int02, menu__int03, menu__dte01, menu__dte02, menu__dte03, menu__dec01, menu__dec02, menu__dec03, menu__log01, menu__log02, menu_uri, menu_fkey, menu_mod_time, menu_user1, menu_user2, menu__qadc01, menu_qad2wms_po_ok, menu_qad2wms_so_ok, menu_qad2wms_wo_ok, menu_qad2wms_vsch_ok, menu_qad2wms_csch_ok, menu_qad2wms_mstr_ok, guid)
+        values (#{menuProgram}, #{menuName}, #{menuHelp}, #{menuCanrun}, #{menuModDate}, #{menuModProg}, #{menuModUser}, #{menu_Chr01}, #{menu_Chr02}, #{menu_Chr03}, #{menu_Int01}, #{menu_Int02}, #{menu_Int03}, #{menu_Dte01}, #{menu_Dte02}, #{menu_Dte03}, #{menu_Dec01}, #{menu_Dec02}, #{menu_Dec03}, #{menu_Log01}, #{menu_Log02}, #{menuUri}, #{menuFkey}, #{menuModTime}, #{menuUser1}, #{menuUser2}, #{menu_Qadc01}, #{menuQad2wmsPoOk}, #{menuQad2wmsSoOk}, #{menuQad2wmsWoOk}, #{menuQad2wmsVschOk}, #{menuQad2wmsCschOk}, #{menuQad2wmsMstrOk}, #{guid})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="menuCorp" useGeneratedKeys="true">
+        insert into public.menu_mstr(menu_program, menu_name, menu_help, menu_canrun, menu_mod_date, menu_mod_prog, menu_mod_user, menu__chr01, menu__chr02, menu__chr03, menu__int01, menu__int02, menu__int03, menu__dte01, menu__dte02, menu__dte03, menu__dec01, menu__dec02, menu__dec03, menu__log01, menu__log02, menu_uri, menu_fkey, menu_mod_time, menu_user1, menu_user2, menu__qadc01, menu_qad2wms_po_ok, menu_qad2wms_so_ok, menu_qad2wms_wo_ok, menu_qad2wms_vsch_ok, menu_qad2wms_csch_ok, menu_qad2wms_mstr_ok, guid)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.menuProgram}, #{entity.menuName}, #{entity.menuHelp}, #{entity.menuCanrun}, #{entity.menuModDate}, #{entity.menuModProg}, #{entity.menuModUser}, #{entity.menu_Chr01}, #{entity.menu_Chr02}, #{entity.menu_Chr03}, #{entity.menu_Int01}, #{entity.menu_Int02}, #{entity.menu_Int03}, #{entity.menu_Dte01}, #{entity.menu_Dte02}, #{entity.menu_Dte03}, #{entity.menu_Dec01}, #{entity.menu_Dec02}, #{entity.menu_Dec03}, #{entity.menu_Log01}, #{entity.menu_Log02}, #{entity.menuUri}, #{entity.menuFkey}, #{entity.menuModTime}, #{entity.menuUser1}, #{entity.menuUser2}, #{entity.menu_Qadc01}, #{entity.menuQad2wmsPoOk}, #{entity.menuQad2wmsSoOk}, #{entity.menuQad2wmsWoOk}, #{entity.menuQad2wmsVschOk}, #{entity.menuQad2wmsCschOk}, #{entity.menuQad2wmsMstrOk}, #{entity.guid})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="menuCorp" useGeneratedKeys="true">
+        insert into public.menu_mstr(menu_program, menu_name, menu_help, menu_canrun, menu_mod_date, menu_mod_prog, menu_mod_user, menu__chr01, menu__chr02, menu__chr03, menu__int01, menu__int02, menu__int03, menu__dte01, menu__dte02, menu__dte03, menu__dec01, menu__dec02, menu__dec03, menu__log01, menu__log02, menu_uri, menu_fkey, menu_mod_time, menu_user1, menu_user2, menu__qadc01, menu_qad2wms_po_ok, menu_qad2wms_so_ok, menu_qad2wms_wo_ok, menu_qad2wms_vsch_ok, menu_qad2wms_csch_ok, menu_qad2wms_mstr_ok, guid)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.menuProgram}, #{entity.menuName}, #{entity.menuHelp}, #{entity.menuCanrun}, #{entity.menuModDate}, #{entity.menuModProg}, #{entity.menuModUser}, #{entity.menu_Chr01}, #{entity.menu_Chr02}, #{entity.menu_Chr03}, #{entity.menu_Int01}, #{entity.menu_Int02}, #{entity.menu_Int03}, #{entity.menu_Dte01}, #{entity.menu_Dte02}, #{entity.menu_Dte03}, #{entity.menu_Dec01}, #{entity.menu_Dec02}, #{entity.menu_Dec03}, #{entity.menu_Log01}, #{entity.menu_Log02}, #{entity.menuUri}, #{entity.menuFkey}, #{entity.menuModTime}, #{entity.menuUser1}, #{entity.menuUser2}, #{entity.menu_Qadc01}, #{entity.menuQad2wmsPoOk}, #{entity.menuQad2wmsSoOk}, #{entity.menuQad2wmsWoOk}, #{entity.menuQad2wmsVschOk}, #{entity.menuQad2wmsCschOk}, #{entity.menuQad2wmsMstrOk}, #{entity.guid})
+        </foreach>
+        on duplicate key update
+         menu_program = values(menu_program) , menu_name = values(menu_name) , menu_help = values(menu_help) , menu_canrun = values(menu_canrun) , menu_mod_date = values(menu_mod_date) , menu_mod_prog = values(menu_mod_prog) , menu_mod_user = values(menu_mod_user) , menu__chr01 = values(menu__chr01) , menu__chr02 = values(menu__chr02) , menu__chr03 = values(menu__chr03) , menu__int01 = values(menu__int01) , menu__int02 = values(menu__int02) , menu__int03 = values(menu__int03) , menu__dte01 = values(menu__dte01) , menu__dte02 = values(menu__dte02) , menu__dte03 = values(menu__dte03) , menu__dec01 = values(menu__dec01) , menu__dec02 = values(menu__dec02) , menu__dec03 = values(menu__dec03) , menu__log01 = values(menu__log01) , menu__log02 = values(menu__log02) , menu_uri = values(menu_uri) , menu_fkey = values(menu_fkey) , menu_mod_time = values(menu_mod_time) , menu_user1 = values(menu_user1) , menu_user2 = values(menu_user2) , menu__qadc01 = values(menu__qadc01) , menu_qad2wms_po_ok = values(menu_qad2wms_po_ok) , menu_qad2wms_so_ok = values(menu_qad2wms_so_ok) , menu_qad2wms_wo_ok = values(menu_qad2wms_wo_ok) , menu_qad2wms_vsch_ok = values(menu_qad2wms_vsch_ok) , menu_qad2wms_csch_ok = values(menu_qad2wms_csch_ok) , menu_qad2wms_mstr_ok = values(menu_qad2wms_mstr_ok) , guid = values(guid)     </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update public.menu_mstr
+        <set>
+            <if test="menuProgram != null and menuProgram != ''">
+                menu_program = #{menuProgram},
+            </if>
+            <if test="menuName != null and menuName != ''">
+                menu_name = #{menuName},
+            </if>
+            <if test="menuHelp != null and menuHelp != ''">
+                menu_help = #{menuHelp},
+            </if>
+            <if test="menuCanrun != null and menuCanrun != ''">
+                menu_canrun = #{menuCanrun},
+            </if>
+            <if test="menuModDate != null">
+                menu_mod_date = #{menuModDate},
+            </if>
+            <if test="menuModProg != null and menuModProg != ''">
+                menu_mod_prog = #{menuModProg},
+            </if>
+            <if test="menuModUser != null and menuModUser != ''">
+                menu_mod_user = #{menuModUser},
+            </if>
+            <if test="menu_Chr01 != null and menu_Chr01 != ''">
+                menu__chr01 = #{menu_Chr01},
+            </if>
+            <if test="menu_Chr02 != null and menu_Chr02 != ''">
+                menu__chr02 = #{menu_Chr02},
+            </if>
+            <if test="menu_Chr03 != null and menu_Chr03 != ''">
+                menu__chr03 = #{menu_Chr03},
+            </if>
+            <if test="menu_Int01 != null">
+                menu__int01 = #{menu_Int01},
+            </if>
+            <if test="menu_Int02 != null">
+                menu__int02 = #{menu_Int02},
+            </if>
+            <if test="menu_Int03 != null">
+                menu__int03 = #{menu_Int03},
+            </if>
+            <if test="menu_Dte01 != null">
+                menu__dte01 = #{menu_Dte01},
+            </if>
+            <if test="menu_Dte02 != null">
+                menu__dte02 = #{menu_Dte02},
+            </if>
+            <if test="menu_Dte03 != null">
+                menu__dte03 = #{menu_Dte03},
+            </if>
+            <if test="menu_Dec01 != null">
+                menu__dec01 = #{menu_Dec01},
+            </if>
+            <if test="menu_Dec02 != null">
+                menu__dec02 = #{menu_Dec02},
+            </if>
+            <if test="menu_Dec03 != null">
+                menu__dec03 = #{menu_Dec03},
+            </if>
+            <if test="menu_Log01 != null">
+                menu__log01 = #{menu_Log01},
+            </if>
+            <if test="menu_Log02 != null">
+                menu__log02 = #{menu_Log02},
+            </if>
+            <if test="menuUri != null and menuUri != ''">
+                menu_uri = #{menuUri},
+            </if>
+            <if test="menuFkey != null">
+                menu_fkey = #{menuFkey},
+            </if>
+            <if test="menuModTime != null">
+                menu_mod_time = #{menuModTime},
+            </if>
+            <if test="menuUser1 != null and menuUser1 != ''">
+                menu_user1 = #{menuUser1},
+            </if>
+            <if test="menuUser2 != null and menuUser2 != ''">
+                menu_user2 = #{menuUser2},
+            </if>
+            <if test="menu_Qadc01 != null and menu_Qadc01 != ''">
+                menu__qadc01 = #{menu_Qadc01},
+            </if>
+            <if test="menuQad2wmsPoOk != null">
+                menu_qad2wms_po_ok = #{menuQad2wmsPoOk},
+            </if>
+            <if test="menuQad2wmsSoOk != null">
+                menu_qad2wms_so_ok = #{menuQad2wmsSoOk},
+            </if>
+            <if test="menuQad2wmsWoOk != null">
+                menu_qad2wms_wo_ok = #{menuQad2wmsWoOk},
+            </if>
+            <if test="menuQad2wmsVschOk != null">
+                menu_qad2wms_vsch_ok = #{menuQad2wmsVschOk},
+            </if>
+            <if test="menuQad2wmsCschOk != null">
+                menu_qad2wms_csch_ok = #{menuQad2wmsCschOk},
+            </if>
+            <if test="menuQad2wmsMstrOk != null">
+                menu_qad2wms_mstr_ok = #{menuQad2wmsMstrOk},
+            </if>
+            <if test="guid != null and guid != ''">
+                guid = #{guid},
+            </if>
+        </set>
+        where menu_corp = #{menuCorp}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from public.menu_mstr where menu_corp = #{menuCorp}
+    </delete>
+    
+    
+
+</mapper>

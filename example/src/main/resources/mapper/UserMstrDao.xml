@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.UserMstrDao">
+
+    <resultMap type="com.example.entity.UserMstr" id="UserMstrMap">
+        <result property="userUserid" column="user_userid" jdbcType="VARCHAR"/>
+        <result property="userCorp" column="user_corp" jdbcType="VARCHAR"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="userLang" column="user_lang" jdbcType="VARCHAR"/>
+        <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
+        <result property="userPasswdEff" column="user_passwd_eff" jdbcType="OTHER"/>
+        <result property="userLastChgDate" column="user_last_chg_date" jdbcType="OTHER"/>
+        <result property="userForceChange" column="user_force_change" jdbcType="BOOLEAN"/>
+        <result property="userMailAddress" column="user_mail_address" jdbcType="VARCHAR"/>
+        <result property="userType" column="user_type" jdbcType="VARCHAR"/>
+        <result property="userCountry" column="user_country" jdbcType="VARCHAR"/>
+        <result property="userFailedAttempts" column="user_failed_attempts" jdbcType="INTEGER"/>
+        <result property="userLogonDate" column="user_logon_date" jdbcType="OTHER"/>
+        <result property="userLogonTime" column="user_logon_time" jdbcType="INTEGER"/>
+        <result property="userLogonTimezone" column="user_logon_timezone" jdbcType="VARCHAR"/>
+        <result property="userAccessType" column="user_access_type" jdbcType="VARCHAR"/>
+        <result property="userAccessLoc" column="user_access_loc" jdbcType="VARCHAR"/>
+        <result property="userActived" column="user_actived" jdbcType="BOOLEAN"/>
+        <result property="userActiveBy" column="user_active_by" jdbcType="VARCHAR"/>
+        <result property="userActiveReason" column="user_active_reason" jdbcType="VARCHAR"/>
+        <result property="userActiveDate" column="user_active_date" jdbcType="OTHER"/>
+        <result property="userRemark" column="user_remark" jdbcType="VARCHAR"/>
+        <result property="userTzdb" column="user_tzdb" jdbcType="VARCHAR"/>
+        <result property="userTimezone" column="user_timezone" jdbcType="VARCHAR"/>
+        <result property="userOnlineStat" column="user_online_stat" jdbcType="BOOLEAN"/>
+        <result property="userSessionId" column="user_session_id" jdbcType="VARCHAR"/>
+        <result property="userModDate" column="user_mod_date" jdbcType="OTHER"/>
+        <result property="userModProg" column="user_mod_prog" jdbcType="VARCHAR"/>
+        <result property="userModUser" column="user_mod_user" jdbcType="VARCHAR"/>
+        <result property="user_Chr01" column="user__chr01" jdbcType="VARCHAR"/>
+        <result property="user_Chr02" column="user__chr02" jdbcType="VARCHAR"/>
+        <result property="user_Chr03" column="user__chr03" jdbcType="VARCHAR"/>
+        <result property="user_Int01" column="user__int01" jdbcType="INTEGER"/>
+        <result property="user_Int02" column="user__int02" jdbcType="INTEGER"/>
+        <result property="user_Int03" column="user__int03" jdbcType="INTEGER"/>
+        <result property="user_Dte01" column="user__dte01" jdbcType="OTHER"/>
+        <result property="user_Dte02" column="user__dte02" jdbcType="OTHER"/>
+        <result property="user_Dte03" column="user__dte03" jdbcType="OTHER"/>
+        <result property="user_Dec01" column="user__dec01" jdbcType="OTHER"/>
+        <result property="user_Dec02" column="user__dec02" jdbcType="OTHER"/>
+        <result property="user_Dec03" column="user__dec03" jdbcType="OTHER"/>
+        <result property="user_Log01" column="user__log01" jdbcType="BOOLEAN"/>
+        <result property="user_Log02" column="user__log02" jdbcType="BOOLEAN"/>
+        <result property="userEmSystemId" column="user_em_system_id" jdbcType="VARCHAR"/>
+        <result property="userUser1" column="user_user1" jdbcType="VARCHAR"/>
+        <result property="userUser2" column="user_user2" jdbcType="VARCHAR"/>
+        <result property="userRestrict" column="user_restrict" jdbcType="BOOLEAN"/>
+        <result property="userSite" column="user_site" jdbcType="VARCHAR"/>
+        <result property="userVariantCode" column="user_variant_code" jdbcType="VARCHAR"/>
+        <result property="user_Qad02" column="user__qad02" jdbcType="VARCHAR"/>
+        <result property="user_Qad01" column="user__qad01" jdbcType="VARCHAR"/>
+        <result property="user_Qadc01" column="user__qadc01" jdbcType="VARCHAR"/>
+        <result property="user_Qadc02" column="user__qadc02" jdbcType="VARCHAR"/>
+        <result property="user_Qadc03" column="user__qadc03" jdbcType="VARCHAR"/>
+        <result property="user_Qadc04" column="user__qadc04" jdbcType="VARCHAR"/>
+        <result property="user_Qadc05" column="user__qadc05" jdbcType="VARCHAR"/>
+        <result property="user_Qadi01" column="user__qadi01" jdbcType="INTEGER"/>
+        <result property="user_Qadi02" column="user__qadi02" jdbcType="INTEGER"/>
+        <result property="user_Qadl01" column="user__qadl01" jdbcType="BOOLEAN"/>
+        <result property="user_Qadl02" column="user__qadl02" jdbcType="BOOLEAN"/>
+        <result property="user_Qadl03" column="user__qadl03" jdbcType="BOOLEAN"/>
+        <result property="userModTime" column="user_mod_time" jdbcType="INTEGER"/>
+        <result property="userAddr" column="user_addr" jdbcType="VARCHAR"/>
+        <result property="userWechat" column="user_wechat" jdbcType="VARCHAR"/>
+        <result property="userCorpcode" column="user_corpcode" jdbcType="VARCHAR"/>
+        <result property="userCorpname" column="user_corpname" jdbcType="VARCHAR"/>
+        <result property="userDepart" column="user_depart" jdbcType="VARCHAR"/>
+        <result property="userPost" column="user_post" jdbcType="VARCHAR"/>
+        <result property="userPhone" column="user_phone" jdbcType="VARCHAR"/>
+        <result property="userQqnum" column="user_qqnum" jdbcType="VARCHAR"/>
+        <result property="userContact" column="user_contact" jdbcType="VARCHAR"/>
+        <result property="userSalt" column="user_salt" jdbcType="VARCHAR"/>
+        <result property="userToken" column="user_token" jdbcType="VARCHAR"/>
+        <result property="guid" column="guid" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMstrMap">
+        select
+          user_userid, user_corp, user_name, user_lang, user_password, user_passwd_eff, user_last_chg_date, user_force_change, user_mail_address, user_type, user_country, user_failed_attempts, user_logon_date, user_logon_time, user_logon_timezone, user_access_type, user_access_loc, user_actived, user_active_by, user_active_reason, user_active_date, user_remark, user_tzdb, user_timezone, user_online_stat, user_session_id, user_mod_date, user_mod_prog, user_mod_user, user__chr01, user__chr02, user__chr03, user__int01, user__int02, user__int03, user__dte01, user__dte02, user__dte03, user__dec01, user__dec02, user__dec03, user__log01, user__log02, user_em_system_id, user_user1, user_user2, user_restrict, user_site, user_variant_code, user__qad02, user__qad01, user__qadc01, user__qadc02, user__qadc03, user__qadc04, user__qadc05, user__qadi01, user__qadi02, user__qadl01, user__qadl02, user__qadl03, user_mod_time, user_addr, user_wechat, user_corpcode, user_corpname, user_depart, user_post, user_phone, user_qqnum, user_contact, user_salt, user_token, guid
+        from public.user_mstr
+        where guid = #{guid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMstrMap">
+        select
+          user_userid, user_corp, user_name, user_lang, user_password, user_passwd_eff, user_last_chg_date, user_force_change, user_mail_address, user_type, user_country, user_failed_attempts, user_logon_date, user_logon_time, user_logon_timezone, user_access_type, user_access_loc, user_actived, user_active_by, user_active_reason, user_active_date, user_remark, user_tzdb, user_timezone, user_online_stat, user_session_id, user_mod_date, user_mod_prog, user_mod_user, user__chr01, user__chr02, user__chr03, user__int01, user__int02, user__int03, user__dte01, user__dte02, user__dte03, user__dec01, user__dec02, user__dec03, user__log01, user__log02, user_em_system_id, user_user1, user_user2, user_restrict, user_site, user_variant_code, user__qad02, user__qad01, user__qadc01, user__qadc02, user__qadc03, user__qadc04, user__qadc05, user__qadi01, user__qadi02, user__qadl01, user__qadl02, user__qadl03, user_mod_time, user_addr, user_wechat, user_corpcode, user_corpname, user_depart, user_post, user_phone, user_qqnum, user_contact, user_salt, user_token, guid
+        from public.user_mstr
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserMstrMap">
+        select
+          user_userid, user_corp, user_name, user_lang, user_password, user_passwd_eff, user_last_chg_date, user_force_change, user_mail_address, user_type, user_country, user_failed_attempts, user_logon_date, user_logon_time, user_logon_timezone, user_access_type, user_access_loc, user_actived, user_active_by, user_active_reason, user_active_date, user_remark, user_tzdb, user_timezone, user_online_stat, user_session_id, user_mod_date, user_mod_prog, user_mod_user, user__chr01, user__chr02, user__chr03, user__int01, user__int02, user__int03, user__dte01, user__dte02, user__dte03, user__dec01, user__dec02, user__dec03, user__log01, user__log02, user_em_system_id, user_user1, user_user2, user_restrict, user_site, user_variant_code, user__qad02, user__qad01, user__qadc01, user__qadc02, user__qadc03, user__qadc04, user__qadc05, user__qadi01, user__qadi02, user__qadl01, user__qadl02, user__qadl03, user_mod_time, user_addr, user_wechat, user_corpcode, user_corpname, user_depart, user_post, user_phone, user_qqnum, user_contact, user_salt, user_token, guid
+        from public.user_mstr
+        <where>
+            <if test="userUserid != null and userUserid != ''">
+                and user_userid = #{userUserid}
+            </if>
+            <if test="userCorp != null and userCorp != ''">
+                and user_corp = #{userCorp}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </if>
+            <if test="userLang != null and userLang != ''">
+                and user_lang = #{userLang}
+            </if>
+            <if test="userPassword != null and userPassword != ''">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userPasswdEff != null">
+                and user_passwd_eff = #{userPasswdEff}
+            </if>
+            <if test="userLastChgDate != null">
+                and user_last_chg_date = #{userLastChgDate}
+            </if>
+            <if test="userForceChange != null">
+                and user_force_change = #{userForceChange}
+            </if>
+            <if test="userMailAddress != null and userMailAddress != ''">
+                and user_mail_address = #{userMailAddress}
+            </if>
+            <if test="userType != null and userType != ''">
+                and user_type = #{userType}
+            </if>
+            <if test="userCountry != null and userCountry != ''">
+                and user_country = #{userCountry}
+            </if>
+            <if test="userFailedAttempts != null">
+                and user_failed_attempts = #{userFailedAttempts}
+            </if>
+            <if test="userLogonDate != null">
+                and user_logon_date = #{userLogonDate}
+            </if>
+            <if test="userLogonTime != null">
+                and user_logon_time = #{userLogonTime}
+            </if>
+            <if test="userLogonTimezone != null and userLogonTimezone != ''">
+                and user_logon_timezone = #{userLogonTimezone}
+            </if>
+            <if test="userAccessType != null and userAccessType != ''">
+                and user_access_type = #{userAccessType}
+            </if>
+            <if test="userAccessLoc != null and userAccessLoc != ''">
+                and user_access_loc = #{userAccessLoc}
+            </if>
+            <if test="userActived != null">
+                and user_actived = #{userActived}
+            </if>
+            <if test="userActiveBy != null and userActiveBy != ''">
+                and user_active_by = #{userActiveBy}
+            </if>
+            <if test="userActiveReason != null and userActiveReason != ''">
+                and user_active_reason = #{userActiveReason}
+            </if>
+            <if test="userActiveDate != null">
+                and user_active_date = #{userActiveDate}
+            </if>
+            <if test="userRemark != null and userRemark != ''">
+                and user_remark = #{userRemark}
+            </if>
+            <if test="userTzdb != null and userTzdb != ''">
+                and user_tzdb = #{userTzdb}
+            </if>
+            <if test="userTimezone != null and userTimezone != ''">
+                and user_timezone = #{userTimezone}
+            </if>
+            <if test="userOnlineStat != null">
+                and user_online_stat = #{userOnlineStat}
+            </if>
+            <if test="userSessionId != null and userSessionId != ''">
+                and user_session_id = #{userSessionId}
+            </if>
+            <if test="userModDate != null">
+                and user_mod_date = #{userModDate}
+            </if>
+            <if test="userModProg != null and userModProg != ''">
+                and user_mod_prog = #{userModProg}
+            </if>
+            <if test="userModUser != null and userModUser != ''">
+                and user_mod_user = #{userModUser}
+            </if>
+            <if test="user_Chr01 != null and user_Chr01 != ''">
+                and user__chr01 = #{user_Chr01}
+            </if>
+            <if test="user_Chr02 != null and user_Chr02 != ''">
+                and user__chr02 = #{user_Chr02}
+            </if>
+            <if test="user_Chr03 != null and user_Chr03 != ''">
+                and user__chr03 = #{user_Chr03}
+            </if>
+            <if test="user_Int01 != null">
+                and user__int01 = #{user_Int01}
+            </if>
+            <if test="user_Int02 != null">
+                and user__int02 = #{user_Int02}
+            </if>
+            <if test="user_Int03 != null">
+                and user__int03 = #{user_Int03}
+            </if>
+            <if test="user_Dte01 != null">
+                and user__dte01 = #{user_Dte01}
+            </if>
+            <if test="user_Dte02 != null">
+                and user__dte02 = #{user_Dte02}
+            </if>
+            <if test="user_Dte03 != null">
+                and user__dte03 = #{user_Dte03}
+            </if>
+            <if test="user_Dec01 != null">
+                and user__dec01 = #{user_Dec01}
+            </if>
+            <if test="user_Dec02 != null">
+                and user__dec02 = #{user_Dec02}
+            </if>
+            <if test="user_Dec03 != null">
+                and user__dec03 = #{user_Dec03}
+            </if>
+            <if test="user_Log01 != null">
+                and user__log01 = #{user_Log01}
+            </if>
+            <if test="user_Log02 != null">
+                and user__log02 = #{user_Log02}
+            </if>
+            <if test="userEmSystemId != null and userEmSystemId != ''">
+                and user_em_system_id = #{userEmSystemId}
+            </if>
+            <if test="userUser1 != null and userUser1 != ''">
+                and user_user1 = #{userUser1}
+            </if>
+            <if test="userUser2 != null and userUser2 != ''">
+                and user_user2 = #{userUser2}
+            </if>
+            <if test="userRestrict != null">
+                and user_restrict = #{userRestrict}
+            </if>
+            <if test="userSite != null and userSite != ''">
+                and user_site = #{userSite}
+            </if>
+            <if test="userVariantCode != null and userVariantCode != ''">
+                and user_variant_code = #{userVariantCode}
+            </if>
+            <if test="user_Qad02 != null and user_Qad02 != ''">
+                and user__qad02 = #{user_Qad02}
+            </if>
+            <if test="user_Qad01 != null and user_Qad01 != ''">
+                and user__qad01 = #{user_Qad01}
+            </if>
+            <if test="user_Qadc01 != null and user_Qadc01 != ''">
+                and user__qadc01 = #{user_Qadc01}
+            </if>
+            <if test="user_Qadc02 != null and user_Qadc02 != ''">
+                and user__qadc02 = #{user_Qadc02}
+            </if>
+            <if test="user_Qadc03 != null and user_Qadc03 != ''">
+                and user__qadc03 = #{user_Qadc03}
+            </if>
+            <if test="user_Qadc04 != null and user_Qadc04 != ''">
+                and user__qadc04 = #{user_Qadc04}
+            </if>
+            <if test="user_Qadc05 != null and user_Qadc05 != ''">
+                and user__qadc05 = #{user_Qadc05}
+            </if>
+            <if test="user_Qadi01 != null">
+                and user__qadi01 = #{user_Qadi01}
+            </if>
+            <if test="user_Qadi02 != null">
+                and user__qadi02 = #{user_Qadi02}
+            </if>
+            <if test="user_Qadl01 != null">
+                and user__qadl01 = #{user_Qadl01}
+            </if>
+            <if test="user_Qadl02 != null">
+                and user__qadl02 = #{user_Qadl02}
+            </if>
+            <if test="user_Qadl03 != null">
+                and user__qadl03 = #{user_Qadl03}
+            </if>
+            <if test="userModTime != null">
+                and user_mod_time = #{userModTime}
+            </if>
+            <if test="userAddr != null and userAddr != ''">
+                and user_addr = #{userAddr}
+            </if>
+            <if test="userWechat != null and userWechat != ''">
+                and user_wechat = #{userWechat}
+            </if>
+            <if test="userCorpcode != null and userCorpcode != ''">
+                and user_corpcode = #{userCorpcode}
+            </if>
+            <if test="userCorpname != null and userCorpname != ''">
+                and user_corpname = #{userCorpname}
+            </if>
+            <if test="userDepart != null and userDepart != ''">
+                and user_depart = #{userDepart}
+            </if>
+            <if test="userPost != null and userPost != ''">
+                and user_post = #{userPost}
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                and user_phone = #{userPhone}
+            </if>
+            <if test="userQqnum != null and userQqnum != ''">
+                and user_qqnum = #{userQqnum}
+            </if>
+            <if test="userContact != null and userContact != ''">
+                and user_contact = #{userContact}
+            </if>
+            <if test="userSalt != null and userSalt != ''">
+                and user_salt = #{userSalt}
+            </if>
+            <if test="userToken != null and userToken != ''">
+                and user_token = #{userToken}
+            </if>
+            <if test="guid != null and guid != ''">
+                and guid = #{guid}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="guid" useGeneratedKeys="true">
+        insert into public.user_mstr(user_userid, user_corp, user_name, user_lang, user_password, user_passwd_eff, user_last_chg_date, user_force_change, user_mail_address, user_type, user_country, user_failed_attempts, user_logon_date, user_logon_time, user_logon_timezone, user_access_type, user_access_loc, user_actived, user_active_by, user_active_reason, user_active_date, user_remark, user_tzdb, user_timezone, user_online_stat, user_session_id, user_mod_date, user_mod_prog, user_mod_user, user__chr01, user__chr02, user__chr03, user__int01, user__int02, user__int03, user__dte01, user__dte02, user__dte03, user__dec01, user__dec02, user__dec03, user__log01, user__log02, user_em_system_id, user_user1, user_user2, user_restrict, user_site, user_variant_code, user__qad02, user__qad01, user__qadc01, user__qadc02, user__qadc03, user__qadc04, user__qadc05, user__qadi01, user__qadi02, user__qadl01, user__qadl02, user__qadl03, user_mod_time, user_addr, user_wechat, user_corpcode, user_corpname, user_depart, user_post, user_phone, user_qqnum, user_contact, user_salt, user_token)
+        values (#{userUserid}, #{userCorp}, #{userName}, #{userLang}, #{userPassword}, #{userPasswdEff}, #{userLastChgDate}, #{userForceChange}, #{userMailAddress}, #{userType}, #{userCountry}, #{userFailedAttempts}, #{userLogonDate}, #{userLogonTime}, #{userLogonTimezone}, #{userAccessType}, #{userAccessLoc}, #{userActived}, #{userActiveBy}, #{userActiveReason}, #{userActiveDate}, #{userRemark}, #{userTzdb}, #{userTimezone}, #{userOnlineStat}, #{userSessionId}, #{userModDate}, #{userModProg}, #{userModUser}, #{user_Chr01}, #{user_Chr02}, #{user_Chr03}, #{user_Int01}, #{user_Int02}, #{user_Int03}, #{user_Dte01}, #{user_Dte02}, #{user_Dte03}, #{user_Dec01}, #{user_Dec02}, #{user_Dec03}, #{user_Log01}, #{user_Log02}, #{userEmSystemId}, #{userUser1}, #{userUser2}, #{userRestrict}, #{userSite}, #{userVariantCode}, #{user_Qad02}, #{user_Qad01}, #{user_Qadc01}, #{user_Qadc02}, #{user_Qadc03}, #{user_Qadc04}, #{user_Qadc05}, #{user_Qadi01}, #{user_Qadi02}, #{user_Qadl01}, #{user_Qadl02}, #{user_Qadl03}, #{userModTime}, #{userAddr}, #{userWechat}, #{userCorpcode}, #{userCorpname}, #{userDepart}, #{userPost}, #{userPhone}, #{userQqnum}, #{userContact}, #{userSalt}, #{userToken})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="guid" useGeneratedKeys="true">
+        insert into public.user_mstr(user_userid, user_corp, user_name, user_lang, user_password, user_passwd_eff, user_last_chg_date, user_force_change, user_mail_address, user_type, user_country, user_failed_attempts, user_logon_date, user_logon_time, user_logon_timezone, user_access_type, user_access_loc, user_actived, user_active_by, user_active_reason, user_active_date, user_remark, user_tzdb, user_timezone, user_online_stat, user_session_id, user_mod_date, user_mod_prog, user_mod_user, user__chr01, user__chr02, user__chr03, user__int01, user__int02, user__int03, user__dte01, user__dte02, user__dte03, user__dec01, user__dec02, user__dec03, user__log01, user__log02, user_em_system_id, user_user1, user_user2, user_restrict, user_site, user_variant_code, user__qad02, user__qad01, user__qadc01, user__qadc02, user__qadc03, user__qadc04, user__qadc05, user__qadi01, user__qadi02, user__qadl01, user__qadl02, user__qadl03, user_mod_time, user_addr, user_wechat, user_corpcode, user_corpname, user_depart, user_post, user_phone, user_qqnum, user_contact, user_salt, user_token)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userUserid}, #{entity.userCorp}, #{entity.userName}, #{entity.userLang}, #{entity.userPassword}, #{entity.userPasswdEff}, #{entity.userLastChgDate}, #{entity.userForceChange}, #{entity.userMailAddress}, #{entity.userType}, #{entity.userCountry}, #{entity.userFailedAttempts}, #{entity.userLogonDate}, #{entity.userLogonTime}, #{entity.userLogonTimezone}, #{entity.userAccessType}, #{entity.userAccessLoc}, #{entity.userActived}, #{entity.userActiveBy}, #{entity.userActiveReason}, #{entity.userActiveDate}, #{entity.userRemark}, #{entity.userTzdb}, #{entity.userTimezone}, #{entity.userOnlineStat}, #{entity.userSessionId}, #{entity.userModDate}, #{entity.userModProg}, #{entity.userModUser}, #{entity.user_Chr01}, #{entity.user_Chr02}, #{entity.user_Chr03}, #{entity.user_Int01}, #{entity.user_Int02}, #{entity.user_Int03}, #{entity.user_Dte01}, #{entity.user_Dte02}, #{entity.user_Dte03}, #{entity.user_Dec01}, #{entity.user_Dec02}, #{entity.user_Dec03}, #{entity.user_Log01}, #{entity.user_Log02}, #{entity.userEmSystemId}, #{entity.userUser1}, #{entity.userUser2}, #{entity.userRestrict}, #{entity.userSite}, #{entity.userVariantCode}, #{entity.user_Qad02}, #{entity.user_Qad01}, #{entity.user_Qadc01}, #{entity.user_Qadc02}, #{entity.user_Qadc03}, #{entity.user_Qadc04}, #{entity.user_Qadc05}, #{entity.user_Qadi01}, #{entity.user_Qadi02}, #{entity.user_Qadl01}, #{entity.user_Qadl02}, #{entity.user_Qadl03}, #{entity.userModTime}, #{entity.userAddr}, #{entity.userWechat}, #{entity.userCorpcode}, #{entity.userCorpname}, #{entity.userDepart}, #{entity.userPost}, #{entity.userPhone}, #{entity.userQqnum}, #{entity.userContact}, #{entity.userSalt}, #{entity.userToken})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="guid" useGeneratedKeys="true">
+        insert into public.user_mstr(user_userid, user_corp, user_name, user_lang, user_password, user_passwd_eff, user_last_chg_date, user_force_change, user_mail_address, user_type, user_country, user_failed_attempts, user_logon_date, user_logon_time, user_logon_timezone, user_access_type, user_access_loc, user_actived, user_active_by, user_active_reason, user_active_date, user_remark, user_tzdb, user_timezone, user_online_stat, user_session_id, user_mod_date, user_mod_prog, user_mod_user, user__chr01, user__chr02, user__chr03, user__int01, user__int02, user__int03, user__dte01, user__dte02, user__dte03, user__dec01, user__dec02, user__dec03, user__log01, user__log02, user_em_system_id, user_user1, user_user2, user_restrict, user_site, user_variant_code, user__qad02, user__qad01, user__qadc01, user__qadc02, user__qadc03, user__qadc04, user__qadc05, user__qadi01, user__qadi02, user__qadl01, user__qadl02, user__qadl03, user_mod_time, user_addr, user_wechat, user_corpcode, user_corpname, user_depart, user_post, user_phone, user_qqnum, user_contact, user_salt, user_token)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userUserid}, #{entity.userCorp}, #{entity.userName}, #{entity.userLang}, #{entity.userPassword}, #{entity.userPasswdEff}, #{entity.userLastChgDate}, #{entity.userForceChange}, #{entity.userMailAddress}, #{entity.userType}, #{entity.userCountry}, #{entity.userFailedAttempts}, #{entity.userLogonDate}, #{entity.userLogonTime}, #{entity.userLogonTimezone}, #{entity.userAccessType}, #{entity.userAccessLoc}, #{entity.userActived}, #{entity.userActiveBy}, #{entity.userActiveReason}, #{entity.userActiveDate}, #{entity.userRemark}, #{entity.userTzdb}, #{entity.userTimezone}, #{entity.userOnlineStat}, #{entity.userSessionId}, #{entity.userModDate}, #{entity.userModProg}, #{entity.userModUser}, #{entity.user_Chr01}, #{entity.user_Chr02}, #{entity.user_Chr03}, #{entity.user_Int01}, #{entity.user_Int02}, #{entity.user_Int03}, #{entity.user_Dte01}, #{entity.user_Dte02}, #{entity.user_Dte03}, #{entity.user_Dec01}, #{entity.user_Dec02}, #{entity.user_Dec03}, #{entity.user_Log01}, #{entity.user_Log02}, #{entity.userEmSystemId}, #{entity.userUser1}, #{entity.userUser2}, #{entity.userRestrict}, #{entity.userSite}, #{entity.userVariantCode}, #{entity.user_Qad02}, #{entity.user_Qad01}, #{entity.user_Qadc01}, #{entity.user_Qadc02}, #{entity.user_Qadc03}, #{entity.user_Qadc04}, #{entity.user_Qadc05}, #{entity.user_Qadi01}, #{entity.user_Qadi02}, #{entity.user_Qadl01}, #{entity.user_Qadl02}, #{entity.user_Qadl03}, #{entity.userModTime}, #{entity.userAddr}, #{entity.userWechat}, #{entity.userCorpcode}, #{entity.userCorpname}, #{entity.userDepart}, #{entity.userPost}, #{entity.userPhone}, #{entity.userQqnum}, #{entity.userContact}, #{entity.userSalt}, #{entity.userToken})
+        </foreach>
+        on duplicate key update
+         user_userid = values(user_userid) , user_corp = values(user_corp) , user_name = values(user_name) , user_lang = values(user_lang) , user_password = values(user_password) , user_passwd_eff = values(user_passwd_eff) , user_last_chg_date = values(user_last_chg_date) , user_force_change = values(user_force_change) , user_mail_address = values(user_mail_address) , user_type = values(user_type) , user_country = values(user_country) , user_failed_attempts = values(user_failed_attempts) , user_logon_date = values(user_logon_date) , user_logon_time = values(user_logon_time) , user_logon_timezone = values(user_logon_timezone) , user_access_type = values(user_access_type) , user_access_loc = values(user_access_loc) , user_actived = values(user_actived) , user_active_by = values(user_active_by) , user_active_reason = values(user_active_reason) , user_active_date = values(user_active_date) , user_remark = values(user_remark) , user_tzdb = values(user_tzdb) , user_timezone = values(user_timezone) , user_online_stat = values(user_online_stat) , user_session_id = values(user_session_id) , user_mod_date = values(user_mod_date) , user_mod_prog = values(user_mod_prog) , user_mod_user = values(user_mod_user) , user__chr01 = values(user__chr01) , user__chr02 = values(user__chr02) , user__chr03 = values(user__chr03) , user__int01 = values(user__int01) , user__int02 = values(user__int02) , user__int03 = values(user__int03) , user__dte01 = values(user__dte01) , user__dte02 = values(user__dte02) , user__dte03 = values(user__dte03) , user__dec01 = values(user__dec01) , user__dec02 = values(user__dec02) , user__dec03 = values(user__dec03) , user__log01 = values(user__log01) , user__log02 = values(user__log02) , user_em_system_id = values(user_em_system_id) , user_user1 = values(user_user1) , user_user2 = values(user_user2) , user_restrict = values(user_restrict) , user_site = values(user_site) , user_variant_code = values(user_variant_code) , user__qad02 = values(user__qad02) , user__qad01 = values(user__qad01) , user__qadc01 = values(user__qadc01) , user__qadc02 = values(user__qadc02) , user__qadc03 = values(user__qadc03) , user__qadc04 = values(user__qadc04) , user__qadc05 = values(user__qadc05) , user__qadi01 = values(user__qadi01) , user__qadi02 = values(user__qadi02) , user__qadl01 = values(user__qadl01) , user__qadl02 = values(user__qadl02) , user__qadl03 = values(user__qadl03) , user_mod_time = values(user_mod_time) , user_addr = values(user_addr) , user_wechat = values(user_wechat) , user_corpcode = values(user_corpcode) , user_corpname = values(user_corpname) , user_depart = values(user_depart) , user_post = values(user_post) , user_phone = values(user_phone) , user_qqnum = values(user_qqnum) , user_contact = values(user_contact) , user_salt = values(user_salt) , user_token = values(user_token)     </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update public.user_mstr
+        <set>
+            <if test="userUserid != null and userUserid != ''">
+                user_userid = #{userUserid},
+            </if>
+            <if test="userCorp != null and userCorp != ''">
+                user_corp = #{userCorp},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="userLang != null and userLang != ''">
+                user_lang = #{userLang},
+            </if>
+            <if test="userPassword != null and userPassword != ''">
+                user_password = #{userPassword},
+            </if>
+            <if test="userPasswdEff != null">
+                user_passwd_eff = #{userPasswdEff},
+            </if>
+            <if test="userLastChgDate != null">
+                user_last_chg_date = #{userLastChgDate},
+            </if>
+            <if test="userForceChange != null">
+                user_force_change = #{userForceChange},
+            </if>
+            <if test="userMailAddress != null and userMailAddress != ''">
+                user_mail_address = #{userMailAddress},
+            </if>
+            <if test="userType != null and userType != ''">
+                user_type = #{userType},
+            </if>
+            <if test="userCountry != null and userCountry != ''">
+                user_country = #{userCountry},
+            </if>
+            <if test="userFailedAttempts != null">
+                user_failed_attempts = #{userFailedAttempts},
+            </if>
+            <if test="userLogonDate != null">
+                user_logon_date = #{userLogonDate},
+            </if>
+            <if test="userLogonTime != null">
+                user_logon_time = #{userLogonTime},
+            </if>
+            <if test="userLogonTimezone != null and userLogonTimezone != ''">
+                user_logon_timezone = #{userLogonTimezone},
+            </if>
+            <if test="userAccessType != null and userAccessType != ''">
+                user_access_type = #{userAccessType},
+            </if>
+            <if test="userAccessLoc != null and userAccessLoc != ''">
+                user_access_loc = #{userAccessLoc},
+            </if>
+            <if test="userActived != null">
+                user_actived = #{userActived},
+            </if>
+            <if test="userActiveBy != null and userActiveBy != ''">
+                user_active_by = #{userActiveBy},
+            </if>
+            <if test="userActiveReason != null and userActiveReason != ''">
+                user_active_reason = #{userActiveReason},
+            </if>
+            <if test="userActiveDate != null">
+                user_active_date = #{userActiveDate},
+            </if>
+            <if test="userRemark != null and userRemark != ''">
+                user_remark = #{userRemark},
+            </if>
+            <if test="userTzdb != null and userTzdb != ''">
+                user_tzdb = #{userTzdb},
+            </if>
+            <if test="userTimezone != null and userTimezone != ''">
+                user_timezone = #{userTimezone},
+            </if>
+            <if test="userOnlineStat != null">
+                user_online_stat = #{userOnlineStat},
+            </if>
+            <if test="userSessionId != null and userSessionId != ''">
+                user_session_id = #{userSessionId},
+            </if>
+            <if test="userModDate != null">
+                user_mod_date = #{userModDate},
+            </if>
+            <if test="userModProg != null and userModProg != ''">
+                user_mod_prog = #{userModProg},
+            </if>
+            <if test="userModUser != null and userModUser != ''">
+                user_mod_user = #{userModUser},
+            </if>
+            <if test="user_Chr01 != null and user_Chr01 != ''">
+                user__chr01 = #{user_Chr01},
+            </if>
+            <if test="user_Chr02 != null and user_Chr02 != ''">
+                user__chr02 = #{user_Chr02},
+            </if>
+            <if test="user_Chr03 != null and user_Chr03 != ''">
+                user__chr03 = #{user_Chr03},
+            </if>
+            <if test="user_Int01 != null">
+                user__int01 = #{user_Int01},
+            </if>
+            <if test="user_Int02 != null">
+                user__int02 = #{user_Int02},
+            </if>
+            <if test="user_Int03 != null">
+                user__int03 = #{user_Int03},
+            </if>
+            <if test="user_Dte01 != null">
+                user__dte01 = #{user_Dte01},
+            </if>
+            <if test="user_Dte02 != null">
+                user__dte02 = #{user_Dte02},
+            </if>
+            <if test="user_Dte03 != null">
+                user__dte03 = #{user_Dte03},
+            </if>
+            <if test="user_Dec01 != null">
+                user__dec01 = #{user_Dec01},
+            </if>
+            <if test="user_Dec02 != null">
+                user__dec02 = #{user_Dec02},
+            </if>
+            <if test="user_Dec03 != null">
+                user__dec03 = #{user_Dec03},
+            </if>
+            <if test="user_Log01 != null">
+                user__log01 = #{user_Log01},
+            </if>
+            <if test="user_Log02 != null">
+                user__log02 = #{user_Log02},
+            </if>
+            <if test="userEmSystemId != null and userEmSystemId != ''">
+                user_em_system_id = #{userEmSystemId},
+            </if>
+            <if test="userUser1 != null and userUser1 != ''">
+                user_user1 = #{userUser1},
+            </if>
+            <if test="userUser2 != null and userUser2 != ''">
+                user_user2 = #{userUser2},
+            </if>
+            <if test="userRestrict != null">
+                user_restrict = #{userRestrict},
+            </if>
+            <if test="userSite != null and userSite != ''">
+                user_site = #{userSite},
+            </if>
+            <if test="userVariantCode != null and userVariantCode != ''">
+                user_variant_code = #{userVariantCode},
+            </if>
+            <if test="user_Qad02 != null and user_Qad02 != ''">
+                user__qad02 = #{user_Qad02},
+            </if>
+            <if test="user_Qad01 != null and user_Qad01 != ''">
+                user__qad01 = #{user_Qad01},
+            </if>
+            <if test="user_Qadc01 != null and user_Qadc01 != ''">
+                user__qadc01 = #{user_Qadc01},
+            </if>
+            <if test="user_Qadc02 != null and user_Qadc02 != ''">
+                user__qadc02 = #{user_Qadc02},
+            </if>
+            <if test="user_Qadc03 != null and user_Qadc03 != ''">
+                user__qadc03 = #{user_Qadc03},
+            </if>
+            <if test="user_Qadc04 != null and user_Qadc04 != ''">
+                user__qadc04 = #{user_Qadc04},
+            </if>
+            <if test="user_Qadc05 != null and user_Qadc05 != ''">
+                user__qadc05 = #{user_Qadc05},
+            </if>
+            <if test="user_Qadi01 != null">
+                user__qadi01 = #{user_Qadi01},
+            </if>
+            <if test="user_Qadi02 != null">
+                user__qadi02 = #{user_Qadi02},
+            </if>
+            <if test="user_Qadl01 != null">
+                user__qadl01 = #{user_Qadl01},
+            </if>
+            <if test="user_Qadl02 != null">
+                user__qadl02 = #{user_Qadl02},
+            </if>
+            <if test="user_Qadl03 != null">
+                user__qadl03 = #{user_Qadl03},
+            </if>
+            <if test="userModTime != null">
+                user_mod_time = #{userModTime},
+            </if>
+            <if test="userAddr != null and userAddr != ''">
+                user_addr = #{userAddr},
+            </if>
+            <if test="userWechat != null and userWechat != ''">
+                user_wechat = #{userWechat},
+            </if>
+            <if test="userCorpcode != null and userCorpcode != ''">
+                user_corpcode = #{userCorpcode},
+            </if>
+            <if test="userCorpname != null and userCorpname != ''">
+                user_corpname = #{userCorpname},
+            </if>
+            <if test="userDepart != null and userDepart != ''">
+                user_depart = #{userDepart},
+            </if>
+            <if test="userPost != null and userPost != ''">
+                user_post = #{userPost},
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                user_phone = #{userPhone},
+            </if>
+            <if test="userQqnum != null and userQqnum != ''">
+                user_qqnum = #{userQqnum},
+            </if>
+            <if test="userContact != null and userContact != ''">
+                user_contact = #{userContact},
+            </if>
+            <if test="userSalt != null and userSalt != ''">
+                user_salt = #{userSalt},
+            </if>
+            <if test="userToken != null and userToken != ''">
+                user_token = #{userToken},
+            </if>
+        </set>
+        where guid = #{guid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from public.user_mstr where guid = #{guid}
+    </delete>
+    
+    
+
+</mapper>
