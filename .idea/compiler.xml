@@ -6,14 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="gateway" />
-        <module name="menu" />
-        <module name="token" />
-        <module name="dbhelper" />
-        <module name="eureka" />
         <module name="core" />
         <module name="router" />
+        <module name="eureka" />
         <module name="wharf" />
+        <module name="menu" />
+        <module name="gateway" />
+        <module name="dbhelper" />
+        <module name="token" />
+        <module name="example" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -29,6 +30,7 @@
       <module name="dbhelper" options="-parameters" />
       <module name="demo" options="-parameters" />
       <module name="eureka" options="-parameters" />
+      <module name="example" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="menu" options="-parameters" />
       <module name="router" options="-parameters" />

@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/menu/pom.xml" />
         <option value="$PROJECT_DIR$/wharf/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/example/pom.xml" />
       </list>
     </option>
   </component>

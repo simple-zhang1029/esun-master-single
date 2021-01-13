@@ -123,7 +123,11 @@ public class UserController {
 
 	/**
 	 * 批量删除信息
+<<<<<<< HEAD
 	 * @param userMstrList 用火实体类列表
+=======
+	 * @param userMstrList 用户实体类列表
+>>>>>>> 5bd9d87719dfd1f67da3807730712881b1a37785
 	 * @return 结果封装类
 	 */
 	@DeleteMapping("userList")
