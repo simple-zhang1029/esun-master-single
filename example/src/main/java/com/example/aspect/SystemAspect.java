@@ -25,8 +25,8 @@ import java.util.Optional;
 /**
  * 系统切面类
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class SystemAspect {
     //日志声明
     private static Logger logger= LoggerFactory.getLogger(SystemAspect.class);

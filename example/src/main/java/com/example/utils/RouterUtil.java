@@ -1,6 +1,6 @@
 package com.example.utils;
 
-import com.example.service.DbHelperService;
+import com.example.service.feign.DbHelperService;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;

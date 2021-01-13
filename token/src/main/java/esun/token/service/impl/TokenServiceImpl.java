@@ -18,12 +18,14 @@ public class TokenServiceImpl implements TokenService {
     @Value("${token.table}")
     String tokenTable;
 
+    private static String CODE="code";
+    private static String SUCCESS_CODE="200";
     @Autowired
     DbHelperService dbHelperService;
 
     /**
      * 更新token
-     * @param user 用户I
+     * @param user 用户Id
      * @return
      */
     @Override
@@ -32,7 +34,7 @@ public class TokenServiceImpl implements TokenService {
         String sql="update "+tokenTable+" set user_token='"+token+"' where lower(user_userId)=lower('"+user+"')";
         String product="postgres_test";
         ResultUtil result=dbHelperService.update(sql,product);
-        if(Integer.parseInt(result.get("code").toString())==200){
+        if(!SUCCESS_CODE.equals(result.get(CODE))){
             return ResultUtil.ok("更新token成功").put("token",token);
         }
         return ResultUtil.error("更新token失败");

@@ -43,31 +43,31 @@ public class AuthorizeFilter implements GlobalFilter {
 			serverHttpRequest=exchange.getRequest().mutate().header("Token-Checked","true").build();
 			return chain.filter(exchange.mutate().request(serverHttpRequest).build());
 		}
-		//获取name和token
+		//获取userId和token
 		String token = serverHttpRequest.getHeaders().getFirst("token");
 		if(StringUtils.isBlank(token)){
 			token = serverHttpRequest.getQueryParams().getFirst("token");
 		}
-		String name = serverHttpRequest.getHeaders().getFirst("name");
-		if(StringUtils.isBlank(name)){
-			name = serverHttpRequest.getQueryParams().getFirst("name");
+		String userId = serverHttpRequest.getHeaders().getFirst("userId");
+		if(StringUtils.isBlank(userId)){
+			userId = serverHttpRequest.getQueryParams().getFirst("userId");
 		}
 		//校验是否存在token参数
 		if(StringUtils.isBlank(token)){
 			serverHttpResponse.setStatusCode(HttpStatus.UNAUTHORIZED);
-			logger.error(name+":token不存在"+token);
+			logger.error(userId+":token不存在"+token);
 			return getVoidMono(serverHttpResponse,"token不存在");
 		}
 		ResultUtil result= tokenService.checkToken(token);
 		if (HttpStatus.OK.value() != (int)result.get("code")){
-			logger.error(name+":token校验失败"+token);
+			logger.error(userId+":token校验失败"+token);
 			return getVoidMono(serverHttpResponse,"token校验失败");
 		}
-		logger.info(name+":token校验成功"+token);
+		logger.info(userId+":token校验成功"+token);
 		//添加Token-Checked请求头
 		serverHttpRequest=exchange.getRequest().mutate()
 				.header("Token-Checked","true")
-				.header("name",name)
+				.header("userId",userId)
 				.build();
 
 		return chain.filter(exchange.mutate().request(serverHttpRequest).build());

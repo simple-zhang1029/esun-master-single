@@ -1,6 +1,6 @@
-package com.example.controller;
+package com.example.controller.v1;
 
-import com.example.service.MenuService;
+import com.example.service.v1.MenuService;
 import com.example.utils.ResultUtil;
 import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;

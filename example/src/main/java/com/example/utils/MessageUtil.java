@@ -1,9 +1,8 @@
 package com.example.utils;
 
 import com.example.exception.CustomHttpException;
-import com.example.service.DbHelperService;
+import com.example.service.feign.DbHelperService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,6 +16,11 @@ public class MessageUtil {
     private static String MESSAGE_TABLE="message_table";
 
     private static String DEFAULT_PRODUCT="mysql";
+
+    public static final String CODE = "code";
+    private static final String DATASOURCE_POSTGRES="postgres";
+
+    public static final String SUCCESS_CODE="10000";
 
 
     public static String getMessage(String code){
@@ -34,7 +38,7 @@ public class MessageUtil {
         DbHelperService dbHelperService=SpringContextUtils.getBean(DbHelperService.class);
         String sql="select message from "+MESSAGE_TABLE+" where code='"+code+"' and language ='"+ language+"' ;";
         ResultUtil result=dbHelperService.select(sql,DEFAULT_PRODUCT);
-        if(HttpStatus.OK.value()!= (int)result.get("code")) {
+        if(!SUCCESS_CODE.equals(result.get(CODE).toString())) {
            throw new CustomHttpException("获取信息失败");
         }
         ArrayList list= (ArrayList) result.get("result");

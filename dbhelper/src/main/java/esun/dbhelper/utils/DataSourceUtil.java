@@ -2,6 +2,7 @@ package esun.dbhelper.utils;
 
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.dialect.postgresql.visitor.PGSchemaStatVisitor;
 import com.alibaba.druid.sql.visitor.SQLASTVisitor;
 import com.alibaba.druid.sql.visitor.SchemaStatVisitor;
 import com.alibaba.druid.stat.TableStat;
@@ -70,7 +71,7 @@ public class DataSourceUtil {
         List<SQLStatement> sqlStatementList= SQLUtils.parseStatements(sql,dbType);
         for (int i = 0; i <sqlStatementList.size() ; i++) {
             SQLStatement sqlStatement=sqlStatementList.get(i);
-            SchemaStatVisitor visitor=new SchemaStatVisitor();
+            PGSchemaStatVisitor visitor=new PGSchemaStatVisitor();
             sqlStatement.accept(visitor);
             //将set转换为list
             List<TableStat.Name> tableList=new ArrayList<>();

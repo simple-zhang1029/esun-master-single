@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.service.feign;
 
 import com.example.utils.ResultUtil;
 import org.springframework.cloud.openfeign.FeignClient;

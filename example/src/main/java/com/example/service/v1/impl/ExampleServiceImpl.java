@@ -1,17 +1,10 @@
-package com.example.service.impl;
+package com.example.service.v1.impl;
 
-import com.alicp.jetcache.Cache;
-import com.alicp.jetcache.CacheGetResult;
-import com.alicp.jetcache.anno.CacheInvalidate;
-import com.alicp.jetcache.anno.CacheType;
-import com.alicp.jetcache.anno.Cached;
-import com.alicp.jetcache.anno.CreateCache;
-import com.alicp.jetcache.embedded.LinkedHashMapCacheBuilder;
 import com.example.constant.Message;
 import com.example.exception.CustomHttpException;
-import com.example.service.DbHelperService;
-import com.example.service.ExampleService;
-import com.example.service.TokenService;
+import com.example.service.feign.DbHelperService;
+import com.example.service.v1.ExampleService;
+import com.example.service.feign.TokenService;
 import com.example.utils.*;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.poi.ss.usermodel.Sheet;

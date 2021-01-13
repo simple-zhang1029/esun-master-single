@@ -1,17 +1,13 @@
-package com.example.controller;
+package com.example.controller.v1;
 
-import com.alicp.jetcache.Cache;
-import com.alicp.jetcache.anno.CreateCache;
 import com.example.constant.Message;
-import com.example.service.ExampleService;
+import com.example.service.v1.ExampleService;
 import com.example.utils.MessageUtil;
 import com.example.utils.ResultUtil;
 import com.example.utils.SpringUtil;
-import com.sun.istack.Nullable;
 import net.sf.json.JSONArray;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.bouncycastle.jcajce.provider.symmetric.ChaCha;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +18,6 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -38,7 +32,7 @@ public class ExampleController {
 
 	/**
 	 * 模板程序登入
-	 * @param name
+	 * @param userId
 	 * @param password
 	 * @return
 	 */
