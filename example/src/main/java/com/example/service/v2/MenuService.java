@@ -22,7 +22,7 @@ public interface MenuService {
 	 * @param criteriaList  排序列表
 	 * @return 结果封装类
 	 */
-	ResultUtil getMenuInfoList(int pageIndex, int pageSize, String menuNo,String menuSelect,List<Map<String,Object>> criteriaList);
+	ResultUtil getMenuInfoList(int pageIndex, int pageSize, String menuNo, String menuSelect, List<Map<String, Object>> criteriaList);
 
 	/**
 	 * 查询信息
@@ -30,7 +30,7 @@ public interface MenuService {
 	 * @param menuSelect 下级菜单号
 	 * @return 结果封装类
 	 */
-	ResultUtil getMenuInfoList(String menuNo,String menuSelect);
+	ResultUtil getMenuInfoList(String menuNo, String menuSelect);
 
 
 
@@ -93,7 +93,7 @@ public interface MenuService {
 	 * @param menuSelect 下级菜单号
 	 * @return 结果封装类
 	 */
-	void exportUserInfo(String menuNo,String menuSelect);
+	void exportUserInfo(String menuNo, String menuSelect);
 
 	/**
 	 * 查询角色菜单信息
@@ -103,13 +103,20 @@ public interface MenuService {
 	ResultUtil getRoleMenuInfoList(String roleName);
 
 	/**
-	 * 更新角色菜单
+	 * 批量更新角色菜单
 	 * @param menuEntityList 菜单列表
 	 * @param roleName 角色名
 	 * @return 结果封装类
 	 */
-	ResultUtil updateRoleMenuInfoList(List<MenuEntity> menuEntityList,String  roleName);
+	ResultUtil updateRoleMenuInfoList(List<MenuEntity> menuEntityList, String roleName);
 
+	/**
+	 * 单条更新角色菜单
+	 * @param menuEntity
+	 * @param roleName
+	 * @return
+	 */
+	ResultUtil updateRoleMenuInfo(MenuEntity menuEntity, String roleName);
 	/**
 	 * 查询用户菜单信息
 	 * @param userUserId 用户ID

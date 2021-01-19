@@ -1,5 +1,6 @@
 package com.example.controller.v2;
 
+import com.example.entity.CorpMstr;
 import com.example.entity.UserMstr;
 import com.example.service.v1.CorpService;
 import com.example.utils.FileUtils;
@@ -39,7 +40,8 @@ public class CorpController {
     @GetMapping("corp")
     public ResultUtil getCorp(@RequestParam(value = "pageIndex", required = false, defaultValue = "1") int pageIndex,
                               @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
-                              @RequestParam(value = "criteriaList", required = false, defaultValue = "[]") String criteriaList, @RequestParam(value = "sort", required = false, defaultValue = "0") int sort,
+                              @RequestParam(value = "criteriaList", required = false, defaultValue = "[]") String criteriaList,
+                              @RequestParam(value = "sort", required = false, defaultValue = "0") int sort,
                               @RequestParam(value = "corp", required = false, defaultValue = "") String corp) {
         //排序条件json转化列表
         JSONArray criteriaArray = JSONArray.fromObject(criteriaList);
@@ -85,19 +87,19 @@ public class CorpController {
         return corpService.getCorp(pageIndex, pageSize, criteriaArray, corp);
     }
 
-    /**
-     * 添加公司信息
-     *
-     * @param dataList 用户信息列表
-     * @Return 结果封装类
-     * @author
-     * @date
-     */
-    @PostMapping("corp")
-    public ResultUtil addCorp(@RequestParam(value = "list") String dataList) {
-        JSONArray jsonArray = JSONArray.fromObject(dataList);
-        return corpService.addCorp(jsonArray);
-    }
+//    /**
+//     * 添加公司信息
+//     *
+//     * @param dataList 用户信息列表
+//     * @Return 结果封装类
+//     * @author
+//     * @date
+//     */
+//    @PostMapping("corp")
+//    public ResultUtil addCorp(@RequestBody  List<CorpMstr> list) {
+//        JSONArray jsonArray = JSONArray.fromObject(dataList);
+//        return corpService.addCorp(jsonArray);
+//    }
 
     /**
      * 删除公司信息
@@ -162,13 +164,14 @@ public class CorpController {
         return corpService.deriveCorp(corp, isDelete);
     }
 
-/**
- * 获取导入模板
- */
-@GetMapping("template")
-    public void getTemplate(){
-    String path="E:/template/user.xls";
-    FileUtils fileUtils=new FileUtils();
-    fileUtils.downLoad(path);
-  }
+    /**
+     * 获取导入模板
+     *
+     */
+    @GetMapping("template")
+        public void getTemplate(){
+        String path="E:/template/user.xls";
+        FileUtils fileUtils=new FileUtils();
+        fileUtils.downLoad(path);
+      }
 }

@@ -29,17 +29,6 @@ public class MenuController {
 	@Resource(name = "MenuV2Service")
 	MenuService menuService;
 
-	/**
-	 * 获取菜单信息
-	 * @return 查询结果
-	 * @author john.xiao
-	 * @date 2020-10-13 17:06
-	 */
-	@GetMapping("/menuList/page")
-	public ResultUtil getMenuList(@RequestParam("menuSelect")String menuSelect,
-	                              @RequestParam("menuNbr")String menuNbr){
-		return menuService.getMenuInfoList(menuNbr,menuSelect);
-	}
 
 
 	/**
@@ -141,8 +130,9 @@ public class MenuController {
 	 * @return 结果封装类
 	 */
 	@PostMapping("/menuList/role")
-	public ResultUtil updateRoleMenuList(@RequestBody List<MenuEntity> menuEntityList,String roleName){
-		return null;
+	public ResultUtil updateRoleMenuList(@RequestBody List<MenuEntity> menuEntityList,
+										 @RequestParam("roleName") String roleName){
+		return menuService.updateRoleMenuInfoList(menuEntityList,roleName);
 	}
 
 	/**
