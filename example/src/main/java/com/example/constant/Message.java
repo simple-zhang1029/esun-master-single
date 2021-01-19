@@ -1,6 +1,8 @@
 package com.example.constant;
 
-//信息码枚举类
+/**
+ * 信息码枚举类
+ */
 public enum   Message {
     PASSWORD_NOT_STANDARD("password_not_standard","密码格式不规范"),
     EMAIL_NOT_STANDARD("email_not_standard","邮箱不规范"),
@@ -120,7 +122,8 @@ public enum   Message {
     //导出收货消息枚举
     DERIVE_RECEIVING_ERROR("derive_receiving_error","导入发货信息失败"),
     DERIVE_RECEIVING_SUCCESS("derive_receiving_success","导入发货信息成功"),
-    PASSWORD_IS_SAME("password_is_same","密码相同");
+    PASSWORD_IS_SAME("password_is_same","密码相同"),
+    TEST_MESSAGE("test_message","测试信息");
 
 
     //信息码

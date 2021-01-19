@@ -1,7 +1,10 @@
 package com.example.constant;
 
-//信息码枚举类
+/**
+ * 信息码枚举类
+ */
 public enum MenuMessage {
+
     QUERY_ERROR("query_error","请求失败"),
     MENU_GET_ERROR("menu_get_error","获取菜单失败"),
     MENU_GET_SUCCESS("menu_get_success","获取菜单成功"),
@@ -35,6 +38,7 @@ public enum MenuMessage {
     }
 
     public String getCode() {
+
         return code;
     }
 }
