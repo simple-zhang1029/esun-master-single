@@ -92,7 +92,7 @@ public class CorpController {
     * @author
      * @date
      */
-    @PutMapping("corp")
+    @PostMapping("corp")
     public ResultUtil addCorp(@RequestBody List<CorpMstr> corpMstrList) {
         return corpService.insertCorpInfoList(corpMstrList);
     }
@@ -118,7 +118,7 @@ public class CorpController {
      * @author
      * @date
      */
-    @PostMapping("corp")
+    @PutMapping("corp")
     public ResultUtil updateCorp(@RequestBody List<CorpMstr> corpMstrList) {
         return corpService.updateCorpInfolist(corpMstrList);
     }

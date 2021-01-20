@@ -54,7 +54,7 @@ public class MenuController {
 	 * @author john.xiao
 	 * @date 2020-10-13 17:06
 	 */
-	@PutMapping("/menuList")
+	@PostMapping("/menuList")
 	public ResultUtil addMenuList(@RequestBody List<MenuEntity> menuEntityList){
 		return menuService.insertMenuInfoList(menuEntityList);
 	}
@@ -78,7 +78,7 @@ public class MenuController {
 	 * @author john.xiao
 	 * @date 2020-10-13 17:06
 	 */
-	@PostMapping("/menuList")
+	@PutMapping("/menuList")
 	public ResultUtil updateMenuList(@RequestBody  List<MenuEntity> menuEntityList){
 		return menuService.updateMenuInfoList(menuEntityList);
 	}
@@ -129,7 +129,7 @@ public class MenuController {
 	 * @param roleName 角色名
 	 * @return 结果封装类
 	 */
-	@PostMapping("/menuList/role")
+	@PutMapping("/menuList/role")
 	public ResultUtil updateRoleMenuList(@RequestBody List<MenuEntity> menuEntityList,
 										 @RequestParam("roleName") String roleName){
 		return menuService.updateRoleMenuInfoList(menuEntityList,roleName);

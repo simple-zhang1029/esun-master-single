@@ -76,7 +76,7 @@ public class RoleController {
 	 * @author john.xiao
 	 * @date 2020-10-13 17:06
 	 */
-	@PutMapping("/role")
+	@PostMapping("/role")
 	public ResultUtil addRole(@RequestBody List<RoleMstr> roleMstrList) {
 		return roleService.insertRoleInfoList(roleMstrList);
 	}
@@ -102,7 +102,7 @@ public class RoleController {
 	 * @author john.xiao
 	 * @date 2020-10-13 17:06
 	 */
-	@PostMapping("/role")
+	@PutMapping("/role")
 	public ResultUtil updateRole(@RequestBody List<RoleMstr> roleMstrList) {
 		return roleService.updateRoleInfolist(roleMstrList);
 	}
@@ -127,7 +127,7 @@ public class RoleController {
 	 * @author john.xiao
 	 * @date 2020-10-13 17:06
 	 */
-	@PostMapping("/userRole")
+	@PutMapping("/userRole")
 	public ResultUtil updateUserRole(@RequestBody List<RoleMstr> roleMstrList,
 									 @RequestParam("userUserId") String userUserId) {
 		return roleService.updateUserRoleInfoList(roleMstrList, userUserId);
