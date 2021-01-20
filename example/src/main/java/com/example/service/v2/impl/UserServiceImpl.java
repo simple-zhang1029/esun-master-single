@@ -261,8 +261,9 @@ public class UserServiceImpl implements UserService {
 		}
 		else {
 			//设置默认排序项
-			criteriaBuilder.append("user_userid");
+			criteriaBuilder.append("user_userid,");
 		}
+		criteriaBuilder.setLength(criteriaBuilder.length()-1);
 		return  criteriaBuilder.toString();
 	}
 
