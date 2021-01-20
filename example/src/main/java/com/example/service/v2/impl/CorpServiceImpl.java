@@ -158,7 +158,7 @@ public class CorpServiceImpl implements CorpService {
         String message;
         boolean corpExist = isCorpExist(corpMstr.getCorp());
         if (!corpExist) {
-            message = MessageUtil.getMessage(Message.DELIVERY_IS_EXIST.getCode());
+            message = MessageUtil.getMessage(Message.DELIVERY_NOT_EXIST.getCode());
             logger.warn(corpMstr.getCorpId() + "：" + message);
             return ResultUtil.error(message, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
@@ -208,7 +208,7 @@ public class CorpServiceImpl implements CorpService {
         String message;
         boolean corpExist = isCorpExist(corpMstr.getCorp());
         if (!corpExist) {
-            message = MessageUtil.getMessage(Message.DELIVERY_IS_EXIST.getCode());
+            message = MessageUtil.getMessage(Message.DELIVERY_NOT_EXIST.getCode());
             logger.warn(corpMstr.getCorpId() + "：" + message);
             return ResultUtil.error(message, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
@@ -219,6 +219,7 @@ public class CorpServiceImpl implements CorpService {
         if (!SUCCESS_CODE.equals(result.get(CODE).toString())) {
             message = MessageUtil.getMessage(Message.DELIVERY_UPDATE_ERROR.getCode());
             logger.error(message);
+
             return ResultUtil.error(message, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         message = MessageUtil.getMessage(Message.DELIVERY_UPDATE_SUCCESS.getCode());
