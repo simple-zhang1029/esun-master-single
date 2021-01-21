@@ -70,8 +70,9 @@ public class RoleServiceImpl implements RoleService {
         }
         else {
             //设置默认排序项
-            criteriaBuilder.append("role_name");
+            criteriaBuilder.append("role_name,");
         }
+        criteriaBuilder.setLength(criteriaBuilder.length()-1);
         return  criteriaBuilder.toString();
     }
 
