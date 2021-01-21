@@ -29,6 +29,9 @@ import java.util.Arrays;
 public class AuthorizeFilter implements GlobalFilter {
 	private  static Logger logger= LoggerFactory.getLogger(AuthorizeFilter.class);
 
+	public static final String CODE = "code";
+	public static final String SUCCESS_CODE = "10000";
+	
 	@Autowired
 	TokenService tokenService;
 
@@ -59,7 +62,7 @@ public class AuthorizeFilter implements GlobalFilter {
 			return getVoidMono(serverHttpResponse,"token不存在");
 		}
 		ResultUtil result= tokenService.checkToken(token);
-		if (HttpStatus.OK.value() != (int)result.get("code")){
+		if (!SUCCESS_CODE.equals(result.get(CODE).toString())){
 			logger.error(userId+":token校验失败"+token);
 			return getVoidMono(serverHttpResponse,"token校验失败");
 		}
