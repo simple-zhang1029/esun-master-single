@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * 登入校验注解
- * @author xiaoliebin
+ * @author john.xiao
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

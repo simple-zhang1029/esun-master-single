@@ -27,14 +27,15 @@ public class GatewayApplication {
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder){
 		return builder.routes()
-				.route("tokenService",r -> r.path("/token/*").uri("lb://token"))
-				.route("dbHelper",r ->r.path("/dbHelper/*").uri("lb://dbHelper"))
-				.route("wharf",r->r.path("/*/wharf/*").uri("lb://wharf"))
-				.route("menu",r->r.path("/*/menu/*").uri("lb://example"))
-				.route("example",r->r.path("/*/example/*").uri("lb://example"))
-				.route("userManage",r->r.path("/*/userManage/*").uri("lb://example"))
-				.route("corp",r->r.path("/*/corpManage/*").uri("lb://example"))
-				.route("domainManage",r->r.path("/*/domainManage/*").uri("lb://example"))
+				.route("tokenService",r -> r.path("/token/**").uri("lb://token"))
+				.route("dbHelper",r ->r.path("/dbHelper/**").uri("lb://dbHelper"))
+				.route("wharf",r->r.path("/*/wharf/**").uri("lb://wharf"))
+				.route("menu",r->r.path("/*/menuManage/**").uri("lb://example"))
+				.route("role",r->r.path("/*/roleManage/**").uri("lb://example"))
+				.route("example",r->r.path("/*/example/**").uri("lb://example"))
+				.route("userManage",r->r.path("/*/userManage/**").uri("lb://example"))
+				.route("corp",r->r.path("/*/corpManage/**").uri("lb://example"))
+				.route("domainManage",r->r.path("/*/domainManage/**").uri("lb://example"))
 				.build();
 
 	}

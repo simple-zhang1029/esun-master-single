@@ -20,18 +20,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-//import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 系统切面类
  */
-//@Aspect
-//@Component
+@Aspect
+@Component
 public class SystemAspect {
-    //日志声明
+    /**
+     * 日志声明
+     */
     private static Logger logger= LoggerFactory.getLogger(SystemAspect.class);
     MethodSignature signature;
-    Optional name;
+    Optional<Object> name;
     @Around("execution(* com.example.controller.*.*(..))")
     public Object TokenCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -46,7 +47,7 @@ public class SystemAspect {
         Object[] args=proceedingJoinPoint.getArgs();
         String[] paraNames = signature.getParameterNames();
         //检查是否经过token校验
-        Optional tokenCheck=Optional.ofNullable(request.getHeader("Token-Checked"));
+        Optional<Object> tokenCheck=Optional.ofNullable(request.getHeader("Token-Checked"));
         name=Optional.ofNullable(request.getHeader("name"));
         if(!"true".equals(tokenCheck.orElse(""))){
             String message="请求错误,未经过token校验";
@@ -57,8 +58,7 @@ public class SystemAspect {
             parameterMap.put(paraNames[i],args[i]);
             logger.info(name.orElse("system").toString()+":"+method.getName()+"-params:"+paraNames[i]+":"+args[i].toString());
         }
-        Object proceed = proceedingJoinPoint.proceed();
-        return proceed;
+        return proceedingJoinPoint.proceed();
     }
 
     /**
