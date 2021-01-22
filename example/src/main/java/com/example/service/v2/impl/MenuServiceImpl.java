@@ -51,7 +51,7 @@ public class MenuServiceImpl implements MenuService {
 		String sortString = getSortString(criteriaList);
 		String sql = "select guid,menu_corp as \"menuCorp\" ,menu_nbr as \"menuNbr\" ,menu_select as \"menuSelect\" ," +
 				"menu_program as \"menuProgram\" ,menu_name as \"menuName\", menu_mod_date as \"menuModDate\" " +
-				"from menu_mstr where menu_nbr ilike '%25" + menuNo + "%25' and menu_select ilke '%25" + menuSelect + "%25' " +
+				"from menu_mstr where menu_nbr ilike '%25" + menuNo + "%25' and menu_select ilike '%25" + menuSelect + "%25' " +
 				"order by " + sortString + ";";
 		String message;
 		ResultUtil result = dbHelperService.selectPage(sql, DATASOURCE_POSTGRES, pageIndex, pageSize);
@@ -83,7 +83,7 @@ public class MenuServiceImpl implements MenuService {
 	public ResultUtil getMenuInfoList(String menuNo, String menuSelect) {
 		String sql = "select guid,menu_corp as \"menuCorp\" ,menu_nbr as \"menuNbr\" ,menu_select as \"menuSelect\" ," +
 				"menu_program as \"menuProgram\" ,menu_name as \"menuName\", menu_mod_date as \"menuModDate\" " +
-				"from menu_mstr where menu_nbr ilike '%25" + menuNo + "%25' and menu_select ilke '%25" + menuSelect + "%25' ";
+				"from menu_mstr where menu_nbr ilike '%25" + menuNo + "%25' and menu_select ilike '%25" + menuSelect + "%25' ";
 		String message;
 		ResultUtil result = dbHelperService.select(sql, DATASOURCE_POSTGRES);
 		if (!SUCCESS_CODE.equals(result.get(CODE).toString())) {
@@ -115,7 +115,7 @@ public class MenuServiceImpl implements MenuService {
 				Map<String, Object> listMap = (Map<String, Object>) criteriaList.get(i);
 				Optional<Object> sort = Optional.ofNullable(listMap.get("sort"));
 				Optional<Object> criteria = Optional.ofNullable(listMap.get("criteria"));
-				criteriaBuilder.append(criteria.orElse("ugid"));
+				criteriaBuilder.append(criteria.orElse("guid"));
 				if (!"0".equals(sort.orElse("0"))) {
 					criteriaBuilder.append(" desc");
 				}
@@ -123,7 +123,7 @@ public class MenuServiceImpl implements MenuService {
 			}
 		} else {
 			//设置默认排序项
-			criteriaBuilder.append("ugid");
+			criteriaBuilder.append("guid");
 		}
 		return criteriaBuilder.toString();
 	}
@@ -145,7 +145,7 @@ public class MenuServiceImpl implements MenuService {
 		List<HashMap<String, Object>> resultList = new ArrayList<>(10);
 		for (int i = 0; i < list.size(); i++) {
 			HashMap<String, Object> stringObjectHashMap = list.get(i);
-			String mapMenuNo = stringObjectHashMap.get("menuNo").toString();
+			String mapMenuNo = stringObjectHashMap.get("menuNbr").toString();
 			String mapMenuSelect = stringObjectHashMap.get("menuSelect").toString();
 			String childNo = "X".equals(menuNo) ? mapMenuSelect : mapMenuNo + "." + mapMenuSelect;
 			if (menuNo.equals(mapMenuNo)) {
@@ -172,10 +172,10 @@ public class MenuServiceImpl implements MenuService {
 			logger.warn(menuEntity.getMenuNbr() + "," + menuEntity.getMenuSelect() + "：" + message);
 			return ResultUtil.error(message, Thread.currentThread().getStackTrace()[1].getMethodName());
 		}
-		String sql = "insert into user_mstr " +
+		String sql = "insert into menu_mstr " +
 				"(guid,menu_corp, menu_nbr, menu_select, menu_program, menu_name) " +
-				"values('" + GUID + "','" + menuEntity.getMenuCorp() + "','" + menuEntity.getMenuNbr() + "'" + menuEntity.getMenuSelect() + "'" +
-				"'" + menuEntity.getMenuProgram() + "'," + menuEntity.getMenuName() + "');";
+				"values('" + GUID + "','" + menuEntity.getMenuCorp() + "','" + menuEntity.getMenuNbr() + "','" + menuEntity.getMenuSelect() + "'," +
+				"'" + menuEntity.getMenuProgram() + "','" + menuEntity.getMenuName() + "');";
 		ResultUtil result = dbHelperService.insert(sql, DATASOURCE_POSTGRES);
 		if (!SUCCESS_CODE.equals(result.get(CODE).toString())) {
 			message = MessageUtil.getMessage(MenuMessage.MENU_ADD_ERROR.getCode());
@@ -201,15 +201,15 @@ public class MenuServiceImpl implements MenuService {
 			logger.warn(menuEntity.getMenuNbr() + "," + menuEntity.getMenuSelect() + "：" + message);
 			return ResultUtil.error(message, Thread.currentThread().getStackTrace()[1].getMethodName());
 		}
-		String sql = "update public.menu_mstr" +
-				"set" +
-				"menu_corp = " + menuEntity.getMenuCorp() + " ," +
-				"menu_nbr = " + menuEntity.getMenuNbr() + " ," +
-				"menu_select = " + menuEntity.getMenuSelect() + "," +
-				"menu_name = " + menuEntity.getMenuName() + "," +
-				"menu_program =" + menuEntity.getMenuProgram() + "" +
+		String sql = "update public.menu_mstr " +
+				"set " +
+				"menu_corp = '" + menuEntity.getMenuCorp() + " '," +
+				"menu_nbr = '" + menuEntity.getMenuNbr() + "' ," +
+				"menu_select = '" + menuEntity.getMenuSelect() + "'," +
+				"menu_name = '" + menuEntity.getMenuName() + "'," +
+				"menu_program ='" + menuEntity.getMenuProgram() + "' " +
 				"where " +
-				"guid=" + menuEntity.getGuid() + "";
+				"guid='" + menuEntity.getGuid() + "'";
 		ResultUtil result = dbHelperService.update(sql, DATASOURCE_POSTGRES);
 		if (!SUCCESS_CODE.equals(result.get(CODE).toString())) {
 			message = MessageUtil.getMessage(MenuMessage.MENU_UPDATE_ERROR.getCode());
@@ -234,9 +234,9 @@ public class MenuServiceImpl implements MenuService {
 			logger.warn(menuEntity.getMenuNbr() + "," + menuEntity.getMenuSelect() + "：" + message);
 			return ResultUtil.error(message, Thread.currentThread().getStackTrace()[1].getMethodName());
 		}
-		String sql = "delete from public.menu_mstr" +
+		String sql = "delete from public.menu_mstr " +
 				"where " +
-				"guid=" + menuEntity.getGuid() + "";
+				"guid='" + menuEntity.getGuid() + "'";
 		ResultUtil result = dbHelperService.delete(sql, DATASOURCE_POSTGRES);
 		if (!SUCCESS_CODE.equals(result.get(CODE).toString())) {
 			message = MessageUtil.getMessage(MenuMessage.MENU_DELETE_ERROR.getCode());
@@ -426,7 +426,7 @@ public class MenuServiceImpl implements MenuService {
 	 */
 	@Override
 	public ResultUtil getRoleMenuInfoList(String roleName) {
-		String sql = "select distinct guid,menu_corp as \"menuCorp\",menud_nbr as \"menuNo\",menu_select as \"menuSelect\",menu_program as \"menuProgram\" " +
+		String sql = "select distinct guid,menu_corp as \"menuCorp\",menud_nbr as \"menuNbr\",menu_select as \"menuSelect\",menu_program as \"menuProgram\",menu_name as \"menuName\" " +
 				"    from menu_mstr ms\n" +
 				"    left join menud_det md on ms.menu_nbr = md.menud_nbr and ms.menu_select = md.menud_select\n" +
 				"    left join roled_det rd on ms.menu_nbr = rd.roled_nbr and ms.menu_select = rd.roled_select\n" +
@@ -458,7 +458,7 @@ public class MenuServiceImpl implements MenuService {
 	 */
 	@Override
 	public ResultUtil getUserMenuInfoList(String userUserId) {
-		String sql = "select distinct menud_nbr as \"menuNo\",menu_select as \"menuSelect\",menu_program as \"menuProgram\",pgrm_url as \"programUrl\",menud_label as \"menuLabel\" from menu_mstr ms\n" +
+		String sql = "select distinct menud_nbr as \"menuNbr\",menu_select as \"menuSelect\",menu_program as \"menuProgram\",pgrm_url as \"programUrl\",menud_label as \"menuLabel\",menu_name as \"menuName\" from menu_mstr ms\n" +
 				"    left join menud_det md on ms.menu_nbr = md.menud_nbr and ms.menu_select = md.menud_select\n" +
 				"    left join roled_det rd on ms.menu_nbr = rd.roled_nbr and ms.menu_select = rd.roled_select\n" +
 				"where  rd.roled_role in (\n" +

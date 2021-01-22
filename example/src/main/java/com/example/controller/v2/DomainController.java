@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController("DomainV2Controller")
-@RequestMapping("v2/domainManager")
+@RequestMapping("v2/domainManage")
 public class DomainController {
     @Resource(name = "DomainV2Service")
     DomainService domainService;

@@ -36,14 +36,26 @@ public class MenuController {
 	 * @author john.xiao
 	 * @date 2020-10-13 17:06
 	 */
-	@GetMapping("/menuList")
-	public ResultUtil getMenuList(@RequestParam(value = "menuSelect",required = false,defaultValue = "")String menuSelect,
+	@GetMapping("/menuList/page")
+	public ResultUtil getMenuListPage(@RequestParam(value = "menuSelect",required = false,defaultValue = "")String menuSelect,
 	                              @RequestParam(value = "menuNbr",required = false,defaultValue = "")String menuNbr,
 	                              @RequestParam(value = "pageIndex",required = false,defaultValue = "1")int pageIndex,
 	                              @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
 	                              @RequestParam(value = "criteriaList",required = false,defaultValue = "[]")String criteriaList){
 		JSONArray jsonArray=JSONArray.fromObject(criteriaList);
 		return menuService.getMenuInfoList(pageIndex,pageSize,menuNbr,menuSelect,jsonArray);
+	}
+
+	/**
+	 * 获取全部菜单
+	 * 该接口会对返回信息进行递归处理
+	 * @author john.xiao
+	 * @date 2020-10-13 17:06
+	 */
+	@GetMapping("/menuList")
+	public ResultUtil getMenuList(@RequestParam(value = "menuSelect",required = false,defaultValue = "")String menuSelect,
+	                              @RequestParam(value = "menuNbr",required = false,defaultValue = "")String menuNbr){
+		return menuService.getMenuInfoList(menuNbr,menuSelect);
 	}
 
 
@@ -106,9 +118,8 @@ public class MenuController {
 	 * 导出菜单信息
 	 */
 	@GetMapping("/menuExcel")
-	public void exportMenuList(@RequestBody MenuEntity menuEntity){
-		String menuNbr=menuEntity.getMenuNbr();
-		String menuSelect=menuEntity.getMenuSelect();
+	public void exportMenuList(@RequestParam(value = "menuSelect",required = false,defaultValue = "")String menuSelect,
+	                           @RequestParam(value = "menuNbr",required = false,defaultValue = "")String menuNbr){
 		menuService.exportUserInfo(menuNbr,menuSelect);
 	}
 
