@@ -320,7 +320,7 @@ public class RoleServiceImpl implements RoleService {
         for (int i = 1; i <=sheet.getLastRowNum() ; i++) {
             //获取相应行的数据，转换为list
             roleInfo=PoiUtils.getRowData(PoiUtils.getRow(sheet,i),titleList);
-            roleName=Optional.ofNullable(roleInfo.get(" roleName"));
+            roleName=Optional.ofNullable(roleInfo.get("roleName"));
             roleDesc=Optional.ofNullable(roleInfo.get("roleDesc"));
 
             //实体类赋值

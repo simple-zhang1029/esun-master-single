@@ -62,7 +62,7 @@ public class CorpServiceImpl implements CorpService {
         dataMap.put("count", count);
         message = MessageUtil.getMessage(Message.DELIVERY_GET_SUCCESS.getCode());
         logger.info(message);
-        return ResultUtil.ok().put("msg", message).put("result", list).put("pageCount", pageCount).put("count", count);
+        return ResultUtil.ok(message,Thread.currentThread().getStackTrace()[1].getMethodName()).setData(dataMap);
     }
 
     /**
@@ -259,6 +259,7 @@ public class CorpServiceImpl implements CorpService {
      */
     @Override
     public ResultUtil exportCorp(Workbook workbook) {
+        String defaultPassword= "123456";
         Sheet sheet=workbook.getSheetAt(0);
         //获取表格标题列表
         List titleList= PoiUtils.getTitleList(PoiUtils.getRow(sheet,0));
@@ -280,16 +281,16 @@ public class CorpServiceImpl implements CorpService {
         for (int i = 1; i <=sheet.getLastRowNum() ; i++) {
             //获取相应行的数据，转换为list
             corpInfo=PoiUtils.getRowData(PoiUtils.getRow(sheet,i),titleList);
-            corp = Optional.ofNullable(corpInfo.get("corp_id"));
-            corpName = Optional.ofNullable(corpInfo.get("corp_name"));
-            corpSname = Optional.ofNullable(corpInfo.get("corp_sname"));
-            corpType = Optional.ofNullable(corpInfo.get("corp_type"));
-            corpMaxUsers = Optional.ofNullable(corpInfo.get("corp_max_users"));
-            corpAdmin =Optional.ofNullable( corpInfo.get("corp_admin"));
-            corpDb = Optional.ofNullable(corpInfo.get("corp_db"));
-            corpHost = Optional.ofNullable(corpInfo.get("corp_host"));
-            corpOs = Optional.ofNullable(corpInfo.get("corp_os"));
-            corpPort = Optional.ofNullable(corpInfo.get("corp_port"));
+            corp= Optional.ofNullable(corpInfo.get("corpId"));
+            corpName = Optional.ofNullable(corpInfo.get("corpName"));
+            corpSname = Optional.ofNullable(corpInfo.get("corpSname"));
+            corpType = Optional.ofNullable(corpInfo.get("corpType"));
+            corpMaxUsers = Optional.ofNullable(corpInfo.get("corpMaxUsers"));
+            corpAdmin =Optional.ofNullable( corpInfo.get("corpAdmin"));
+            corpDb = Optional.ofNullable(corpInfo.get("corpDb"));
+            corpHost = Optional.ofNullable(corpInfo.get("corpHost"));
+            corpOs = Optional.ofNullable(corpInfo.get("corpOs"));
+            corpPort = Optional.ofNullable(corpInfo.get("corpPort"));
             //实体类赋值
             CorpMstr corpMstr=new CorpMstr();
             corpMstr.setCorp(corp.orElse("").toString());
@@ -332,9 +333,11 @@ public class CorpServiceImpl implements CorpService {
     @Override
     public ResultUtil deriveCorp(String corp, boolean isDelete) {
         String sql = "select\n" +
-                "         corp_id, corp_name, corp_sname, corp_type, corp_max_users, corp_admin, corp_db, corp_host, corp_os, corp_port, corp_scrpt_timeout, corp_idle_timeout, corp_mod_date, corp_mod_prog, corp_mod_user, corp__chr01, corp__chr02, corp__chr03, corp__int01, corp__int02, corp__int03, corp__dte01, corp__dte02, corp__dte03, corp__dec01, corp__dec02, corp__dec03, corp__log01, corp__log02, corp_mod_time\n" +
+                "         corp_id as  \"corpId\", corp_name as \"corpName\", corp_sname as \"corpSname\"," +
+                "         corp_type as \"corpType\", corp_max_users as \"corpMaxUsers\", corp_admin as \"corpAdmin\"," +
+                "         corp_db as \"corpDb\", corp_host as \"corpHost\", corp_os as \"corpOs\", corp_port as \"corpPort\" " +
                 "        from public.corp_mstr\n" +
-                "        where corp_id ilike '%"+corp+"%' ";
+                "        where corp_id ilike '%25"+corp+"%25' ";
         String message;
         ResultUtil result=dbHelperService.select(sql,DATASOURCE_POSTGRES);
         if(!SUCCESS_CODE.equals(result.get(CODE).toString())){
@@ -350,16 +353,16 @@ public class CorpServiceImpl implements CorpService {
             return ResultUtil.ok(message);
         }
         List<String> titleList=new ArrayList<>();
-        titleList.add("corp_id");
-        titleList.add("corp_name");
-        titleList.add("corp_sname");
-        titleList.add("corp_type");
-        titleList.add("corp_max_users");
-        titleList.add("corp_admin");
-        titleList.add("corp_db");
-        titleList.add("corp_host");
-        titleList.add("corp_os");
-        titleList.add("corp_port");
+        titleList.add("corpId");
+        titleList.add("corpName");
+        titleList.add("corpSname");
+        titleList.add("corpType");
+        titleList.add("corpMaxUsers");
+        titleList.add("corpAdmin");
+        titleList.add("corpDb");
+        titleList.add("corpHost");
+        titleList.add("corpOs");
+        titleList.add("corpPort");
         String diskPath="E:/test/";
         String path= ExcelUtils.createMapListExcel(list,diskPath,titleList);
         FileUtils fileUtils=new FileUtils();
@@ -367,7 +370,7 @@ public class CorpServiceImpl implements CorpService {
         //判断是否删除
         if(isDelete){
             String 	deleteSql = "delete  from corp_mstr " +
-                    "where corp_id ilike "+corp+" " ;
+                    "where corp_id = "+corp+" " ;
 
             ResultUtil deleteResult=dbHelperService.delete(deleteSql,DATASOURCE_POSTGRES);
             if(HttpStatus.OK.value()!= (int)deleteResult.get(CODE)){
