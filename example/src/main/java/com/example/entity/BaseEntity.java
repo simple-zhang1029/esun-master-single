@@ -19,6 +19,10 @@ public class BaseEntity {
 
 	private String programId="";
 
+	private String result;
+
+	private String code;
+
 	public String getToken() {
 		return token;
 	}
@@ -65,5 +69,21 @@ public class BaseEntity {
 
 	public void setProgramId(String programId) {
 		this.programId = programId;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

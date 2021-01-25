@@ -172,44 +172,38 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ResultUtil deleteUserInfoList(List<UserMstr> userMstrList) {
-		List<Map<String,Object>> resultList=new ArrayList<>(userMstrList.size());
 		String message;
-		for (int i = 0; i < userMstrList.size(); i++) {
-			ResultUtil result=deleteUserInfo(userMstrList.get(i));
-			Map<String,Object> resultMap=new HashMap<>();
-			resultMap.put(userMstrList.get(i).getUserUserId(),result);
-			resultList.add(resultMap);
+		for (UserMstr userMstr : userMstrList) {
+			ResultUtil result = deleteUserInfo(userMstr);
+			userMstr.setResult(result.get("msg").toString());
+			userMstr.setCode(result.get("code").toString());
 		}
 		message=MessageUtil.getMessage(Message.USER_INFO_DELETE_SUCCESS.getCode());
-		return  ResultUtil.ok(message,Thread.currentThread().getStackTrace()[1].getMethodName()).setData(resultList);
+		return  ResultUtil.ok(message,Thread.currentThread().getStackTrace()[1].getMethodName()).setData(userMstrList);
 	}
 
 	@Override
 	public ResultUtil insertUserInfoList(List<UserMstr> userMstrList) {
-		List<Map<String,Object>> resultList=new ArrayList<>(userMstrList.size());
 		String message;
-		for (int i = 0; i < userMstrList.size(); i++) {
-			ResultUtil result=insertUserInfo(userMstrList.get(i));
-			Map<String,Object> resultMap=new HashMap<>();
-			resultMap.put(userMstrList.get(i).getUserUserId(),result);
-			resultList.add(resultMap);
+		for (UserMstr userMstr : userMstrList) {
+			ResultUtil result = insertUserInfo(userMstr);
+			userMstr.setResult(result.get("msg").toString());
+			userMstr.setCode(result.get("code").toString());
 		}
 		message=MessageUtil.getMessage(Message.USER_INFO_DELETE_SUCCESS.getCode());
-		return  ResultUtil.ok(message,Thread.currentThread().getStackTrace()[1].getMethodName()).setData(resultList);
+		return  ResultUtil.ok(message,Thread.currentThread().getStackTrace()[1].getMethodName()).setData(userMstrList);
 	}
 
 	@Override
 	public ResultUtil updateUserInfoList(List<UserMstr> userMstrList) {
-		List<Map<String,Object>> resultList=new ArrayList<>(userMstrList.size());
 		String message;
-		for (int i = 0; i < userMstrList.size(); i++) {
-			ResultUtil result=updateUserInfo(userMstrList.get(i));
-			Map<String,Object> resultMap=new HashMap<>();
-			resultMap.put(userMstrList.get(i).getUserUserId(),result);
-			resultList.add(resultMap);
+		for (UserMstr userMstr : userMstrList) {
+			ResultUtil result = insertUserInfo(userMstr);
+			userMstr.setResult(result.get("msg").toString());
+			userMstr.setCode(result.get("code").toString());
 		}
 		message=MessageUtil.getMessage(Message.USER_INFO_DELETE_SUCCESS.getCode());
-		return  ResultUtil.ok(message,Thread.currentThread().getStackTrace()[1].getMethodName()).setData(resultList);
+		return  ResultUtil.ok(message,Thread.currentThread().getStackTrace()[1].getMethodName()).setData(userMstrList);
 	}
 
 	@Override

@@ -2,12 +2,15 @@ package com.example.constant;
 
 /**
  * 信息码枚举类
+ * @author John.xiao
  */
-public enum   Message {
+public enum Message {
+    //密码格式不规范
     PASSWORD_NOT_STANDARD("password_not_standard","密码格式不规范"),
     EMAIL_NOT_STANDARD("email_not_standard","邮箱不规范"),
     PASSWORD_IS_NULL("password_is_null","密码为空"),
     QUERY_ERROR("query_error","请求失败"),
+    QUERY_SUCCESS("query_success","请求成功"),
     USER_INFO_GET_ERROR("user_info_get_error","获取用户信息失败"),
     USER_INFO_DELETE_ERROR("user_info_delete_error","删除用户信息失败"),
     USER_INFO_UPDATE_ERROR("user_info_update_error","更新用户信息失败"),
@@ -126,9 +129,13 @@ public enum   Message {
     TEST_MESSAGE("test_message","测试信息");
 
 
-    //信息码
+    /**
+     * 信息码
+     */
     private final String code;
-    //信息码描述
+    /**
+     * 信息码描述
+     */
     private final String description;
 
     private Message(String code,String description) {
@@ -138,5 +145,9 @@ public enum   Message {
 
     public String getCode() {
         return code;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
