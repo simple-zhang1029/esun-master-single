@@ -40,7 +40,7 @@ public class CorpServiceImpl implements CorpService {
     public ResultUtil getCorpInfoList(int pageIndex, int pageSize, String corp, List<Map<String, Object>> criteriaList) {
         String sortString = getSortString(criteriaList);
         String sql = "select" +
-                " corp_id as \"corpId\", corp_name as \"corpName\", corp_sname as \"corpSname\", corp_type as \"corpType\", corp_max_users as \"corpMaxUsers\", corp_admin as \"corpAdmin\", " +
+                " corp_id as \"corp\", corp_name as \"corpName\", corp_sname as \"corpSname\", corp_type as \"corpType\", corp_max_users as \"corpMaxUsers\", corp_admin as \"corpAdmin\", " +
                 " corp_db as \"corpDb\", corp_host as \"corpHost\", corp_os as \"corpOs\", corp_port as \"corpPort\", " +
                 " corp_scrpt_timeout as \"corpScrptTimeout\", corp_idle_timeout as \"corpIdleTimeout\", " +
                 " corp_mod_date as \"corpId\", corp_mod_prog as \"corpModProg\", corp_mod_user as \"corpModUser\",corp_mod_time as \"corpModTime\"" +
