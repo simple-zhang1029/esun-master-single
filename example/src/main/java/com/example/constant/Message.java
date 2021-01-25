@@ -120,11 +120,11 @@ public enum Message {
     EXPORT_RECEIVING_ERROR("export_receiving_error","导入发货信息失败"),
     EXPORT_RECEIVING_SUCCESS("export_receiving_success","导入发货信息成功"),
     //导出发货信息
-    DERIVE_DELIVERY_ERROR("derive_delivery_error","导入发货信息失败"),
-    DERIVE_DELIVERY_SUCCESS("derive_delivery_success","导入发货信息成功"),
+    DERIVE_DELIVERY_ERROR("derive_delivery_error","导出发货信息失败"),
+    DERIVE_DELIVERY_SUCCESS("derive_delivery_success","导出发货信息成功"),
     //导出收货消息枚举
-    DERIVE_RECEIVING_ERROR("derive_receiving_error","导入发货信息失败"),
-    DERIVE_RECEIVING_SUCCESS("derive_receiving_success","导入发货信息成功"),
+    DERIVE_RECEIVING_ERROR("derive_receiving_error","导出发货信息失败"),
+    DERIVE_RECEIVING_SUCCESS("derive_receiving_success","导出发货信息成功"),
     PASSWORD_IS_SAME("password_is_same","密码相同"),
     TEST_MESSAGE("test_message","测试信息");
 
