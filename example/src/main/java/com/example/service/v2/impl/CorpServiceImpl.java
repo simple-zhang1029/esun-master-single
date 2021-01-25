@@ -107,7 +107,7 @@ public class CorpServiceImpl implements CorpService {
         boolean corpExist = isCorpExist(corpMstr.getCorp());
         if (corpExist) {
             message = MessageUtil.getMessage(Message.DELIVERY_IS_EXIST.getCode());
-            logger.warn(corpMstr.getCorpId() + "：" + message);
+            logger.warn(corpMstr.getCorp() + "：" + message);
             return ResultUtil.error(message, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         String sql = "insert into corp_mstr " +
@@ -158,7 +158,7 @@ public class CorpServiceImpl implements CorpService {
         boolean corpExist = isCorpExist(corpMstr.getCorp());
         if (!corpExist) {
             message = MessageUtil.getMessage(Message.DELIVERY_NOT_EXIST.getCode());
-            logger.warn(corpMstr.getCorpId() + "：" + message);
+            logger.warn(corpMstr.getCorp() + "：" + message);
             return ResultUtil.error(message, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         String sql ="delete from corp_mstr where lower(corp_id)=lower('"+corpMstr.getCorp()+"')";
@@ -206,7 +206,7 @@ public class CorpServiceImpl implements CorpService {
         boolean corpExist = isCorpExist(corpMstr.getCorp());
         if (!corpExist) {
             message = MessageUtil.getMessage(Message.DELIVERY_NOT_EXIST.getCode());
-            logger.warn(corpMstr.getCorpId() + "：" + message);
+            logger.warn(corpMstr.getCorp() + "：" + message);
             return ResultUtil.error(message, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         String sql = "update corp_mstr set corp_name= '"+corpMstr.getCorpName()+"',corp_sname= '"+corpMstr.getCorpSname()+"',corp_type= '"+corpMstr.getCorpType()+"',corp_max_users= '"+corpMstr.getCorpMaxUsers()+
